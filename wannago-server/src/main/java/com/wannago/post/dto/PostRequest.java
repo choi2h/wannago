@@ -10,4 +10,6 @@ public class PostRequest {
     private String contents;
     private String author;
     private boolean isPublic;
+    private int likeCount;
+    private boolean liked;
 }
