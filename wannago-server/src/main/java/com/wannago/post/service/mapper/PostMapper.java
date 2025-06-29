@@ -7,9 +7,11 @@ import com.wannago.post.entity.Post;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class PostMapper {
+    // 요청 → 엔티티 변환
     public Post getPost(PostRequest postRequest) {
         return Post.builder()
                 .title(postRequest.getTitle())
@@ -19,25 +21,29 @@ public class PostMapper {
                 .build();
     }
 
-
-    public PostsResponse getPostsResponse(List<Post> posts) {
+    // 엔티티 리스트 → 응답 리스트 변환 (+ 좋아요 수, 상태 포함)
+    public PostsResponse getPostsResponse(List<Post> posts,Map<Long, Integer> likeCountMap, Map<Long, Boolean> likedMap) {
         PostsResponse response = new PostsResponse();
 
         for(Post post : posts) {
-            PostResponse postResponse = getPostResponse(post);
+            int likeCount = likeCountMap.getOrDefault(post.getId(),0);
+            boolean liked = likedMap.getOrDefault(post.getId(), false);
+            PostResponse postResponse = getPostResponse(post, likeCount, liked);
             response.addPost(postResponse);
         }
 
         return response;
     }
-
-    public PostResponse getPostResponse(Post post) {
+    // 엔티티 → 단건 응답 DTO 변환
+    public PostResponse getPostResponse(Post post, int likeCount, boolean liked) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .contents(post.getContents())
                 .isPublic(post.isPublic())
+                .likeCount(likeCount)
+                .liked(liked)
                 .build();
     }
 }
