@@ -1,0 +1,119 @@
+.view {
+  height: 379px;
+  left: 323px;
+  position: absolute;
+  top: 144px;
+  width: 791px;
+}
+
+.view .frame-2 {
+  align-items: flex-start;
+  background-color: #fdfaf5;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  left: 1px;
+  position: absolute;
+  top: 0;
+  width: 760px;
+}
+
+.view .frame-3 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px 8px;
+  position: relative;
+}
+
+.view .frame-4 {
+  align-items: center;
+  border: 1px solid;
+  border-color: #000000;
+  border-radius: 1000px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  justify-content: center;
+  padding: 4px 8px;
+  position: relative;
+}
+
+.view .text-wrapper-4 {
+  color: #1f1d1b;
+  font-family: "Space Grotesk", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  width: fit-content;
+}
+
+.view .text-wrapper-5 {
+  align-self: stretch;
+  color: #1f1d1b;
+  font-family: "Space Grotesk", Helvetica;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+}
+
+.view .left {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  left: 1px;
+  position: absolute;
+  top: 115px;
+}
+
+.view .frame-5 {
+  background: url(https://c.animaapp.com/mcd2vn6dgOtm8p/img/frame-2-3.png) 50%
+    50% / cover;
+  border-radius: 76.56px;
+  height: 56px;
+  position: relative;
+  width: 56px;
+}
+
+.view .text-wrapper-6 {
+  color: #1f1d1b;
+  font-family: "Space Grotesk", Helvetica;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+
+.view .text-wrapper-7 {
+  color: #757575;
+  font-family: "Roboto", Helvetica;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.view .p {
+  color: #1f1d1b;
+  font-family: "S-Core Dream-4Regular", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 29px;
+  position: absolute;
+  top: 200px;
+  width: 789px;
+}

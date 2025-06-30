@@ -1,0 +1,36 @@
+.post-write {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  margin-top: 60px;
+  padding: 0 20px;
+}
+
+.add-schedule {
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-button {
+  border-top: 1px solid #e0e0e0;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 20px 0;
+  gap: 10px;
+  margin-top: 20px;
+}

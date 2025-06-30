@@ -1,0 +1,30 @@
+.tag-box {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background-color: #f2f2f4;
+  border: 1px solid #dedee0;
+  border-radius: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1f1f1f;
+  gap: 8px;
+}
+
+.tag-text {
+  margin: 0;
+}
+
+.tag-close {
+  width: 20px;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}

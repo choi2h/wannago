@@ -1,0 +1,209 @@
+.element {
+  border: 1px solid;
+  border-color: #c4c4c4;
+  border-radius: 20px;
+  height: 454px;
+  left: 283px;
+  overflow: hidden;
+  position: absolute;
+  top: 755px;
+  width: 886px;
+}
+
+.element .frame-3 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 80px;
+  left: 63px;
+  position: absolute;
+  top: 52px;
+  width: 760px;
+}
+
+.element .text-wrapper-7 {
+  align-self: stretch;
+  color: #409f71;
+  font-family: "S-Core Dream-5Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  height: 34px;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.element .text-wrapper-8 {
+  align-self: stretch;
+  color: #1f1d1b;
+  font-family: "S-Core Dream-5Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+}
+
+.element .frame-4 {
+  height: 18px;
+  margin-bottom: -28.00px;
+  position: relative;
+  width: 34px;
+}
+
+.element .group-2 {
+  height: 29px;
+  left: 63px;
+  position: absolute;
+  top: 145px;
+  width: 760px;
+}
+
+.element .input {
+  align-items: center;
+  border: 1px solid;
+  border-color: #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  gap: 10px;
+  height: 29px;
+  left: 0;
+  padding: 0px 10px;
+  position: absolute;
+  top: 0;
+  width: 220px;
+}
+
+.element .icon-outlined-action {
+  height: 20px !important;
+  position: relative !important;
+  width: 20px !important;
+}
+
+.element .text-wrapper-9 {
+  color: #757575;
+  flex: 1;
+  font-family: var(--body-md-regular-font-family);
+  font-size: var(--body-md-regular-font-size);
+  font-style: var(--body-md-regular-font-style);
+  font-weight: var(--body-md-regular-font-weight);
+  letter-spacing: var(--body-md-regular-letter-spacing);
+  line-height: var(--body-md-regular-line-height);
+  position: relative;
+}
+
+.element .content-wrapper {
+  align-items: center;
+  border: 1px solid;
+  border-color: #c4c4c4;
+  border-radius: 4px;
+  display: flex;
+  gap: 10px;
+  height: 29px;
+  left: 230px;
+  padding: 0px 10px;
+  position: absolute;
+  top: 0;
+  width: 530px;
+}
+
+.element .content-2 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  position: relative;
+  width: 257px;
+}
+
+.element .vector {
+  height: 21.5px;
+  margin-bottom: -0.75px;
+  margin-left: -0.75px;
+  margin-top: -0.75px;
+  position: relative;
+  width: 17.5px;
+}
+
+.element .text-wrapper-10 {
+  color: #757575;
+  flex: 1;
+  font-family: var(--body-md-regular-font-family);
+  font-size: var(--body-md-regular-font-size);
+  font-style: var(--body-md-regular-font-style);
+  font-weight: var(--body-md-regular-font-weight);
+  letter-spacing: var(--body-md-regular-letter-spacing);
+  line-height: var(--body-md-regular-line-height);
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.element .text-wrapper-11 {
+  color: #212224;
+  font-family: "S-Core Dream-3Light", Helvetica;
+  font-size: 16px;
+  font-weight: 300;
+  left: 68px;
+  letter-spacing: 0.16px;
+  line-height: normal;
+  position: absolute;
+  top: 202px;
+  width: 755px;
+}
+
+.element .frame-5 {
+  align-items: center;
+  background-color: #e6e6e6;
+  border-radius: 9.22px;
+  display: inline-flex;
+  left: 63px;
+  position: absolute;
+  top: 385px;
+}
+
+.element .vuesax-linear-wrapper {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 9.22px;
+  padding: 9.22px;
+  position: relative;
+}
+
+.element .vuesax-linear {
+  flex: 0 0 auto !important;
+  position: relative !important;
+}
+
+.element .frame-6 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 9.22px;
+  justify-content: center;
+  padding: 9.22px 9.22px 9.22px 0px;
+  position: relative;
+}
+
+.element .text-wrapper-12 {
+  color: #000000;
+  font-family: "Manrope", Helvetica;
+  font-size: 14.8px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 23.6px;
+  margin-top: -0.92px;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.element .x-instance {
+  height: 24px !important;
+  left: 822px !important;
+  position: absolute !important;
+  top: 28px !important;
+  width: 24px !important;
+}
