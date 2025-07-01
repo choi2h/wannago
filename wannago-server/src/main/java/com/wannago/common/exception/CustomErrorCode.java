@@ -14,6 +14,9 @@ public enum CustomErrorCode {
     INVALID_INPUT(HttpStatus.BAD_REQUEST, "M004", "다시 작성해주세요"),
     EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M005", "잘못된 이메일입니다."),
 
+    // 인증 A
+    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, "A001", "로그인이 필요한 요청입니다."),
+
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다.");
 
