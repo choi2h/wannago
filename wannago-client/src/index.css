@@ -52,18 +52,6 @@
   --size-space-400: 16px;
 }
 
-/*
-
-To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
-
-<body data-radius-mode="medium">
-    <!-- the rest of your content -->
-</body>
-
-You can apply the theme on any DOM node, not just the `body`
-
-*/
-
 [data-radius-mode="medium"] {
   --radius-radius-md: 8px;
 }

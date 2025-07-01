@@ -1,0 +1,131 @@
+.element {
+  border: 1px solid;
+  border-color: #cdcdcd;
+  border-radius: 24px;
+  height: 279px;
+  left: 324px;
+  overflow: hidden;
+  position: absolute;
+  top: 686px;
+  width: 793px;
+}
+
+.element .group-2 {
+  height: 223px;
+  left: 40px;
+  position: relative;
+  top: 28px;
+  width: 724px;
+}
+
+.element .left-2 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  left: 1px;
+  position: absolute;
+  top: 0;
+  width: 176px;
+}
+
+.element .frame-6 {
+  background: url(https://c.animaapp.com/mcd2vn6dgOtm8p/img/frame-2-3.png) 50%
+    50% / cover;
+  border-radius: 76.56px;
+  height: 30px;
+  position: relative;
+  width: 30px;
+}
+
+.element .text-wrapper-8 {
+  color: #1f1d1b;
+  font-family: "Space Grotesk", Helvetica;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+
+.element .text-wrapper-9 {
+  color: #757575;
+  font-family: "Roboto", Helvetica;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.element .text-wrapper-10 {
+  color: #757575;
+  font-family: "Roboto", Helvetica;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-right: -0.85px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.element .button {
+  align-items: center;
+  background-color: #e6e6e6;
+  border-radius: 24px;
+  display: flex;
+  gap: 8px;
+  height: 24px;
+  justify-content: center;
+  left: 623px;
+  overflow: hidden;
+  padding: 12px;
+  position: absolute;
+  top: 3px;
+  width: 99px;
+}
+
+.element .star-instance {
+  height: 16px !important;
+  margin-bottom: -8.00px !important;
+  margin-left: -4.00px !important;
+  margin-top: -8.00px !important;
+  position: relative !important;
+  width: 16px !important;
+}
+
+.element .button-2 {
+  all: unset;
+  box-sizing: border-box;
+  color: #757575;
+  font-family: var(--single-line-body-base-font-family);
+  font-size: var(--single-line-body-base-font-size);
+  font-style: var(--single-line-body-base-font-style);
+  font-weight: var(--single-line-body-base-font-weight);
+  letter-spacing: var(--single-line-body-base-letter-spacing);
+  line-height: var(--single-line-body-base-line-height);
+  margin-bottom: -7.00px;
+  margin-right: -4.00px;
+  margin-top: -9.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.element .text-wrapper-11 {
+  color: #1f1d1b;
+  font-family: "Space Grotesk", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 29px;
+  position: absolute;
+  top: 50px;
+  width: 689px;
+}

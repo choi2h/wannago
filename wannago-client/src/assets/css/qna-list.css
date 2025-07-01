@@ -1,0 +1,111 @@
+/* 전체 페이지 컨테이너 */
+.qna-page-container {
+  max-width: 960px; /* 페이지 최대 너비 설정 */
+  margin: 40px auto; /* 중앙 정렬 및 상하 여백 */
+  padding: 0 20px; /* 좌우 패딩 */
+}
+
+/* 페이지 메인 제목 */
+.page-main-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #222;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* 카테고리 메뉴 바 */
+.category-menu-bar {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  gap: 15px; /* 메뉴 아이템 간 간격 */
+  margin-bottom: 30px;
+  padding: 15px 20px;
+}
+
+.category-menu-bar .menu-item {
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.category-menu-bar .menu-item a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: #555;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.category-menu-bar .menu-item:hover {
+  background-color: #e9ecef; /* 호버 시 배경색 */
+}
+
+.category-menu-bar .menu-item.selected {
+  background-color: #409F71;
+}
+
+.category-menu-bar .menu-item.selected a {
+  color: #fff; /* 선택된 아이템 글씨색 */
+  font-weight: 700;
+}
+
+/* Q&A 목록 섹션 */
+.qna-list-section {
+  display: flex;
+  flex-direction: column; /* 세로로 나열 */
+  gap: 20px; /* 각 Q&A 프레임 사이 간격 */
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  margin-top: 40px;
+}
+
+.pagination-list {
+  display: flex;
+  list-style: none; /* 리스트 점 제거 */
+  padding: 0;
+  margin: 0;
+  gap: 8px; /* 페이지 번호 간 간격 */
+}
+
+.pagination-page {
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.pagination-page a {
+  display: block;
+  padding: 6px 12px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.pagination-page:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.pagination-page.selected {
+  background-color: #409F71;
+}
+
+.pagination-page.selected a {
+  color: #fff;
+  font-weight: 700;
+}
+
+.pagination-gap {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  color: #888;
+  font-size: 15px;
+  font-weight: 600;
+}
