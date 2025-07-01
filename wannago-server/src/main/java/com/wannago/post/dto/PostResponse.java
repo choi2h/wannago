@@ -16,4 +16,5 @@ public class PostResponse {
     private boolean isPublic;
     private int likeCount;
     private boolean liked;
+    private boolean bookmarked;
 }
