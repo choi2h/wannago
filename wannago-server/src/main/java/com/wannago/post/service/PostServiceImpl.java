@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
         postRepository.save(post);
     }
 
-    public PostsResponse getAllPosts() {
+    /*public PostsResponse getAllPosts() {
         List<Post> posts = postRepository.findAll();
         return postMapper.getPostsResponse(posts);
     }
@@ -38,6 +38,6 @@ public class PostServiceImpl implements PostService {
         }
 
         return postMapper.getPostResponse(post.get());
-    }
+    }*/
 
 }
