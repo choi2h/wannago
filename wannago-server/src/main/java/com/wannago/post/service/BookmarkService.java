@@ -1,11 +1,13 @@
 package com.wannago.post.service;
 
+import com.wannago.member.entity.Member;
+
 import java.util.List;
 import java.util.Map;
 
 public interface BookmarkService {
 
-    boolean toggleBookmark(Long postId, Long memberId);
-    boolean hasBookmarked(Long postId, Long memberId);
-    Map<Long, Boolean> getBookmarkedMap(List<Long> postIds, Long memberId);
+    boolean toggleBookmark(Long postId, Member member);
+    boolean hasBookmarked(Long postId, Member member);
+    Map<Long, Boolean> getBookmarkedMap(List<Long> postIds, Member member);
 }

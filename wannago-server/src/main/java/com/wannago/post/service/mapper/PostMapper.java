@@ -30,9 +30,7 @@ public class PostMapper {
                 .author(post.getAuthor())
                 .contents(post.getContents())
                 .isPublic(post.isPublic())
-                .likeCount(statusInfo.getLikeCount())
-                .liked(statusInfo.isLiked())
-                .bookmarked(statusInfo.isBookmarked())
+                .statusInfo(statusInfo)
                 .build();
     }
 
