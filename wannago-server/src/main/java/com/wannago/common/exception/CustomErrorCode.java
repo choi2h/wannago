@@ -15,10 +15,13 @@ public enum CustomErrorCode {
     EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M005", "잘못된 이메일입니다."),
 
     // 게시글 P
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다.");
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다."),
 
+    // 댓글 C
+    COMMENT_EMPTY(HttpStatus.BAD_REQUEST, "C001", "댓글 내용을 입력해주세요."),
+    COMMENT_TOO_LONG(HttpStatus.BAD_REQUEST, "C002", "댓글은 100자 이하로 입력해주세요.");
 
-    // 답변 C
+    // 답변 A
 
 
     // 질문 Q
