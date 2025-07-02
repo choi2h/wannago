@@ -28,7 +28,7 @@ public class CommentController {
     }
 
     // 답글 작성
-    @PostMapping("/{parentId}")
+    @PostMapping("/{parentCommentId}/reply")
     public ResponseEntity<CommentResponse> addReply(
             @PathVariable Long postId,
             @PathVariable String parentId,

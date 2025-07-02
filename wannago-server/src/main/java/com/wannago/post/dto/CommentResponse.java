@@ -19,4 +19,5 @@ public class CommentResponse {
     private String contents;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+    private List<CommentResponse> replies; // 답글 리스트 (CommentResponse 타입)
 }
