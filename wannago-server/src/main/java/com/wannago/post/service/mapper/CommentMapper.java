@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Component
 public class CommentMapper {
-    // 댓글 변환
     // 요청 -> 엔티티로 변환
     public Comment getComment(Long postId,String parentId, CommentRequest req, Member member){
         return Comment.builder()

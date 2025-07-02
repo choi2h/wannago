@@ -27,7 +27,6 @@ public class CommentController {
         return ResponseEntity.ok(commentService.addComment(postId,req,member));
     }
 
-    // 답글 작성
     @PostMapping("/{parentId}")
     public ResponseEntity<CommentResponse> addReply(
             @PathVariable Long postId,
@@ -37,6 +36,7 @@ public class CommentController {
     ){
         return ResponseEntity.ok(commentService.addReply(postId,parentId,req,member));
     }
+
 
     //댓글 수정
     @PutMapping("/{commentId}")

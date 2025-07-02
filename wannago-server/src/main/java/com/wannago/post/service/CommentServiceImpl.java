@@ -22,8 +22,12 @@ public class CommentServiceImpl implements CommentService{
     // 댓글 작성
     @Override
     public CommentResponse addComment(Long postId, CommentRequest commentRequest, Member member){
+
         // 댓글 객체 생성( 댓글은 parentId = null)
         Comment comment = commentMapper.getComment(postId,null,commentRequest,member);
+        // 댓글 객체 생성
+        Comment comment = commentMapper.getComment(postId,commentRequest,member);
+
         // 댓글 저장
         commentRepository.save(comment);
         // 댓글 DTO 반환
@@ -58,7 +62,7 @@ public class CommentServiceImpl implements CommentService{
         // 댓글 DTO 반환
         return commentMapper.getCommentResponse(comment);
     }
-
+  
     // 댓글 찾기 및 유효성 검증 유틸 메소드
     private Comment getCommentOrThrow(String commentId) {
         return commentRepository.findById(commentId)
