@@ -13,18 +13,18 @@ function ScheduleForm({newSchedule, setNewSchedule, idx}){
   }
 
   const updateLocation = ({name, lat, lng}) => {
-    const location = {name, lat, lng};
-    setNewSchedule(idx, {...newSchedule, location});
+    console.log(name + " lat:" + lat + " lng:" + lng);
+    const locationName = name;
+    setNewSchedule(idx, {...newSchedule, locationName, lat, lng});
+    console.log(newSchedule);
   }
 
   const updateContents = (contents) => {
-    console.log('update contents : ' + contents);
     const modifiedSchedule = {...newSchedule, contents};
     setNewSchedule(idx, modifiedSchedule);
   }
 
   const updateTime = (time) => {
-    console.log('update time : ' + time);
     setNewSchedule(idx, {...newSchedule, time});
   }
 
@@ -59,7 +59,7 @@ function ScheduleForm({newSchedule, setNewSchedule, idx}){
             type="text"
             placeholder="장소를 입력하세요"
             className="location-input"
-            value={newSchedule?.location?.name || ''} // 안전한 접근
+            value={newSchedule?.locationName || ''} // 안전한 접근
             onClick={() => {
               console.log('click!!')
               setIsOpenLocationModal(true);
