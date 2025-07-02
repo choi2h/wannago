@@ -1,13 +1,12 @@
 package com.wannago.post.controller;
 
 import com.wannago.post.dto.PostRequest;
+import com.wannago.post.dto.PostResponse;
 import com.wannago.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/post")
@@ -22,4 +21,9 @@ public class PostController {
         postService.insertPost(postRequest);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
+        PostResponse postResponse = postService.getPostById(id, 1L);
+        return ResponseEntity.ok(postResponse);
+    }
 }

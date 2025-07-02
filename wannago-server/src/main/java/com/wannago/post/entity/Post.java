@@ -10,10 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Entity @Getter @ToString
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity(name = "post")
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
 
@@ -45,7 +43,7 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Schedule> schedules;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
     private List<PostTag> tags;
 
     @Builder

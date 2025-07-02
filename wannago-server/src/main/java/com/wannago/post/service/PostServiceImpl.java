@@ -1,8 +1,14 @@
 package com.wannago.post.service;
 
+import com.wannago.common.exception.CustomErrorCode;
+import com.wannago.common.exception.CustomException;
 import com.wannago.post.dto.PostRequest;
+import com.wannago.post.dto.PostResponse;
+import com.wannago.post.dto.PostStatusInfo;
 import com.wannago.post.entity.Post;
 import com.wannago.post.entity.Tag;
+import com.wannago.post.repository.BookmarkRepository;
+import com.wannago.post.repository.PostLikeRepository;
 import com.wannago.post.repository.PostRepository;
 import com.wannago.post.repository.TagRepository;
 import com.wannago.post.service.mapper.PostMapper;
@@ -15,6 +21,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
+    private final PostLikeRepository postLikeRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final PostMapper postMapper;
@@ -31,6 +40,25 @@ public class PostServiceImpl implements PostService {
         postRepository.save(post);
     }
 
+    @Override
+    public PostResponse getPostById(Long postId, Long memberId) {
+        Post post = postRepository
+                    .findByIdWithSchedules(postId)
+                    .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
+        List<String> tags = tagRepository.getTagsByPost(postId);
+        PostStatusInfo statusInfo = getPostStatusInfo(postId, memberId);
+        return postMapper.getPostResponse(post, tags, statusInfo);
+    }
+
+    private PostStatusInfo getPostStatusInfo(Long postId, Long memberId) {
+        int likeCount = postLikeRepository.countByPost_Id(postId);
+
+        // TODO 추후 로그인 정보 개발 완료되면 수정
+        if(memberId == null) return new PostStatusInfo(likeCount, false, false);
+        boolean isLiked = postLikeRepository.existsByPost_IdAndMember_Id(postId, memberId);
+        boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, memberId);
+        return new PostStatusInfo(likeCount, isLiked, isBookmarked);
+    }
 
     private void setTags(Post post, List<String> inputTags) {
         for(String inputTag : inputTags) {

@@ -1,7 +1,6 @@
 package com.wannago.post.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,9 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
+@Entity @Getter
 @NoArgsConstructor
-@Entity(name = "tag")
 @EntityListeners(AuditingEntityListener.class)
 public class Tag {
 
