@@ -18,12 +18,21 @@ public enum CustomErrorCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
     // 게시글 P
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다.");
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다."),
 
 
 
     // 답변 C
 
+    ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "요청하신 답변을 찾을 수 없습니다."),
+    ANSWER_CONTENT_EMPTY(HttpStatus.BAD_REQUEST, "C002", "답변 내용을 작성해주세요."),
+    ANSWER_UNAUTHORIZED(HttpStatus.FORBIDDEN, "C003", "답변 작성자만 수정/삭제할 수 있습니다."),
+    ANSWER_UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "C004", "답변 수정에 실패했습니다. 다시 시도해주세요."),
+    ANSWER_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "C005", "답변 삭제에 실패했습니다. 다시 시도해주세요."),
+    ANSWER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "C006", "이미 채택된 답변이 있습니다."),
+
+    // 질문 Q
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Q001", "요청하신 질문을 찾을 수 없습니다.");
 
     // 질문 Q
 
