@@ -1,5 +1,6 @@
 package com.wannago.member.config;
 
+import com.wannago.member.jwt.CustomAuthenticationEntryPoint;
 import com.wannago.member.jwt.JwtAuthenticationFilter;
 import com.wannago.member.jwt.JwtTokenResolver;
 import com.wannago.member.jwt.TokenProvider;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 
 @Configuration // 이 클래스가 스프링 설정 클래스임을 의미
@@ -25,6 +30,7 @@ public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final JwtTokenResolver jwtTokenResolver;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     // 비밀번호 암호화 하기 위한 BCrypt 빈 등록
     @Bean
@@ -35,12 +41,21 @@ public class SecurityConfig {
     // 보안 필터 체인
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(List.of("http://localhost:3000")); // 프론트 도메인
+            configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE")); // 허용 HTTP 메서드
+            configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 허용
+            configuration.setAllowCredentials(true); // 인증정보 포함 허용
+            return configuration;
+        }));
         http.csrf(auth -> auth.disable()); // CSRF 공격 방지 기능 비활성화
         http.formLogin(auth -> auth.disable()); // 기본 로그인 폼 비활성화
         http.httpBasic(auth -> auth.disable()); // HTTP Basic 인증 비활성화
         http.authorizeHttpRequests(auth -> auth // 경로별 접근 권한 설정
                 //.requestMatchers("/**").permitAll()
-                //.requestMatchers("/mypage/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/post/*/like").authenticated()
+                .requestMatchers(HttpMethod.POST, "/post/*/bookmark").authenticated()
                 //.anyRequest().authenticated());
                         .anyRequest().permitAll());
         http.sessionManagement(session -> session
@@ -48,7 +63,7 @@ public class SecurityConfig {
         http.addFilterBefore(new JwtAuthenticationFilter(tokenProvider, memberRepository, jwtTokenResolver), UsernamePasswordAuthenticationFilter.class); // Filter 적용
         http.exceptionHandling(ex -> ex
                 // 인증실패
-                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
                 // 권한 없음
                 .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN)));
 
