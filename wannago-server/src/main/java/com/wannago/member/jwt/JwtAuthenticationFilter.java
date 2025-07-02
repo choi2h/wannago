@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+// 요청마다 AccessToken 검사
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -34,8 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (!tokenProvider.validateToken(token)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "유효하지 않은 토큰입니다.");
-            return;
+            throw new CustomException(CustomErrorCode.INVALID_TOKEN);
         }
 
         try {
