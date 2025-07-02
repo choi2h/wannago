@@ -1,7 +1,5 @@
 package com.wannago.qna.answer.controller;
 
-
-
 import com.wannago.qna.answer.dto.AnswerRequest;
 import com.wannago.qna.answer.dto.AnswerResponse;
 import com.wannago.qna.answer.service.AnswerService;
@@ -11,17 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
-
 @RestController
 @RequestMapping("/qna")
 @RequiredArgsConstructor
 public class AnswerController {
-
     private final AnswerService answerService;
-
 
     // 답변 등록
     @PostMapping("/{qnaId}/answer")
@@ -29,17 +21,11 @@ public class AnswerController {
             @PathVariable Long qnaId,
             @RequestBody AnswerRequest request
     ) {
-
         // 로그인 정보 가져오기
         String loginId = getCurrentLoginId();
-
-
         AnswerResponse response = answerService.createAnswer(qnaId,loginId, request);
         return ResponseEntity.ok(response);
     }
-
-
-
 
     // 현재 로그인한 ID 조회
     private String getCurrentLoginId() {
@@ -48,10 +34,6 @@ public class AnswerController {
         if (authentication == null || !authentication.isAuthenticated()) {
             // 예외 처리
         }
-
-
         return authentication.getName();
     }
-
-
 }

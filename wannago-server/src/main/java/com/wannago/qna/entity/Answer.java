@@ -49,6 +49,4 @@ public class Answer {
     @UpdateTimestamp
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
-
-
 }
