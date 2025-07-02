@@ -2,10 +2,10 @@ package com.wannago.member.service;
 
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
-import com.wannago.member.dto.JoinRequestDto;
-import com.wannago.member.dto.LoginRequestDto;
-import com.wannago.member.dto.MemberResponseDto;
-import com.wannago.member.dto.TokenResponseDto;
+import com.wannago.member.dto.JoinRequest;
+import com.wannago.member.dto.LoginRequest;
+import com.wannago.member.dto.MemberResponse;
+import com.wannago.member.dto.TokenResponse;
 import com.wannago.member.entity.Member;
 import com.wannago.member.jwt.TokenProvider;
 import com.wannago.member.repository.MemberRepository;
@@ -28,38 +28,38 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public MemberResponseDto join(JoinRequestDto joinRequestDto) {
+    public MemberResponse join(JoinRequest joinRequest) {
         // 이름 값 체크
-        if (joinRequestDto.getName() == null || joinRequestDto.getName().trim().isEmpty() || !joinRequestDto.getName().matches("^[a-zA-Z0-9]{4,12}$")) {
+        if (joinRequest.getName() == null || joinRequest.getName().trim().isEmpty() || !joinRequest.getName().matches("^[a-zA-Z0-9]{4,12}$")) {
             throw new CustomException(CustomErrorCode.INVALID_INPUT);
         }
 
-        if (memberRepository.existsByName(joinRequestDto.getName()))
+        if (memberRepository.existsByName(joinRequest.getName()))
             throw new CustomException(CustomErrorCode.DUPLICATE_NAME);
 
         // 비밀번호 값 체크
-        if (joinRequestDto.getPassword() == null || joinRequestDto.getPassword().length() < 6 || joinRequestDto.getPassword().length() > 20) {
+        if (joinRequest.getPassword() == null || joinRequest.getPassword().length() < 6 || joinRequest.getPassword().length() > 20) {
             throw new CustomException(CustomErrorCode.INVALID_INPUT);
         }
 
-        if (!joinRequestDto.getPassword().equals(joinRequestDto.getConfirmPassword())) {
+        if (!joinRequest.getPassword().equals(joinRequest.getConfirmPassword())) {
             throw new CustomException(CustomErrorCode.PASSWORD_MISMATCH);
         }
 
         // 이메일 값 체크
-        if (joinRequestDto.getEmail() == null || !isValidEmail(joinRequestDto.getEmail())) {
+        if (joinRequest.getEmail() == null || !isValidEmail(joinRequest.getEmail())) {
             throw new CustomException(CustomErrorCode.INVALID_INPUT);
         }
 
-        LocalDate birthDate = validateAndParseBirth(joinRequestDto.getBirth());
+        LocalDate birthDate = validateAndParseBirth(joinRequest.getBirth());
 
-        String loginId = generateLoginId(joinRequestDto.getName());
+        String loginId = generateLoginId(joinRequest.getName());
 
-        String encodedPassword = passwordEncoder.encode(joinRequestDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(joinRequest.getPassword());
 
         Member member = Member.builder()
-                .name(joinRequestDto.getName())
-                .email(joinRequestDto.getEmail())
+                .name(joinRequest.getName())
+                .email(joinRequest.getEmail())
                 .loginId(loginId)
                 .password(encodedPassword)
                 .birth(birthDate)
@@ -67,30 +67,30 @@ public class AuthServiceImpl implements AuthService {
 
         Member savedMember = memberRepository.save(member);
 
-        return MemberResponseDto.of(savedMember);
+        return MemberResponse.of(savedMember);
     }
 
     @Override
     @Transactional
-    public TokenResponseDto login(LoginRequestDto loginRequestDto) {
+    public TokenResponse login(LoginRequest loginRequest) {
         // 회원 조회
-        Member member = memberRepository.findByName(loginRequestDto.getName())
+        Member member = memberRepository.findByName(loginRequest.getName())
                 .orElseThrow(() -> new CustomException(CustomErrorCode.MEMBER_NOT_FOUND));
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.getPassword(), member.getPassword())) {
             throw new CustomException(CustomErrorCode.PASSWORD_NOT_MATCH);
         }
 
         // 토큰 발급
         String accessToken = tokenProvider.generateAccessToken(member.getLoginId());
         String refreshToken = tokenProvider.generateRefreshToken();
-        return new TokenResponseDto(accessToken, refreshToken, member.getLoginId());
+        return new TokenResponse(accessToken, refreshToken, member.getLoginId());
     }
 
     @Override
     @Transactional
-    public TokenResponseDto reissue(String refreshToken, String accessToken) {
+    public TokenResponse reissue(String refreshToken, String accessToken) {
         // 토큰 유효성 확인
         if (!tokenProvider.validateToken(refreshToken)) {
             throw new CustomException(CustomErrorCode.INVALID_REFRESH_TOKEN);
@@ -107,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
         // 새 토큰 발급
         String newAccessToken = tokenProvider.generateAccessToken(loginId);
         String newRefreshToken = tokenProvider.generateRefreshToken();
-        return new TokenResponseDto(newAccessToken, newRefreshToken, loginId);
+        return new TokenResponse(newAccessToken, newRefreshToken, loginId);
     }
 
     private String generateLoginId(String name) {

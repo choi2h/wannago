@@ -2,22 +2,21 @@ package com.wannago.member.controller;
 
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
-import com.wannago.member.dto.JoinRequestDto;
-import com.wannago.member.dto.LoginRequestDto;
-import com.wannago.member.dto.MemberResponseDto;
-import com.wannago.member.dto.TokenResponseDto;
+import com.wannago.member.dto.JoinRequest;
+import com.wannago.member.dto.LoginRequest;
+import com.wannago.member.dto.MemberResponse;
+import com.wannago.member.dto.TokenResponse;
 import com.wannago.member.jwt.JwtTokenResolver;
 import com.wannago.member.service.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/member")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -25,22 +24,37 @@ public class AuthController {
     private final JwtTokenResolver jwtTokenResolver;
 
     @PostMapping("/join")
-    public ResponseEntity<MemberResponseDto> join(@RequestBody JoinRequestDto joinRequestDto) {
-        MemberResponseDto memberResponseDto = authServiceImpl.join(joinRequestDto);
-        return ResponseEntity.ok(memberResponseDto);
+    public ResponseEntity<MemberResponse> join(@RequestBody JoinRequest joinRequest) {
+        MemberResponse memberResponse = authServiceImpl.join(joinRequest);
+        return ResponseEntity.ok(memberResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        TokenResponseDto tokenResponseDto = authServiceImpl.login(loginRequestDto);
-        return ResponseEntity.ok(tokenResponseDto);
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
+        TokenResponse tokenResponse = authServiceImpl.login(loginRequest);
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenResponseDto> reissue(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<TokenResponse> reissue(HttpServletRequest httpServletRequest) {
         String refreshToken = jwtTokenResolver.resolveRefreshToken(httpServletRequest);
         String accessToken = jwtTokenResolver.resolveAccessToken(httpServletRequest);
-        TokenResponseDto tokenResponseDto = authServiceImpl.reissue(refreshToken, accessToken);
-        return ResponseEntity.ok(tokenResponseDto);
+        TokenResponse tokenResponse = authServiceImpl.reissue(refreshToken, accessToken);
+        return ResponseEntity.ok(tokenResponse);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
+        String accessToken = jwtTokenResolver.resolveAccessToken(httpServletRequest);
+
+        if (!StringUtils.hasText(accessToken) || !authServiceImpl.validateAccessToken(accessToken)) {
+            throw new CustomException(CustomErrorCode.INVALID_TOKEN);
+        }
+
+        String loginId = authServiceImpl.extractLoginId(accessToken);
+
+        authServiceImpl.logout(loginId);
+
+        return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 }
