@@ -7,6 +7,7 @@ import com.wannago.post.entity.Tag;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,11 @@ public class PostMapper {
 
     private void addSchedules(Post post, List<ScheduleRequest> scheduleRequests) {
         for (ScheduleRequest request : scheduleRequests) {
-            String[] times = request.getTime().split(":");
+            LocalTime time = LocalTime.parse(request.getTime(), DateTimeFormatter.ofPattern("HH:mm"));
 
             Schedule schedule = Schedule.builder()
                     .title(request.getTitle())
-                    .time(LocalTime.of(Integer.parseInt(times[0]), Integer.parseInt(times[1])))
+                    .time(time)
                     .contents(request.getContents())
                     .locationName(request.getLocationName())
                     .lat(request.getLat())

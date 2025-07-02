@@ -19,23 +19,28 @@ public class PostServiceImpl implements PostService {
     private final TagRepository tagRepository;
     private final PostMapper postMapper;
 
-        // 게시글 등록
-        @Override
-        public void insertPost(PostRequest postRequest) {
-            Post post = postMapper.getPost(postRequest, true);
+    // 게시글 등록
+    @Override
+    public void insertPost(PostRequest postRequest) {
+        Post post = postMapper.getPost(postRequest, true);
+
+        if(postRequest.getTags() != null && !postRequest.getTags().isEmpty()) {
             setTags(post, postRequest.getTags());
-            postRepository.save(post);
         }
 
-        private void setTags(Post post, List<String> inputTags) {
-            for(String inputTag : inputTags) {
-                System.out.println(inputTag);
-                String name = inputTag.trim();
-                Optional<Tag> tagOptional = tagRepository.findByName(name);
-                Tag tag = tagOptional.orElseGet(() -> tagRepository.save(new Tag(name)));
-                post.addTag(tag);
-            }
+        postRepository.save(post);
+    }
+
+
+    private void setTags(Post post, List<String> inputTags) {
+        for(String inputTag : inputTags) {
+            System.out.println(inputTag);
+            String name = inputTag.trim();
+            Optional<Tag> tagOptional = tagRepository.findByName(name);
+            Tag tag = tagOptional.orElseGet(() -> tagRepository.save(new Tag(name)));
+            post.addTag(tag);
         }
+    }
 }
 
 
