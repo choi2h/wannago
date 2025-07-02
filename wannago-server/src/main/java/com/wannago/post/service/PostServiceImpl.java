@@ -54,48 +54,48 @@ public class PostServiceImpl implements PostService {
 //        return postMapper.getPostResponse(post.get());
 //    }
 
-        // 게시글 등록
-        @Override
-        public void insertPost(PostRequest postRequest) {
-            Post post = postMapper.getPost(postRequest);
-            postRepository.save(post);
-        }
-
-        // 단일 게시글 조회
-        @Override
-        public PostResponse getPostById(Long id, Long memberId) {
-            Post post = postRepository.findById(id)
-                    .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
-
-            int likeCount = postLikeService.getLikeCount(id);
-            boolean liked = memberId != null && postLikeService.hasLiked(id, memberId);
-            boolean bookmarked = memberId != null && bookmarkService.hasBookmarked(id, memberId);
-
-            PostStatusInfo status = new PostStatusInfo(likeCount, liked, bookmarked);
-            return postMapper.getPostResponse(post, status);
-        }
+//        // 게시글 등록
+//        @Override
+//        public void insertPost(PostRequest postRequest) {
+//            Post post = postMapper.getPost(postRequest);
+//            postRepository.save(post);
+//        }
+//
+//        // 단일 게시글 조회
+//        @Override
+//        public PostResponse getPostById(Long id, Long memberId) {
+//            Post post = postRepository.findById(id)
+//                    .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
+//
+//            int likeCount = postLikeService.getLikeCount(id);
+//            boolean liked = memberId != null && postLikeService.hasLiked(id, memberId);
+//            boolean bookmarked = memberId != null && bookmarkService.hasBookmarked(id, memberId);
+//
+//            PostStatusInfo status = new PostStatusInfo(likeCount, liked, bookmarked);
+//            return postMapper.getPostResponse(post, status);
+//        }
 
     // 전체 게시글 조회 (좋아요/북마크 포함)
-    @Override
-    public PostsResponse getAllPostsWithStatusInfo(Long memberId) {
-        List<Post> posts = postRepository.findAll();
-        List<Long> postIds = posts.stream().map(Post::getId).toList();
-
-        Map<Long, Integer> likeCountMap = postLikeService.getLikeCountMap(postIds);
-        Map<Long, Boolean> likedMap = postLikeService.getLikedMap(postIds, memberId);
-        Map<Long, Boolean> bookmarkedMap = bookmarkService.getBookmarkedMap(postIds, memberId);
-
-        Map<Long, PostStatusInfo> statusMap = new HashMap<>();
-        for (Long postId : postIds) {
-            statusMap.put(postId, new PostStatusInfo(
-                    likeCountMap.getOrDefault(postId, 0),
-                    likedMap.getOrDefault(postId, false),
-                    bookmarkedMap.getOrDefault(postId, false)
-            ));
-        }
-
-        return postMapper.getPostsResponse(posts, statusMap);
-    }
+//    @Override
+//    public PostsResponse getAllPostsWithStatusInfo(Long memberId) {
+//        List<Post> posts = postRepository.findAll();
+//        List<Long> postIds = posts.stream().map(Post::getId).toList();
+//
+//        Map<Long, Integer> likeCountMap = postLikeService.getLikeCountMap(postIds);
+//        Map<Long, Boolean> likedMap = postLikeService.getLikedMap(postIds, memberId);
+//        Map<Long, Boolean> bookmarkedMap = bookmarkService.getBookmarkedMap(postIds, memberId);
+//
+//        Map<Long, PostStatusInfo> statusMap = new HashMap<>();
+//        for (Long postId : postIds) {
+//            statusMap.put(postId, new PostStatusInfo(
+//                    likeCountMap.getOrDefault(postId, 0),
+//                    likedMap.getOrDefault(postId, false),
+//                    bookmarkedMap.getOrDefault(postId, false)
+//            ));
+//        }
+//
+//        return postMapper.getPostsResponse(posts, statusMap);
+//    }
 
 
 

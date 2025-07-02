@@ -15,21 +15,21 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping
-    public ResponseEntity<PostsResponse> getAllPost() {
-        PostsResponse response = postService.getAllPosts();
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping
-    public void addPost(@RequestBody PostRequest postRequest) {
-        postService.insertPost(postRequest);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
-        PostResponse response = postService.getPostById(id);
-
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping
+//    public ResponseEntity<PostsResponse> getAllPost() {
+//        PostsResponse response = postService.getAllPosts();
+//        return ResponseEntity.ok(response);
+//    }
+//
+//    @PostMapping
+//    public void addPost(@RequestBody PostRequest postRequest) {
+//        postService.insertPost(postRequest);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+//        PostResponse response = postService.getPostById(id);
+//
+//        return ResponseEntity.ok(response);
+//    }
 }

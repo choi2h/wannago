@@ -22,7 +22,16 @@ public class BookmarkController {
             @PathVariable Long postId,
             @AuthenticationPrincipal Member member
     ) {
+
         boolean bookmarked = bookmarkService.toggleBookmark(postId, member);
+        // 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
         return ResponseEntity.ok(Map.of("bookmarked", bookmarked));
     }
 
@@ -33,6 +42,14 @@ public class BookmarkController {
             @AuthenticationPrincipal Member member
     ) {
         boolean bookmarked = bookmarkService.hasBookmarked(postId, member);
+        // 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
         return ResponseEntity.ok(Map.of("bookmarked", bookmarked));
     }
 }

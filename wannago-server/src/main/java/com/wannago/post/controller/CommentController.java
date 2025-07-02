@@ -24,6 +24,15 @@ public class CommentController {
             @Valid @RequestBody  CommentRequest req, // 댓글 글자수 제한 및 빈 값 유효성 검증
             @AuthenticationPrincipal Member member
             ){
+        // 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
+
         return ResponseEntity.ok(commentService.addComment(postId,req,member));
     }
 
@@ -35,6 +44,16 @@ public class CommentController {
             @Valid @RequestBody  CommentRequest req, // 댓글 글자수 제한 및 빈 값 유효성 검증
             @AuthenticationPrincipal Member member
     ){
+        // 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
+
+
         return ResponseEntity.ok(commentService.addReply(postId,parentId,req,member));
     }
 
@@ -45,6 +64,15 @@ public class CommentController {
             @Valid @RequestBody CommentRequest commentRequest, // 댓글 글자수 제한 및 빈 값 유효성 검증
             @AuthenticationPrincipal Member member
     ) {
+        // 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
+
         return ResponseEntity.ok(commentService.updateComment(commentId,commentRequest,member));
     }
 }

@@ -22,6 +22,14 @@ public class PostCopyController {
             @AuthenticationPrincipal Member member
     ) {
         Long copiedPostId = postCopyService.copyPost(postId, member);
+        // 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
         return ResponseEntity.ok(Map.of(
                 "message", "나의 여행에 복사되었습니다.",
                 "copiedPostId", copiedPostId
