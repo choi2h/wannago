@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @ToString
 @AllArgsConstructor
-public class PostRequest {
+public class ScheduleRequest {
     private String title;
     private String contents;
-    private String author;
-    private List<String> tags;
-    private List<ScheduleRequest> schedules;
+    private String time;
+    private String locationName;
+    private BigDecimal lat;
+    private BigDecimal lng;
 }

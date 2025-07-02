@@ -1,25 +1,46 @@
 package com.wannago.post.service.mapper;
 
-import com.wannago.post.dto.PostRequest;
-import com.wannago.post.dto.PostResponse;
-import com.wannago.post.dto.PostStatusInfo;
-import com.wannago.post.dto.PostsResponse;
+import com.wannago.post.dto.*;
 import com.wannago.post.entity.Post;
+import com.wannago.post.entity.Schedule;
+import com.wannago.post.entity.Tag;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class PostMapper {
     // 요청 → 엔티티 변환
-    public Post getPost(PostRequest postRequest) {
-        return Post.builder()
+    public Post getPost(PostRequest postRequest, boolean isPublic) {
+        Post post =  Post.builder()
                 .title(postRequest.getTitle())
                 .author(postRequest.getAuthor())
                 .contents(postRequest.getContents())
-                .isPublic(postRequest.isPublic())
+                .isPublic(isPublic)
                 .build();
+
+        addSchedules(post, postRequest.getSchedules());
+        return post;
+    }
+
+    private void addSchedules(Post post, List<ScheduleRequest> scheduleRequests) {
+        for (ScheduleRequest request : scheduleRequests) {
+            String[] times = request.getTime().split(":");
+
+            Schedule schedule = Schedule.builder()
+                    .title(request.getTitle())
+                    .time(LocalTime.of(Integer.parseInt(times[0]), Integer.parseInt(times[1])))
+                    .contents(request.getContents())
+                    .locationName(request.getLocationName())
+                    .lat(request.getLat())
+                    .lng(request.getLng())
+                    .build();
+
+            post.addSchedule(schedule);
+        }
     }
 
     // 엔티티 → 단건 응답 DTO 변환
