@@ -15,7 +15,7 @@ public class PostController {
 
     private final PostService postService;
 
-    /*@GetMapping
+    @GetMapping
     public ResponseEntity<PostsResponse> getAllPost() {
         PostsResponse response = postService.getAllPosts();
         return ResponseEntity.ok(response);
@@ -31,5 +31,5 @@ public class PostController {
         PostResponse response = postService.getPostById(id);
 
         return ResponseEntity.ok(response);
-    }*/
+    }
 }

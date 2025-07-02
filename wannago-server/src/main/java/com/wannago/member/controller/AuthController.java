@@ -6,6 +6,7 @@ import com.wannago.member.dto.JoinRequestDto;
 import com.wannago.member.dto.LoginRequestDto;
 import com.wannago.member.dto.MemberResponseDto;
 import com.wannago.member.dto.TokenResponseDto;
+import com.wannago.member.jwt.JwtTokenResolver;
 import com.wannago.member.service.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthServiceImpl authServiceImpl;
+    private final JwtTokenResolver jwtTokenResolver;
 
     @PostMapping("/join")
     public ResponseEntity<MemberResponseDto> join(@RequestBody JoinRequestDto joinRequestDto) {
@@ -36,25 +38,9 @@ public class AuthController {
 
     @PostMapping("/reissue")
     public ResponseEntity<TokenResponseDto> reissue(HttpServletRequest httpServletRequest) {
-        String refreshToken = resolveRefreshToken(httpServletRequest);
-        String accessToken = resolveAccessToken(httpServletRequest);
+        String refreshToken = jwtTokenResolver.resolveRefreshToken(httpServletRequest);
+        String accessToken = jwtTokenResolver.resolveAccessToken(httpServletRequest);
         TokenResponseDto tokenResponseDto = authServiceImpl.reissue(refreshToken, accessToken);
         return ResponseEntity.ok(tokenResponseDto);
-    }
-
-    private String resolveRefreshToken(HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader("Authorization");
-        if (bearerToken!=null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
-        }
-        throw new CustomException(CustomErrorCode.INVALID_TOKEN);
-    }
-
-    private String resolveAccessToken(HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("X-ACCESS-TOKEN");
-        if (token != null && !token.isEmpty()) {
-            return token;
-        }
-        throw new CustomException(CustomErrorCode.INVALID_TOKEN);
     }
 }

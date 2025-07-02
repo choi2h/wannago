@@ -73,13 +73,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public TokenResponseDto login(LoginRequestDto loginRequestDto) {
+        // 회원 조회
         Member member = memberRepository.findByName(loginRequestDto.getName())
                 .orElseThrow(() -> new CustomException(CustomErrorCode.MEMBER_NOT_FOUND));
 
+        // 비밀번호 검증
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
             throw new CustomException(CustomErrorCode.PASSWORD_NOT_MATCH);
         }
 
+        // 토큰 발급
         String accessToken = tokenProvider.generateAccessToken(member.getLoginId());
         String refreshToken = tokenProvider.generateRefreshToken();
         return new TokenResponseDto(accessToken, refreshToken, member.getLoginId());
@@ -88,15 +91,20 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public TokenResponseDto reissue(String refreshToken, String accessToken) {
+        // 토큰 유효성 확인
         if (!tokenProvider.validateToken(refreshToken)) {
             throw new CustomException(CustomErrorCode.INVALID_REFRESH_TOKEN);
         }
+
         String loginId;
         try {
+            // 만료된 토큰에서 loginId 추출
             loginId = tokenProvider.getLoginIdFromExpiredToken(accessToken);
         } catch (Exception e) {
             throw new CustomException(CustomErrorCode.INVALID_TOKEN);
         }
+
+        // 새 토큰 발급
         String newAccessToken = tokenProvider.generateAccessToken(loginId);
         String newRefreshToken = tokenProvider.generateRefreshToken();
         return new TokenResponseDto(newAccessToken, newRefreshToken, loginId);
