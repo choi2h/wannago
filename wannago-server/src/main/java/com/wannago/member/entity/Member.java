@@ -2,6 +2,7 @@ package com.wannago.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "member")
@@ -44,5 +46,4 @@ public class Member {
     @UpdateTimestamp
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
-
 }
