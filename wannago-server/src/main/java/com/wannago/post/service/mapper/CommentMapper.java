@@ -4,9 +4,11 @@ import com.wannago.member.entity.Member;
 import com.wannago.post.dto.CommentRequest;
 import com.wannago.post.dto.CommentResponse;
 import com.wannago.post.entity.Comment;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class CommentMapper {
     // 요청 -> 엔티티로 변환
     public Comment getComment(Long postId, CommentRequest req, Member member){
