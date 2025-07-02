@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Component
 public class CommentMapper {
     // 요청 -> 엔티티로 변환
-    public Comment getComment(Long postId,String parentId, CommentRequest req, Member member){
+    public Comment getComment(Long postId, CommentRequest req, Member member){
         return Comment.builder()
                 .postId(postId)
-                .parentId(parentId)
+                .parentId(null)
                 .author(member.getLoginId().toString())
                 .contents(req.getContent().trim())
                 .createdDate(LocalDateTime.now())

@@ -24,8 +24,6 @@ public class CommentServiceImpl implements CommentService{
     public CommentResponse addComment(Long postId, CommentRequest commentRequest, Member member){
 
         // 댓글 객체 생성( 댓글은 parentId = null)
-        Comment comment = commentMapper.getComment(postId,null,commentRequest,member);
-        // 댓글 객체 생성
         Comment comment = commentMapper.getComment(postId,commentRequest,member);
 
         // 댓글 저장
@@ -43,7 +41,6 @@ public class CommentServiceImpl implements CommentService{
         // 답글 객체를 생성하여 부모 Document의 Sub-document로 만들기
         Comment reply = commentMapper.getComment(
                 parentComment.getPostId(), // 부모 댓글의 postId를 사용
-                parentComment.getId(),     // 대댓글 객체에 부모 ID를 설정 (필요에 따라 DTO 변환 시 사용)
                 commentRequest,
                 member
         );
