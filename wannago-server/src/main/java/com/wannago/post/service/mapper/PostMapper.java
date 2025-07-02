@@ -4,10 +4,13 @@ import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostsResponse;
 import com.wannago.post.entity.Post;
+import com.wannago.qna.entity.Ask;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
@@ -46,4 +49,46 @@ public class PostMapper {
                 .liked(liked)
                 .build();
     }
+    // 마이페이지용 - 단순 Post → PostResponse 변환 (제목 + 작성일)
+    public PostResponse toPostSimpleResponse(Post post) {
+        return PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .createdAt(post.getCreatedDate())
+                .author(post.getAuthor())
+                .contents(post.getContents())
+                .isPublic(post.isPublic())
+                .likeCount(0)
+                .liked(false)
+                .build();
+    }
+
+    public List<PostResponse> toPostSimpleResponseList(List<Post> posts) {
+        return posts.stream()
+                .map(this::toPostSimpleResponse)
+                .collect(Collectors.toList());
+    }
+
+    // 마이페이지용 - Ask → PostResponse 변환
+    public PostResponse toAskSimpleResponse(Ask ask) {
+        return PostResponse.builder()
+                .id(ask.getId())
+                .title(ask.getTitle())
+                .createdAt(ask.getCreatedDate())
+                .author(ask.getAuthor())
+                .contents(ask.getContents())
+                .isPublic(false) // 질문에는 공개 여부 없음
+                .likeCount(0)    // 질문에는 좋아요 없음
+                .liked(false)    // 로그인 사용자 기준 좋아요 없음
+                .isAccepted(ask.isAccepted())
+                .build();
+    }
+
+    public List<PostResponse> toAskSimpleResponseList(List<Ask> asks) {
+        return asks.stream()
+                .map(this::toAskSimpleResponse)
+                .collect(Collectors.toList());
+    }
+    
 }
+
