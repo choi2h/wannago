@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+// 헤더에서 Token 추출
 @Component
 public class JwtTokenResolver {
     public String resolveRefreshToken(HttpServletRequest httpServletRequest) {
