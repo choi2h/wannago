@@ -26,4 +26,11 @@ public class Comment {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private List<Comment> replies = new ArrayList<>();// 답글 리스트
+
+    // 댓글 내용 수정용 메서드
+    public void updateContent(String contents) {
+        this.contents = contents;
+        this.modifiedDate = LocalDateTime.now();
+    }
+
 }

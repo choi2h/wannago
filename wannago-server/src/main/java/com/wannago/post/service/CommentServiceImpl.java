@@ -21,21 +21,34 @@ public class CommentServiceImpl implements CommentService{
 
     // 댓글 작성
     @Override
-    public CommentResponse addComment(Long postId, CommentRequest req, Member member){
-        // 댓글 내용이 빈 값이거나 100자 초과할 경우 예외처리
-        if(req.getContent() == null | req.getContent().isBlank()){ // isBlank -> 스페이스만 입력해도 막고 싶을 경우
-            throw new CustomException(CustomErrorCode.COMMENT_EMPTY);
-        }
-        if(req.getContent().length() > 100){
-            throw new CustomException(CustomErrorCode.COMMENT_TOO_LONG);
-        }
+    public CommentResponse addComment(Long postId, CommentRequest commentRequest, Member member){
         // 댓글 객체 생성
-        Comment comment = commentMapper.getComment(postId,req,member);
+        Comment comment = commentMapper.getComment(postId,commentRequest,member);
         // 댓글 저장
         commentRepository.save(comment);
         // 댓글 DTO 반환
         return commentMapper.getCommentResponse(comment);
     }
 
+    // 댓글 수정
+    public CommentResponse updateComment(String commentId,CommentRequest commentRequest, Member member){
+        // 댓글 찾기
+        Comment comment = getCommentOrThrow(commentId);
+        // 로그인한 사용자가 해당 댓글의 작성자인지 검증
+        if (!comment.getAuthor().equals(member.getLoginId().toString())) {
+            throw new CustomException(CustomErrorCode.COMMENT_UNAUTHORIZED);
+        }
+        // 댓글 수정
+        comment.updateContent(commentRequest.getContent());
+        // 수정된 댓글 저장
+        commentRepository.save(comment);
+        // 댓글 DTO 반환
+        return commentMapper.getCommentResponse(comment);
+    }
 
+    // 댓글 찾아오는 유틸 메소드
+    private Comment getCommentOrThrow(String commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.COMMENT_NOT_FOUND));
+    }
 }
