@@ -13,7 +13,10 @@ public enum CustomErrorCode {
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "M003", "입력된 비밀번호가 일치하지 않습니다."),
     INVALID_INPUT(HttpStatus.BAD_REQUEST, "M004", "다시 작성해주세요"),
     EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M005", "잘못된 이메일입니다."),
-
+    MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M006", "회원을 찾을 수 없습니다."),
+    PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "M007", "입력된 비밀번호가 일치하지 않습니다."),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다."),
 
@@ -21,15 +24,15 @@ public enum CustomErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "요청하신 댓글을 찾을 수 없습니다."),
     COMMENT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "C002", "댓글을 수정할 권한이 없습니다.");
 
-
-    // 답변 A
+    // 답글 R
 
 
     // 질문 Q
 
 
-    // 답글 A
+    // 답변 A
 
+  
     private final HttpStatus status;
     private final String errorCode;
     private final String message;
