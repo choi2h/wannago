@@ -14,6 +14,5 @@ public class PostResponse {
     private String author;
     private String contents;
     private boolean isPublic;
-    private int likeCount;
-    private boolean liked;
+    private PostStatusInfo statusInfo;
 }

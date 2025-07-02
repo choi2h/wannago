@@ -2,6 +2,7 @@ package com.wannago.post.service.mapper;
 
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
+import com.wannago.post.dto.PostStatusInfo;
 import com.wannago.post.dto.PostsResponse;
 import com.wannago.post.entity.Post;
 import org.springframework.stereotype.Component;
@@ -21,29 +22,31 @@ public class PostMapper {
                 .build();
     }
 
-    // 엔티티 리스트 → 응답 리스트 변환 (+ 좋아요 수, 상태 포함)
-    public PostsResponse getPostsResponse(List<Post> posts,Map<Long, Integer> likeCountMap, Map<Long, Boolean> likedMap) {
-        PostsResponse response = new PostsResponse();
-
-        for(Post post : posts) {
-            int likeCount = likeCountMap.getOrDefault(post.getId(),0);
-            boolean liked = likedMap.getOrDefault(post.getId(), false);
-            PostResponse postResponse = getPostResponse(post, likeCount, liked);
-            response.addPost(postResponse);
-        }
-
-        return response;
-    }
     // 엔티티 → 단건 응답 DTO 변환
-    public PostResponse getPostResponse(Post post, int likeCount, boolean liked) {
+    public PostResponse getPostResponse(Post post, PostStatusInfo statusInfo) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .contents(post.getContents())
                 .isPublic(post.isPublic())
-                .likeCount(likeCount)
-                .liked(liked)
+                .statusInfo(statusInfo)
                 .build();
     }
+
+    // 엔티티 리스트 → 응답 리스트 변환
+    public PostsResponse getPostsResponse(List<Post> posts, Map<Long, PostStatusInfo> statusMap) {
+        PostsResponse response = new PostsResponse();
+
+        for (Post post : posts) {
+            PostStatusInfo status = statusMap.getOrDefault(post.getId(),
+                    new PostStatusInfo(0, false, false));
+            PostResponse postResponse = getPostResponse(post, status);
+            response.addPost(postResponse);
+        }
+
+        return response;
+    }
+
+
 }
