@@ -42,19 +42,4 @@ public class AuthController {
         TokenResponse tokenResponse = authServiceImpl.reissue(refreshToken, accessToken);
         return ResponseEntity.ok(tokenResponse);
     }
-
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
-        String accessToken = jwtTokenResolver.resolveAccessToken(httpServletRequest);
-
-        if (!StringUtils.hasText(accessToken) || !authServiceImpl.validateAccessToken(accessToken)) {
-            throw new CustomException(CustomErrorCode.INVALID_TOKEN);
-        }
-
-        String loginId = authServiceImpl.extractLoginId(accessToken);
-
-        authServiceImpl.logout(loginId);
-
-        return ResponseEntity.ok("로그아웃 되었습니다.");
-    }
 }
