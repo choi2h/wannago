@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+// 토큰 생성 및 검증
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
