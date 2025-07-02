@@ -48,8 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증 처리 실패");
-            return;
+            throw new CustomException(CustomErrorCode.INVALID_TOKEN);
         }
 
         filterChain.doFilter(request, response);
