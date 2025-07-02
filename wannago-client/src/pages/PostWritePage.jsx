@@ -3,15 +3,78 @@ import PostForm from '../components/PostForm';
 import ScheduleForm from '../components/ScheduleForm';
 import Button from '../components/Button';
 import '../assets/css/post-write.css';
+import { useState } from 'react';
 
 function PostWritePage () {
+    const [newPost, setNewPost] = useState(
+      {
+        title : '',
+        contents : '',
+        tags : [],
+        schedules : [
+          {
+                title : '',
+                time : '',
+                location : {
+                  name: '',
+                  lat: 0,
+                  lng: 0
+                },
+                contents : '',
+          },
+        ]
+      }
+  );
+
+  const updateSchedule = (preIdx, newSchedule) => {
+    const schedules = newPost.schedules.map((schedule, idx) => idx === preIdx ? newSchedule : schedule);
+    setNewPost((prePost) => {return {...prePost, schedules : [...schedules]}});
+    console.log(newPost.schedules);
+  }
+
+  const updateTItle = (title) => {
+    setNewPost((prePost) => {return {...prePost, title}});
+  }
+
+    const updateContents = (contents) => {
+    setNewPost((prePost) => {return {...prePost, contents}});
+  }
+
+  const updateTags = (tags) => {
+    setNewPost((prePost) =>  {return {...prePost, tags}});
+  }
+
+  const addSchedule = () => {
+    setNewPost((prePost) => {
+      return {
+        ...prePost,
+        schedules: [
+          ...prePost.schedules,
+          {
+            title : '',
+            time : '',
+            location : {
+              name: '',
+              lat: 0,
+              lng: 0
+            },
+            contents : '',
+          }
+        ]      
+      }
+    });
+    console.log(newPost);
+  }
+
   return (
     <DefaultLayout>
-        <div class="body">
-          <PostForm />
-          <ScheduleForm />
-          <div class="add-schedule">
-            <Button type={'secondary'} text={'+ 일정 추가하기'}/>
+        <div className="body">
+          <PostForm updateTitle={updateTItle} tags={newPost.tags} updateTags={updateTags} updateContents={updateContents}/>
+          {
+            newPost.schedules.map((schedule, idx) => <ScheduleForm key={idx} newSchedule={schedule} setNewSchedule={updateSchedule} idx={idx}/>)
+          }
+          <div className="add-schedule">
+            <Button type={'secondary'} text={'+ 일정 추가하기'} onClick={addSchedule}/>
           </div>
           <div className="bottom-button">
             <Button type={'negative'} text={'작성취소'}/>
