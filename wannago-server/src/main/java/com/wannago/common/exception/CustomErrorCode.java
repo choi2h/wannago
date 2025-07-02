@@ -13,14 +13,17 @@ public enum CustomErrorCode {
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다.");
 
+    // 댓글 C
 
-    // 답변 C
+
+    // 답글 R
 
 
     // 질문 Q
 
 
-    // 답글 A
+    // 답변 A
+
 
     private final HttpStatus status;
     private final String errorCode;
