@@ -42,4 +42,9 @@ public class AuthController {
         TokenResponse tokenResponse = authServiceImpl.reissue(refreshToken, accessToken);
         return ResponseEntity.ok(tokenResponse);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok("로그아웃 성공");
+    }
 }
