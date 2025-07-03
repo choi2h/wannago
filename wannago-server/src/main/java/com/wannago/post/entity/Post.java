@@ -42,10 +42,10 @@ public class Post {
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
     private Set<DailySchedule> dailySchedules;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PostTag> tags;
 
     @Builder
@@ -65,5 +65,21 @@ public class Post {
 
     public void addTag(Tag tag) {
         tags.add(PostTag.builder().post(this).tag(tag).build());
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void clearSchedules() {
+        this.dailySchedules.clear();
+    }
+
+    public void clearTags() {
+        this.tags.clear();
     }
 }

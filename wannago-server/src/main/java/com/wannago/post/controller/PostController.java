@@ -17,13 +17,18 @@ public class PostController {
 
     @PostMapping
     public void addPost(@Valid @RequestBody PostRequest postRequest) {
-        System.out.println(postRequest);
         postService.insertPost(postRequest);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
         PostResponse postResponse = postService.getPostById(id, 1L);
+        return ResponseEntity.ok(postResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        PostResponse postResponse = postService.updatePost(id, postRequest, 1L);
         return ResponseEntity.ok(postResponse);
     }
 }
