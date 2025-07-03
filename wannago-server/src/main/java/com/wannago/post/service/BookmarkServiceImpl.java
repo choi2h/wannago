@@ -6,6 +6,7 @@ import com.wannago.post.entity.Bookmark;
 import com.wannago.post.entity.Post;
 import com.wannago.post.repository.BookmarkRepository;
 import com.wannago.post.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +23,20 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final PostRepository postRepository;
 
-    // 북마크 토글
+    // 북마크 등록
     @Override
-    public boolean toggleBookmark(Long postId, Member member) {
+    @Transactional // 트랜잭션 추가 (저장 작업이므로)
+    public void addBookmark(Long postId, Member member) {
+        // 게시글 존재 여부 확인
         Post post = getPostOrThrow(postId);
 
-        return bookmarkRepository.findByPostAndMember(post, member)
-                .map(bookmark -> {
-                    bookmarkRepository.delete(bookmark);
-                    return false;
-                })
-                .orElseGet(() -> {
-                    bookmarkRepository.save(new Bookmark(null, post, member));
-                    return true;
-                });
+        // 이미 북마크 되어 있는지 확인
+        if (bookmarkRepository.existsByPostAndMember(post, member)) {
+            // 이미 북마크 되어 있다면, 예외 발생 또는 성공으로 간주 (여기서는 예외 발생으로 처리)
+            throw new CustomException(CustomErrorCode.ALREADY_BOOKMARKED);
+        }
+        // 북마크 저장
+        bookmarkRepository.save(new Bookmark(null, post, member));
     }
 
     // 게시글 단건 북마크 여부 확인
