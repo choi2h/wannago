@@ -49,4 +49,9 @@ public class Answer {
     @UpdateTimestamp
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
+
+    // 답변 수정을 위한 메서드
+    public void updateContents(String contents) {
+        this.contents = contents;
+    }
 }

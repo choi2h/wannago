@@ -11,6 +11,7 @@
   padding: 10px;
   top: 1771px;
   width: 203px;
+  cursor: pointer;
 }
 
 .button-wrapper {
@@ -37,6 +38,7 @@
   text-align: center;
   white-space: nowrap;
   width: fit-content;
+  cursor: pointer;
 }
 
 .frame-wrapper {
@@ -62,6 +64,7 @@
   width: 161px;
   color: #ffffff;
   font-weight: 500;
+  cursor: pointer;
 }
 
 /* .text-wrapper-19 {
@@ -102,6 +105,7 @@
   width: 161px;
   color: #eb4600;
   font-weight: 500;
+  cursor: pointer;
 }
 
 /* .text-wrapper-20 {

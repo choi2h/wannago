@@ -2,8 +2,8 @@ package com.wannago.post.controller;
 
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
-import com.wannago.post.dto.PostsResponse;
 import com.wannago.post.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +15,15 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping
-    public ResponseEntity<PostsResponse> getAllPost() {
-        PostsResponse response = postService.getAllPosts();
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping
-    public void addPost(@RequestBody PostRequest postRequest) {
+    public void addPost(@Valid @RequestBody PostRequest postRequest) {
+        System.out.println(postRequest);
         postService.insertPost(postRequest);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
-        PostResponse response = postService.getPostById(id);
-
-        return ResponseEntity.ok(response);
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
+        PostResponse postResponse = postService.getPostById(id, 1L);
+        return ResponseEntity.ok(postResponse);
     }
 }
