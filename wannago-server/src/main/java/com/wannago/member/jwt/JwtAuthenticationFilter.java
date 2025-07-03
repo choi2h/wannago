@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -30,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // 인증 필요 없는 경로 (회원가입, 로그인 등)
-        if (path.equals("/join") || path.equals("/login")) {
+        if (path.equals("/join") || path.equals("/login") || path.equals("/reissue")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -39,12 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 토큰 없으면 인증 실패 예외 던짐
         if (!StringUtils.hasText(token)) {
-            throw new CustomException(CustomErrorCode.UNAUTHORIZED);
+            throw new BadCredentialsException("유효하지 않은 토큰");
         }
 
         // 토큰 유효하지 않으면 예외 던짐
         if (!tokenProvider.validateToken(token)) {
-            throw new CustomException(CustomErrorCode.INVALID_TOKEN);
+            throw new BadCredentialsException("유효하지 않은 토큰");
         }
 
         try {

@@ -1,7 +1,5 @@
 package com.wannago.member.jwt;
 
-import com.wannago.common.exception.CustomErrorCode;
-import com.wannago.common.exception.CustomException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
