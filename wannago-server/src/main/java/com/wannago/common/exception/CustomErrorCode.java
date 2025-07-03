@@ -42,7 +42,6 @@ public enum CustomErrorCode {
     ANSWER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "A006", "이미 채택된 답변이 있습니다.");
 
 
-  
     private final HttpStatus status;
     private final String errorCode;
     private final String message;
