@@ -82,4 +82,8 @@ public class BookmarkServiceImpl implements BookmarkService {
             .map(Bookmark::getPost)
             .toList();
 }
+
+
+
+
 }

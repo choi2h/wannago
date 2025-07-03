@@ -32,6 +32,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostLikeService postLikeService;
+    
     private final BookmarkService bookmarkService;
     private final PostMapper postMapper;
     // 기존 코드
@@ -97,18 +98,7 @@ public class PostServiceImpl implements PostService {
         return postMapper.getPostsResponse(posts, statusMap);
     }
 
-    // 내 북마크 목록 조회
-    public List<Post> getBookmarks(Member member) {
-    List<Bookmark> bookmarks = bookmarkRepository.findByMember(member);
-    return bookmarks.stream()
-            .map(Bookmark::getPost)
-            .toList();
-}
-    void deleteBookmark(Post post, Member member); // 북마크 해제 기능 
-    public void deleteBookmark(Post post, Member member) {
-    bookmarkRepository.findByPostAndMember(post, member)
-            .ifPresent(bookmarkRepository::delete);
-}
+
 
 
 

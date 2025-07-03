@@ -47,7 +47,7 @@ public class BookmarkController {
         return ResponseEntity.ok(Map.of("bookmarked", bookmarked));
     }
   //  북마크한 게시글 목록
-    @GetMapping("/{postId}/bookmark")
+    @GetMapping("/bookmark")
     public ResponseEntity<List<PostResponse>> getBookmarks(
             @AuthenticationPrincipal Member member
     ) {
