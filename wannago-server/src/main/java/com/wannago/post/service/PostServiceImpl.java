@@ -32,7 +32,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public void insertPost(PostRequest postRequest) {
         Post post = postMapper.getPost(postRequest, true);
-
         if(postRequest.getTags() != null && !postRequest.getTags().isEmpty()) {
             setTags(post, postRequest.getTags());
         }

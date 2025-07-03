@@ -1,6 +1,6 @@
 import DefaultLayout from '../layouts/DefatulLayout';
 import PostForm from '../components/PostForm';
-import ScheduleForm from '../components/ScheduleForm';
+import DailyScheduleForm from '../components/DailyScheduleForm';
 import Button from '../components/Button';
 import '../assets/css/post-write.css';
 import { useState } from 'react';
@@ -16,12 +16,17 @@ function PostWritePage () {
         tags : [],
         schedules : [
           {
-                title : '',
-                time : '',
-                contents : '',
-                locationName: '',
-                lat: 0,
-                lng: 0,
+            day: '',
+            timeSchedules : [
+                {
+                  title : '',
+                  time : '',
+                  contents : '',
+                  locationName: '',
+                  lat: 0,
+                  lng: 0,
+                }
+            ]
           },
         ]
       }
@@ -29,7 +34,8 @@ function PostWritePage () {
 
   const completeWirtePost = () => {
     console.log("작성 완료했대!!");
-    inputNewPost(newPost);
+    const schedules = newPost.schedules.map((schedule, idx) => {return {...schedule, day: `${idx+1}일차`}});
+    inputNewPost({...newPost, schedules});
   }
 
   const updateSchedule = (preIdx, newSchedule) => {
@@ -57,15 +63,18 @@ function PostWritePage () {
         schedules: [
           ...prePost.schedules,
           {
-            title : '',
-            time : '',
-            location : {
-              name: '',
-              lat: 0,
-              lng: 0
-            },
-            contents : '',
-          }
+            day: '',
+            timeSchedules : [
+                {
+                  title : '',
+                  time : '',
+                  contents : '',
+                  locationName: '',
+                  lat: 0,
+                  lng: 0,
+                }
+            ]
+          },
         ]      
       }
     });
@@ -77,10 +86,10 @@ function PostWritePage () {
         <div className="body">
           <PostForm updateTitle={updateTItle} tags={newPost.tags} updateTags={updateTags} updateContents={updateContents}/>
           {
-            newPost.schedules.map((schedule, idx) => <ScheduleForm key={idx} newSchedule={schedule} setNewSchedule={updateSchedule} idx={idx}/>)
+            newPost.schedules.map((schedule, idx) => <DailyScheduleForm key={idx} newSchedule={schedule} setNewSchedule={updateSchedule} idx={idx}/>)
           }
           <div className="add-schedule">
-            <Button type={'secondary'} text={'+ 일정 추가하기'} onClick={addSchedule}/>
+            <Button type={'secondary'} text={'+ 일차 추가하기'} onClick={addSchedule}/>
           </div>
           <div className="bottom-button">
             <Button type={'negative'} text={'작성취소'} onClick={() => {navigate("/")}}/>

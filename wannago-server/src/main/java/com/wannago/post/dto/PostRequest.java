@@ -24,5 +24,5 @@ public class PostRequest {
     private List<String> tags;
 
     @NotNull @Size(min = 1, message = "일정은 1개이상 입력되어야 합니다.")
-    private List<ScheduleRequest> schedules;
+    private List<DailyScheduleInfo> schedules;
 }

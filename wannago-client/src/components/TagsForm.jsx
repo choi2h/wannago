@@ -29,7 +29,7 @@ function TagsForm({tags, setTags}) {
           :
           <ul className="tags-list">
             {tags.map((tag, index) => (
-              <Tag type="input" text={tag} onClick={() => removeTags(index)}/>
+              <Tag key={index} type="input" text={tag} onClick={() => removeTags(index)}/>
             ))}
           </ul>
         }

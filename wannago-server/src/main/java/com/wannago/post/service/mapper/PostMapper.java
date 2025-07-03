@@ -1,9 +1,9 @@
 package com.wannago.post.service.mapper;
 
 import com.wannago.post.dto.*;
+import com.wannago.post.entity.DailySchedule;
 import com.wannago.post.entity.Post;
-import com.wannago.post.entity.Schedule;
-import com.wannago.post.entity.Tag;
+import com.wannago.post.entity.TimeSchedule;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -29,53 +29,78 @@ public class PostMapper {
         return post;
     }
 
-    private void addSchedules(Post post, List<ScheduleRequest> scheduleRequests) {
-        for (ScheduleRequest request : scheduleRequests) {
-            LocalTime time = LocalTime.parse(request.getTime(), DateTimeFormatter.ofPattern("HH:mm"));
-
-            Schedule schedule = Schedule.builder()
-                    .title(request.getTitle())
-                    .time(time)
-                    .contents(request.getContents())
-                    .locationName(request.getLocationName())
-                    .lat(request.getLat())
-                    .lng(request.getLng())
+    private void addSchedules(Post post, List<DailyScheduleInfo> scheduleRequests) {
+        for (DailyScheduleInfo request : scheduleRequests) {
+            DailySchedule dailySchedule = DailySchedule.builder()
+                    .day(request.getDay())
                     .build();
 
-            post.addSchedule(schedule);
+            request.getTimeSchedules().forEach(timeSchedule -> {
+                dailySchedule.addTimeSchedule(toTimeSchedule(timeSchedule));
+            });
+
+            post.addSchedule(dailySchedule);
         }
+    }
+
+    private TimeSchedule toTimeSchedule(TimeScheduleInfo timeScheduleInfo) {
+        LocalTime time = LocalTime.parse(timeScheduleInfo.getTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        System.out.println(timeScheduleInfo.getTime());
+        return TimeSchedule.builder()
+                    .title(timeScheduleInfo.getTitle())
+                    .time(time)
+                    .contents(timeScheduleInfo.getContents())
+                    .locationName(timeScheduleInfo.getLocationName())
+                    .lat(timeScheduleInfo.getLat())
+                    .lng(timeScheduleInfo.getLng())
+                    .build();
     }
 
     // 엔티티 → 단건 응답 DTO 변환
     public PostResponse getPostResponse(Post post, List<String> tags, PostStatusInfo statusInfo) {
-        List<ScheduleInfo> scheduleInfos = new ArrayList<>();
-        post.getSchedules().forEach((schedule -> scheduleInfos.add(getScheduleInfo(schedule))));
-
+        List<DailyScheduleInfo> scheduleInfos = new ArrayList<>();
+        post.getDailySchedules().forEach(dailySchedule ->
+            scheduleInfos.add(toDailyScheduleInfo(dailySchedule)));
+        System.out.println(post.getDailySchedules());
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .contents(post.getContents())
                 .isPublic(post.isPublic())
+                .createdAt(post.getCreatedDate())
                 .schedules(scheduleInfos)
                 .statusInfo(statusInfo)
                 .tags(tags)
                 .build();
     }
 
-    private ScheduleInfo getScheduleInfo(Schedule schedule) {
-        return ScheduleInfo.builder()
-                .title(schedule.getTitle())
-                .contents(schedule.getContents())
-                .locationName(schedule.getLocationName())
-                .time(schedule.getTime().format(DateTimeFormatter.ofPattern(TIME_FORMAT)))
-                .lat(schedule.getLat())
-                .lng(schedule.getLng())
+    private DailyScheduleInfo toDailyScheduleInfo(DailySchedule dailySchedule) {
+        DailyScheduleInfo dailyScheduleInfo = DailyScheduleInfo.builder()
+                .day(dailySchedule.getDay()).build();
+
+        dailySchedule.getTimeSchedules().forEach(timeSchedule -> {
+            dailyScheduleInfo.addTimeSchedule(toTimeScheduleInfo(timeSchedule));
+        });
+
+        return dailyScheduleInfo;
+    }
+
+    private TimeScheduleInfo toTimeScheduleInfo(TimeSchedule timeSchedule) {
+        String time = timeSchedule.getTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        return TimeScheduleInfo.builder()
+                .title(timeSchedule.getTitle())
+                .contents(timeSchedule.getContents())
+                .locationName(timeSchedule.getLocationName())
+                .time(time)
+                .lat(timeSchedule.getLat())
+                .lng(timeSchedule.getLng())
                 .build();
     }
 
     // 엔티티 리스트 → 응답 리스트 변환
-    public PostsResponse getPostsResponse(List<Post> posts, Map<Long, List<String>> tagsMap,  Map<Long, PostStatusInfo> statusMap) {
+    public PostsResponse getPostsResponse
+        (List<Post> posts, Map<Long, List<String>> tagsMap, Map<Long, PostStatusInfo> statusMap) {
         PostsResponse response = new PostsResponse();
 
         for (Post post : posts) {
@@ -88,6 +113,4 @@ public class PostMapper {
 
         return response;
     }
-
-
 }
