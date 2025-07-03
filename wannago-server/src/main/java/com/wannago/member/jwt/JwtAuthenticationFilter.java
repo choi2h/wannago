@@ -37,11 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = jwtTokenResolver.resolveAccessToken(request);
 
+        // 토큰 없으면 인증 실패 예외 던짐
         if (!StringUtils.hasText(token)) {
-            filterChain.doFilter(request, response); // 이건 허용할 수도 있음 (비로그인 가능 API의 경우)
-            return;
+            throw new CustomException(CustomErrorCode.UNAUTHORIZED);
         }
 
+        // 토큰 유효하지 않으면 예외 던짐
         if (!tokenProvider.validateToken(token)) {
             throw new CustomException(CustomErrorCode.INVALID_TOKEN);
         }
