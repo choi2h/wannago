@@ -33,4 +33,13 @@ public class Comment {
         this.modifiedDate = LocalDateTime.now();
     }
 
+    // 답글 추가용 메서드
+    public void addReply(Comment reply) {
+        if (this.replies == null) {
+            this.replies = new ArrayList<>();
+        }
+        this.replies.add(reply);
+        this.modifiedDate = LocalDateTime.now(); // 부모 댓글이 수정된 것으로 간주
+    }
+
 }
