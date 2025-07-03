@@ -4,6 +4,7 @@ import com.wannago.post.dto.*;
 import com.wannago.post.entity.DailySchedule;
 import com.wannago.post.entity.Post;
 import com.wannago.post.entity.TimeSchedule;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -98,15 +99,24 @@ public class PostMapper {
 
     // 엔티티 리스트 → 응답 리스트 변환
     public PostsResponse getPostsResponse
-        (List<Post> posts, Map<Long, List<String>> tagsMap, Map<Long, PostStatusInfo> statusMap) {
+        (Page<Post> posts, Map<Long, List<String>> tagsMap, Map<Long, Integer> likeMap) {
         PostsResponse response = new PostsResponse();
 
         for (Post post : posts) {
-            PostStatusInfo status = statusMap.getOrDefault(post.getId(),
-                    new PostStatusInfo(0, false, false));
+            int likeCount = likeMap.getOrDefault(post.getId(), 0);
             List<String> tags = tagsMap.get(post.getId());
-            PostResponse postResponse = getPostResponse(post, tags, status);
-            response.addPost(postResponse);
+            PostSummaryInfo postInfo = PostSummaryInfo.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .author(post.getAuthor())
+                    .contents(post.getContents())
+                    .isPublic(post.isPublic())
+                    .createdAt(post.getCreatedDate())
+                    .likeCount(likeCount)
+                    .tags(tags)
+                    .build();
+
+            response.addPost(postInfo);
         }
 
         return response;

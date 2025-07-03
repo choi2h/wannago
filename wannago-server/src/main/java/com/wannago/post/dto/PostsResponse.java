@@ -7,14 +7,13 @@ import java.util.List;
 
 @Getter
 public class PostsResponse {
-    private final List<PostResponse> posts;
+    private final List<PostSummaryInfo> posts;
 
     public PostsResponse() {
         posts = new ArrayList<>();
     }
 
-    public void addPost(PostResponse post) {
+    public void addPost(PostSummaryInfo post) {
         posts.add(post);
     }
-
 }
