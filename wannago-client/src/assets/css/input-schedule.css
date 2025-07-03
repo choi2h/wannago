@@ -99,6 +99,7 @@
 
 .location-input {
   font-size: 14px;
+  width: 100px;
   color: #333333;
   background: transparent;
   border: none;
