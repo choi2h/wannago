@@ -1,9 +1,9 @@
 import React from "react";
 
-export const Xcircle1 = ({ className }) => {
+export const Xcircle1 = ({ text }) => {
   return (
     <svg
-      className={`xcircle-1 ${className}`}
+      className={`xcircle-1 ${text}`}
       fill="none"
       height="24"
       viewBox="0 0 24 24"

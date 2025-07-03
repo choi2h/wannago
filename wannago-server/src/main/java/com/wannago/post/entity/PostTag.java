@@ -2,10 +2,11 @@ package com.wannago.post.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Getter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "post_tag")

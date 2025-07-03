@@ -12,7 +12,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "tag")
 @EntityListeners(AuditingEntityListener.class)
 public class Tag {
@@ -31,4 +30,8 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     private List<PostTag> posts;
+
+    public Tag(String name) {
+        this.name = name;
+    }
 }
