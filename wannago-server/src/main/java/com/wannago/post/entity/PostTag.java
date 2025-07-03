@@ -2,13 +2,12 @@ package com.wannago.post.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Entity @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity(name = "post_tag")
 public class PostTag {
 
     @Id
@@ -24,4 +23,9 @@ public class PostTag {
     @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 
+    @Builder
+    public PostTag(Post post, Tag tag) {
+        this.post = post;
+        this.tag = tag;
+    }
 }

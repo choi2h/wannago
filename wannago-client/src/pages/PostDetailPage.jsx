@@ -4,6 +4,7 @@ import DefaultLayout from '../layouts/DefatulLayout';
 import Input from '../components/Input';
 import Comment from '../components/Comment';
 import ScheduleItem from '../components/ScheduleItem';
+import Map from "../components/Map";
 import Tag from "../components/Tag";
 import '../assets/css/post-detail.css';
 
@@ -96,7 +97,7 @@ function PostDetailPage() {
 
           <div className="frame-2">
             {
-              tags.map(tag => <Tag type='view' text={tag} onClick={() => console.log('click heart icon!!!!')}/>)
+              tags.map((tag,idx) => <Tag key={idx} type='view' text={tag} onClick={() => console.log('click heart icon!!!!')}/>)
             }
           </div>
         </div>
@@ -130,14 +131,8 @@ function PostDetailPage() {
         <div className="edit-delete-section">
           <div className="text-wrapper-2">수정 | 삭제</div>
         </div>
-
-        <div className="map-wrapper">
-          <img
-            className="image"
-            alt="Image"
-            src="https://c.animaapp.com/mccxjumpIKwo6s/img/image-1.png"
-          />
-        </div>
+        
+        <Map/>
 
         <p className="contents">
           드디어 만난 인생 순대!!! 지금까지 먹은 순대는 순대가 아니었구나 한 맛.

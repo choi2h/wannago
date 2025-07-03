@@ -1,4 +1,4 @@
-import { Xcircle1 } from '../assets/icons/Xcircle1';
+import { XIcon } from '../assets/icons/Icons';
 import '../assets/css/tag.css';
 
 const getTagByType = (type, text, onClick) => {
@@ -12,7 +12,9 @@ const getTagByType = (type, text, onClick) => {
         return (
             <div className="tag-box">
                 <div className="tag-text">{text}</div>
-                <Xcircle1 className="x-circle" onClick={onClick} />
+                <div className="tag-close" onClick={onClick}>
+                    <XIcon/>
+                </div>
             </div>
         );
     }

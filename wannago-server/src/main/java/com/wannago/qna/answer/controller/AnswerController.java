@@ -13,8 +13,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/qna")
 @RequiredArgsConstructor
 public class AnswerController {
+  
     private final AnswerService answerService;
 
+    // 답변 수정
+    @PutMapping("/{qnaId}/answer/{answerId}")
+    public ResponseEntity<AnswerResponse> updateAnswer(
+            @PathVariable Long qnaId,
+            @PathVariable Long answerId,
+       @RequestBody AnswerRequest request
+    ) {
+        // 로그인 정보 가져오기
+        String loginId = getCurrentLoginId();
+        AnswerResponse response = answerService.updateAnswer(answerId,loginId, request);
+        return ResponseEntity.ok(response);
+    }
+  
     // 답변 등록
     @PostMapping("/{qnaId}/answer")
     public ResponseEntity<AnswerResponse> createAnswer(
@@ -30,7 +44,6 @@ public class AnswerController {
     // 현재 로그인한 ID 조회
     private String getCurrentLoginId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication == null || !authentication.isAuthenticated()) {
             // 예외 처리
         }
