@@ -72,4 +72,14 @@ public class BookmarkServiceImpl implements BookmarkService {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
+    public void deleteBookmark(Post post, Member member) {
+    bookmarkRepository.findByPostAndMember(post, member)
+            .ifPresent(bookmarkRepository::delete);
+}
+    public List<Post> getBookmarks(Member member) {
+    List<Bookmark> bookmarks = bookmarkRepository.findByMember(member);
+    return bookmarks.stream()
+            .map(Bookmark::getPost)
+            .toList();
+}
 }
