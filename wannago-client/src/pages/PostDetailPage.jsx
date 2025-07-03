@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BookmarkFilled } from "../assets/icons/BookmarkFilled";
 import DefaultLayout from '../layouts/DefatulLayout';
 import Input from '../components/Input';
@@ -7,6 +7,9 @@ import ScheduleItem from '../components/ScheduleItem';
 import Map from "../components/Map";
 import Tag from "../components/Tag";
 import '../assets/css/post-detail.css';
+import { selectPostById } from '../service/post-service';
+import { useParams } from "react-router";
+
 
 const schedules = [
   {
@@ -78,42 +81,62 @@ const comments = [
   }
 ]
 
-const tags = [
-  '태그1', '태그2', '태그3'
-]
+// const tags = [
+//   '태그1', '태그2', '태그3'
+// ]
 
 function PostDetailPage() {
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const { id } = useParams();
+  const [post, setPost] = useState(null); 
+  useEffect(() => {
+      console.log("Post!!");
+      const fetchPost = async () => {
+      try {
+        const selectPost = await selectPostById(id); // 비동기 호출
+        setPost(selectPost);
+        console.log(`post setting!!!! ${post}`);
+      } catch (error) {
+        console.error("게시글 불러오기 실패:", error);
+      }
+    };
+
+    fetchPost(); // 함수 실행
+  }, [id]);
 
   const handleBookmarkClick = () => {
     setIsBookmarked(!isBookmarked);
   };
 
+  if(!post) {
+    return <DefaultLayout><div> 게시글을 로딩중입니다. </div></DefaultLayout>
+  }
+
   return (
     <DefaultLayout>
     <div className="post-detail">
         <div className="title">
-          <div className="simple-delicious">Simple Delicious Beef Tacos</div>
+          <div className="simple-delicious">{post?.title}</div>
 
           <div className="frame-2">
             {
-              tags.map((tag,idx) => <Tag key={idx} type='view' text={tag} onClick={() => console.log('click heart icon!!!!')}/>)
+              post.tags?.map((tag,idx) => <Tag key={idx} type='view' text={tag} onClick={() => console.log('click heart icon!!!!')}/>)
             }
           </div>
         </div>
 
         <div className="author">
           <div style={{display: "flex", flexDirection: 'row', alignItems: 'center'}}>
-            <div className="text-wrapper-4">사용자2</div>
-            <div className="text-wrapper-5">2025.06.26</div>
+            <div className="text-wrapper-4">{post.author}</div>
+            <div className="text-wrapper-5">{post.createdAt}</div>
           </div>
           
         <div className="frame-4">
           <div 
-            className={`bookmark-circle-wrapper ${isBookmarked ? 'bookmarked' : ''}`}
+            className={`bookmark-circle-wrapper ${post.statusInfo.bookmared ? 'bookmarked' : ''}`}
             onClick={handleBookmarkClick}
           >
-            <BookmarkFilled className="bookmark-filled" isActive={isBookmarked}/>
+            <BookmarkFilled className="bookmark-filled" isActive={post.statusInfo.bookmared}/>
           </div>
           <div className="stats">
             <div className="heart-button">
@@ -122,7 +145,7 @@ function PostDetailPage() {
                 alt="Heart icon"
                 src="https://c.animaapp.com/mccxjumpIKwo6s/img/free-icon-like-6924834-1.png"
               />
-              <span className="heart-count">5</span>
+              <span className="heart-count">{post.statusInfo.likeCount}</span>
             </div>
           </div>
         </div>
@@ -134,10 +157,8 @@ function PostDetailPage() {
         
         <Map/>
 
-        <p className="contents">
-          드디어 만난 인생 순대!!! 지금까지 먹은 순대는 순대가 아니었구나 한 맛.
-          순대를 주문하면 가자미식해와 무말랭이를 조금 주는데 같이 먹으니 천국.
-          회냉면은 그럭저럭 괜찮았다. 근데 순대랑 같이 먹으면 조합 최고.
+        <p className="contents" style={{whiteSpace: 'pre-line'}}>
+          {post.contents}
         </p>
 
         {
