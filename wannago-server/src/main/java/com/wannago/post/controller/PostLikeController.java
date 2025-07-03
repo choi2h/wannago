@@ -24,9 +24,6 @@ public class PostLikeController {
             @PathVariable Long postId,
             @AuthenticationPrincipal Member member
     ) {
-        int likeCount = postLikeService.getLikeCount(postId);
-        boolean liked = member != null && postLikeService.hasLiked(postId,member);
-// 로그인 안 했을 경우 더미 유저로 대체
         if (member == null) {
             member = Member.builder()
                     .id(1L)
@@ -34,6 +31,9 @@ public class PostLikeController {
                     .email("test@example.com")
                     .build();
         }
+        int likeCount = postLikeService.getLikeCount(postId);
+        boolean liked = member != null && postLikeService.hasLiked(postId,member);
+
         return ResponseEntity.ok(Map.of(
                 "postId", postId,
                 "likeCount", likeCount,
@@ -47,7 +47,15 @@ public class PostLikeController {
             @PathVariable Long postId,
             @AuthenticationPrincipal Member member
     ) {
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
         boolean liked = postLikeService.toggleLike(postId, member);
+
         return ResponseEntity.ok(Map.of("liked", liked));
     }
 
