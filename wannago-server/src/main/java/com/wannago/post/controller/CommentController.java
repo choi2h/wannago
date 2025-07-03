@@ -6,6 +6,7 @@ import com.wannago.post.dto.CommentResponse;
 import com.wannago.post.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class CommentController {
             @Valid @RequestBody  CommentRequest req, // 댓글 글자수 제한 및 빈 값 유효성 검증
             @AuthenticationPrincipal Member member
             ){
-        return ResponseEntity.ok(commentService.addComment(postId,req,member));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.addComment(postId,req,member));
     }
 
     // 대댓글 작성
@@ -37,7 +38,7 @@ public class CommentController {
             @Valid @RequestBody  CommentRequest req, // 댓글 글자수 제한 및 빈 값 유효성 검증
             @AuthenticationPrincipal Member member
     ){
-        return ResponseEntity.ok(commentService.addReply(postId,parentId,req,member));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.addReply(postId,parentId,req,member));
     }
 
     // 댓글 전체 조회(대댓글 포함)
@@ -74,5 +75,14 @@ public class CommentController {
     }
 
     //댓글 삭제
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(
+        @PathVariable Long postId,
+        @PathVariable String commentId,
+        @AuthenticationPrincipal Member member
+    ){
+        commentService.deleteComment(postId,commentId,member);
+        return ResponseEntity.noContent().build();
+    }
 
 }

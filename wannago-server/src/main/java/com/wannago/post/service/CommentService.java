@@ -12,4 +12,5 @@ public interface CommentService {
     CommentResponse addReply(Long postId, String parentId, CommentRequest commentRequest, Member member);
     List<CommentResponse> getAllCommentsWithReplies(Long postId);
     List<CommentResponse> getRepliesForComment(String parentCommentId);
+    void deleteComment(Long postId, String commentId, Member member);
 }

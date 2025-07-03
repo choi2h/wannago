@@ -8,12 +8,17 @@ import com.wannago.post.dto.CommentResponse;
 import com.wannago.post.entity.Comment;
 import com.wannago.post.repository.CommentRepository;
 import com.wannago.post.service.mapper.CommentMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.mongodb.core.MongoTemplate; // MongoTemplate 임포트
+import org.springframework.data.mongodb.core.query.Criteria; // Criteria 임포트
+import org.springframework.data.mongodb.core.query.Query;     // Query 임포트
+import org.springframework.data.mongodb.core.query.Update;    // Update 임포트
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,6 +26,7 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final MongoTemplate mongoTemplate;
 
     // 댓글 작성
     @Override
@@ -41,6 +47,11 @@ public class CommentServiceImpl implements CommentService{
         // 부모 댓글을 찾아 유효성 검증
         Comment parentComment = getCommentOrThrow(parentId);
 
+        // 부모 댓글 자체가 이미 대댓글이면 그 아래에는 대댓글을 달 수 없도록 하기
+        if (parentComment.getParentId() != null) {
+            throw new CustomException(CustomErrorCode.INVALID_COMMENT_OPERATION);
+        }
+        ///  부모가 댓글인 경우
         // 대댓글 객체를 생성하여 부모 Document의 Sub-document로 만들기
         Comment reply = commentMapper.getReply(
                 parentComment.getPostId(), // 부모 댓글의 postId를 사용
@@ -92,10 +103,8 @@ public class CommentServiceImpl implements CommentService{
     public CommentResponse updateComment(String commentId,CommentRequest commentRequest, Member member){
         // 댓글 찾기 및 유효성 검증
         Comment comment = getCommentOrThrow(commentId);
-        // 로그인한 사용자가 해당 댓글의 작성자인지 검증
-        if (!comment.getAuthor().equals(member.getLoginId().toString())) {
-            throw new CustomException(CustomErrorCode.COMMENT_UNAUTHORIZED);
-        }
+        // 로그인한 사용자가 해당 댓글의 작성자인지 유효성 검증
+        validateAuthor(comment,member);
         // 댓글 수정
         comment.updateContent(commentRequest.getContent());
         // 수정된 댓글 저장
@@ -104,12 +113,59 @@ public class CommentServiceImpl implements CommentService{
         return commentMapper.getCommentResponse(comment);
     }
 
-    // 댓글 삭제
-  
+    @Override
+    @Transactional
+    public void deleteComment(Long postId, String commentId, Member member) {
+        // 댓글 유효성 검증
+        Comment comment = getCommentOrThrow(commentId);
+        // 댓글인 경우 (parentId가 null)
+        if (comment.getParentId() == null) {
+            // 작성자 유효성 검증
+            validateAuthor(comment, member);
+            commentRepository.delete(comment); // 내장된 replies도 함께 삭제됨
+            return;
+        }
+        // 대댓글인 경우: 부모 댓글 문서에서 해당 대댓글만 제거
+        Query query = new Query(Criteria.where("postId").is(postId)
+                .and("replies.id").is(commentId));
+        Comment parentComment = mongoTemplate.findOne(query, Comment.class);
+        if (parentComment == null) {
+            throw new CustomException(CustomErrorCode.COMMENT_NOT_FOUND);
+        }
+        // 대댓글 객체 추출 후 작성자 검증
+        Comment reply = findCommentInTreeById(parentComment, commentId);
+        validateAuthor(reply, member);
+        // 실제 삭제 수행
+        Update update = new Update().pull("replies", Query.query(Criteria.where("id").is(commentId)));
+        mongoTemplate.updateFirst(query, update, Comment.class);
+    }
+
+    // deleteComment 메서드 내에서 `$pull` 연산 전에 대댓글의 작성자를 확인하는 용도로 사용
+    private Comment findCommentInTreeById(Comment currentComment, String targetId) {
+        if (currentComment.getId().equals(targetId)) {
+            return currentComment;
+        }
+        if (currentComment.getReplies() != null) {
+            for (Comment reply : currentComment.getReplies()) {
+                Comment found = findCommentInTreeById(reply, targetId); // 재귀 호출
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
     // 댓글 찾기 및 유효성 검증 유틸 메소드
     private Comment getCommentOrThrow(String commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.COMMENT_NOT_FOUND));
     }
 
+    // 댓글 또는 대댓글의 작성자가 현재 로그인 사용자와 같은지 검증하는 유틸 메소드
+    private void validateAuthor(Comment comment, Member member) {
+        if (comment == null || !comment.getAuthor().equals(member.getLoginId().toString())) {
+            throw new CustomException(CustomErrorCode.COMMENT_UNAUTHORIZED);
+        }
+    }
 }
