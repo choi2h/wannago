@@ -31,4 +31,9 @@ public class PostController {
         PostResponse postResponse = postService.updatePost(id, postRequest, 1L);
         return ResponseEntity.ok(postResponse);
     }
+
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable Long id) {
+        postService.deletePost(id, 1L);
+    }
 }
