@@ -72,4 +72,7 @@ public class CommentController {
     ) {
         return ResponseEntity.ok(commentService.updateComment(commentId,commentRequest,member));
     }
+
+    //댓글 삭제
+
 }

@@ -103,10 +103,13 @@ public class CommentServiceImpl implements CommentService{
         // 댓글 DTO 반환
         return commentMapper.getCommentResponse(comment);
     }
+
+    // 댓글 삭제
   
     // 댓글 찾기 및 유효성 검증 유틸 메소드
     private Comment getCommentOrThrow(String commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.COMMENT_NOT_FOUND));
     }
+
 }
