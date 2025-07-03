@@ -1,4 +1,6 @@
 package com.wannago.post.controller;
+// import org.springframework.security.core.annotation.AuthenticationPrincipal; 
+// 추후에 @AuthenticationPrincipal Member member 대체
 
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.service.PostService;
@@ -13,17 +15,19 @@ import java.util.List;
 public class MyPageController {
 
     private final PostService postService;
-
-     // 내가 쓴 게시글 조회
     @GetMapping("/posts")
     public ResponseEntity<List<PostResponse>> getMyPosts(@RequestParam String loginId) {
         List<PostResponse> posts = postService.getMyPosts(loginId);
         return ResponseEntity.ok(posts);
     }
-    // 내가 쓴 질문 목록 조회
-    @GetMapping("/qnas")
-    public ResponseEntity<List<PostResponse>> getMyQnas(@RequestParam String loginId) {
-        List<PostResponse> qnas = postService.getMyQnaList(loginId);
-        return ResponseEntity.ok(qnas);
-    }
+
+
+
+     // 내가 쓴 게시글 조회
+//     @GetMapping("/posts")
+//     public ResponseEntity<List<PostResponse>> getMyPosts(@AuthenticationPrincipal Member member) {
+//     List<PostResponse> posts = postService.getMyPosts(member.getLoginId());
+//     return ResponseEntity.ok(posts);
+// } 추후에 @AuthenticationPrincipal Member member 로 대체할 코드
+
 }

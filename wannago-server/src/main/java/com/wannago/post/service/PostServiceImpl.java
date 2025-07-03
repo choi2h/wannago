@@ -8,7 +8,6 @@ import com.wannago.post.dto.PostsResponse;
 import com.wannago.post.entity.Post;
 import com.wannago.post.repository.PostRepository;
 import com.wannago.post.service.mapper.PostMapper;
-import com.wannago.qna.entity.Ask;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,10 +46,5 @@ public List<PostResponse> getMyPosts(String loginId) {
     return postMapper.toPostSimpleResponseList(myPosts);
 }
 
-@Transactional(readOnly = true)
-public List<PostResponse> getMyQnaList(String loginId) {
-    List<Ask> myQnas = askRepository.findByAuthor(loginId);
-    return postMapper.toAskSimpleResponseList(myQnas);
-}
 
 }
