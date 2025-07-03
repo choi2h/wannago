@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     // 대댓글 작성
-    @PostMapping("/{parentCommentId}/reply")
+    @PostMapping("/{parentId}/reply")
     public ResponseEntity<CommentResponse> addReply(
             @PathVariable Long postId,
             @PathVariable String parentId,
@@ -48,19 +48,17 @@ public class CommentController {
     ) {
         // 모든 댓글 (대댓글 포함)을 가져오기
         List<CommentResponse> comments = commentService.getAllCommentsWithReplies(postId);
-        // HTTP 200 OK 상태 코드와 함께 댓글 목록을 반환
         return ResponseEntity.ok(comments);
     }
 
     // 특정 댓글의 대댓글만 조회
-    @GetMapping("/{parentCommentId}/reply")
+    @GetMapping("/{parentId}/reply")
     public ResponseEntity<List<CommentResponse>> getRepliesForComment(
             @PathVariable Long postId, // 경로 일관성을 위해 postId를 유지
-            @PathVariable String parentCommentId
+            @PathVariable String parentId
     ) {
         // 특정 부모 댓글에 속하는 대댓글 목록을 가져오기
-        List<CommentResponse> replies = commentService.getRepliesForComment(parentCommentId);
-        // HTTP 200 OK 상태 코드와 함께 대댓글 목록을 반환합니다.
+        List<CommentResponse> replies = commentService.getRepliesForComment(parentId);
         return ResponseEntity.ok(replies);
     }
 
@@ -74,12 +72,13 @@ public class CommentController {
         return ResponseEntity.ok(commentService.updateComment(commentId,commentRequest,member));
     }
 
+
     //댓글 삭제
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
-        @PathVariable Long postId,
-        @PathVariable String commentId,
-        @AuthenticationPrincipal Member member
+            @PathVariable Long postId,
+            @PathVariable String commentId,
+            @AuthenticationPrincipal Member member
     ){
         commentService.deleteComment(postId,commentId,member);
         return ResponseEntity.noContent().build();
