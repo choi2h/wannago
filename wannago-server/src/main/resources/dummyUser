@@ -1,0 +1,8 @@
+// 로그인 안 했을 경우 더미 유저로 대체
+        if (member == null) {
+            member = Member.builder()
+                    .id(1L)
+                    .loginId("test_user")
+                    .email("test@example.com")
+                    .build();
+        }
