@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/qna")
 @RequiredArgsConstructor
 public class AnswerController {
-
+  
     private final AnswerService answerService;
 
     // 답변 수정
@@ -21,12 +21,23 @@ public class AnswerController {
     public ResponseEntity<AnswerResponse> updateAnswer(
             @PathVariable Long qnaId,
             @PathVariable Long answerId,
+       @RequestBody AnswerRequest request
+    ) {
+        // 로그인 정보 가져오기
+        String loginId = getCurrentLoginId();
+        AnswerResponse response = answerService.updateAnswer(answerId,loginId, request);
+        return ResponseEntity.ok(response);
+    }
+  
+    // 답변 등록
+    @PostMapping("/{qnaId}/answer")
+    public ResponseEntity<AnswerResponse> createAnswer(
+            @PathVariable Long qnaId,
             @RequestBody AnswerRequest request
     ) {
         // 로그인 정보 가져오기
         String loginId = getCurrentLoginId();
-
-        AnswerResponse response = answerService.updateAnswer(answerId,loginId, request);
+        AnswerResponse response = answerService.createAnswer(qnaId,loginId, request);
         return ResponseEntity.ok(response);
     }
 
