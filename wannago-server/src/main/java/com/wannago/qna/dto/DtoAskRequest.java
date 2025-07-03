@@ -1,4 +1,4 @@
-// AskRequestDto.java
+// DtoAskRequest.java
 package com.wannago.dto;
 
 import lombok.Getter;
