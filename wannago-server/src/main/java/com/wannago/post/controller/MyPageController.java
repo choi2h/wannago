@@ -20,10 +20,4 @@ public class MyPageController {
         List<PostResponse> posts = postService.getMyPosts(loginId);
         return ResponseEntity.ok(posts);
     }
-    // 내가 쓴 질문 목록 조회
-    @GetMapping("/qnas")
-    public ResponseEntity<List<PostResponse>> getMyQnas(@RequestParam String loginId) {
-        List<PostResponse> qnas = postService.getMyQnaList(loginId);
-        return ResponseEntity.ok(qnas);
-    }
 }

@@ -47,10 +47,5 @@ public List<PostResponse> getMyPosts(String loginId) {
     return postMapper.toPostSimpleResponseList(myPosts);
 }
 
-@Transactional(readOnly = true)
-public List<PostResponse> getMyQnaList(String loginId) {
-    List<Ask> myQnas = askRepository.findByAuthor(loginId);
-    return postMapper.toAskSimpleResponseList(myQnas);
-}
 
 }

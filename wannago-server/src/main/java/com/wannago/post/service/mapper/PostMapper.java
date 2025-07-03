@@ -69,26 +69,6 @@ public class PostMapper {
                 .collect(Collectors.toList());
     }
 
-    // 마이페이지용 - Ask → PostResponse 변환
-    public PostResponse toAskSimpleResponse(Ask ask) {
-        return PostResponse.builder()
-                .id(ask.getId())
-                .title(ask.getTitle())
-                .createdAt(ask.getCreatedDate())
-                .author(ask.getAuthor())
-                .contents(ask.getContents())
-                .isPublic(false) // 질문에는 공개 여부 없음
-                .likeCount(0)    // 질문에는 좋아요 없음
-                .liked(false)    // 로그인 사용자 기준 좋아요 없음
-                .isAccepted(ask.isAccepted())
-                .build();
-    }
-
-    public List<PostResponse> toAskSimpleResponseList(List<Ask> asks) {
-        return asks.stream()
-                .map(this::toAskSimpleResponse)
-                .collect(Collectors.toList());
-    }
     
 }
 
