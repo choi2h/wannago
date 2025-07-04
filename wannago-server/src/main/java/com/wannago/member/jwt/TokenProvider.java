@@ -19,7 +19,7 @@ import java.util.Date;
 public class TokenProvider {
     @Value("${jwt.secret}")
     private String secretKey;
-    private final long accessTokenValidity = 1000L * 5;
+    private final long accessTokenValidity = 1000L * 20;
     //private final long accessTokenValidity = 1000L * 60 * 30; // 30분
     private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
 
