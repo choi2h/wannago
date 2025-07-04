@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 @Transactional(readOnly = true)
 public class AnswerServiceImpl {
 
+    private final AskRepository askRepository;
     private final AnswerRepository answerRepository;
     private final MemberRepository memberRepository;
 
@@ -77,6 +78,30 @@ public class AnswerServiceImpl {
         //log.info("답변 등록 완료: answerId={}, askId={}, author={}", savedAnswer.getId(), askId, author);
 
         return convertToResponse(savedAnswer);
+    }
+
+    @Transactional
+    public AnswerResponse acceptAnswer(Long answerId, String LoginId) {
+        // 답변 존재 여부 확인 및 해당 답변 객체 가져오기
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.ANSWER_NOT_FOUND));
+
+        // 이미 채택된 답변이 있는지 확인
+        if (answerRepository.existsByAskIdAndIsAcceptedTrue(answer.getAskId())) {
+            throw new CustomException(CustomErrorCode.ANSWER_ALREADY_ACCEPTED);
+        }
+
+        // 작성자 권한 확인
+        Member member = memberRepository.findByLoginId(LoginId)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.MEMBER_NOT_EXIST));
+        validateAnswerAuthor(answer, member.getId());
+
+        // 답변 채택 처리
+        answer.accept();
+        Answer acceptedAnswer = answerRepository.save(answer);
+
+       // log.info("답변 채택 완료: answerId={}, questionAuthor={}", answerId, currentUser);
+        return convertToResponse(acceptedAnswer);
     }
     // 답변 내용 검사
     private void validateAnswerContent(String contents) {
