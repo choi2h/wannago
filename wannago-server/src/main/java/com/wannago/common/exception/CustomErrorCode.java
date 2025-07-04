@@ -20,7 +20,8 @@ public enum CustomErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M010", "인증이 필요합니다."),
 
     // 게시글 P
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다."),
+    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
+    POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
 
     //북마크 B
     ALREADY_BOOKMARKED(HttpStatus.CONFLICT, "B001", "이미 북마크된 게시글입니다."),

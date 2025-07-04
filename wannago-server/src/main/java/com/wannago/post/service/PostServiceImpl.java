@@ -76,6 +76,16 @@ public class PostServiceImpl implements PostService {
         return postMapper.getPostResponse(post, tags, statusInfo);
     }
 
+    @Override
+    public void deletePost(Long postId, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.POST_ALREADY_DELETED));
+
+        //TODO 회원정보와 게시글 작성자 비교하여 자신 글이 맞는지 확인
+
+        postRepository.delete(post);
+    }
+
     private PostStatusInfo getPostStatusInfo(Long postId, Long memberId) {
         int likeCount = postLikeRepository.countByPost_Id(postId);
 
