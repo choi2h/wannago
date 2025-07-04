@@ -1,11 +1,13 @@
 package com.wannago.post.controller;
 
+import com.wannago.member.entity.Member;
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,7 +35,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        postService.deletePost(id, 1L);
+    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal Member member) {
+        postService.deletePost(id, member.getLoginId());
     }
 }

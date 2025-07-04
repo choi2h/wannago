@@ -13,7 +13,6 @@ import com.wannago.post.repository.PostLikeRepository;
 import com.wannago.post.repository.PostRepository;
 import com.wannago.post.repository.TagRepository;
 import com.wannago.post.service.mapper.PostMapper;
-import com.wannago.qna.entity.Ask;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -103,11 +102,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Long postId, Long memberId) {
+    @Transactional
+    public void deletePost(Long postId, String loginId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.POST_ALREADY_DELETED));
 
-        //TODO 회원정보와 게시글 작성자 비교하여 자신 글이 맞는지 확인
+        //회원정보와 게시글 작성자 비교하여 자신 글이 맞는지 확인
+        if (!post.getAuthor().equals(loginId)) {
+            throw new CustomException(CustomErrorCode.NOT_POST_AUTHOR);
+        }
 
         postRepository.delete(post);
     }
