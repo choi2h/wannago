@@ -46,4 +46,11 @@ public class Member {
     @UpdateTimestamp
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
+
+    public void updateInfo(String name, String encodedPassword, String email) {
+    this.name = name;
+    this.password = encodedPassword;
+    this.email = email;
+}
+
 }

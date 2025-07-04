@@ -1,5 +1,6 @@
 /* 전체 레이아웃 */
 .post-detail {
+  width: 800px;
   max-width: 800px;
   margin: 0 auto;
   padding: 120px 20px 40px; /* 상단 네비게이션 바 공간 확보 */

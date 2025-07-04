@@ -23,8 +23,11 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     // 사용자가 게시글에 좋아요 눌렀는지를 빠르게 판단하여, 존재 여부만 반환
     boolean existsByPostAndMember(Post post, Member member);
 
+    boolean existsByPost_IdAndMember_Id(Long postId, Long memberId);
+
     // 단일 게시글의 좋아요 수 조회
     int countByPost(Post post);
+    int countByPost_Id(Long postId);
 
     // 여러 게시글의 좋아요 수 한 번에 조회
     @Query("SELECT pl.post.id AS postId, COUNT(pl) AS likeCount " +

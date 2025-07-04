@@ -1,54 +1,80 @@
 package com.wannago.post.service.mapper;
 
-import com.wannago.post.dto.PostRequest;
-import com.wannago.post.dto.PostResponse;
-import com.wannago.post.dto.PostsResponse;
+import com.wannago.post.dto.*;
 import com.wannago.post.entity.Post;
-import com.wannago.qna.entity.Ask;
-
+import com.wannago.post.entity.Schedule;
+import com.wannago.post.entity.Tag;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
+    private static final String TIME_FORMAT = "HH:mm";
+
     // 요청 → 엔티티 변환
-    public Post getPost(PostRequest postRequest) {
-        return Post.builder()
+    public Post getPost(PostRequest postRequest, boolean isPublic) {
+        Post post =  Post.builder()
                 .title(postRequest.getTitle())
                 .author(postRequest.getAuthor())
                 .contents(postRequest.getContents())
-                .isPublic(postRequest.isPublic())
+                .isPublic(isPublic)
                 .build();
+
+        addSchedules(post, postRequest.getSchedules());
+        return post;
     }
 
-    // 엔티티 리스트 → 응답 리스트 변환 (+ 좋아요 수, 상태 포함)
-    public PostsResponse getPostsResponse(List<Post> posts,Map<Long, Integer> likeCountMap, Map<Long, Boolean> likedMap) {
-        PostsResponse response = new PostsResponse();
+    private void addSchedules(Post post, List<ScheduleRequest> scheduleRequests) {
+        for (ScheduleRequest request : scheduleRequests) {
+            LocalTime time = LocalTime.parse(request.getTime(), DateTimeFormatter.ofPattern("HH:mm"));
 
-        for(Post post : posts) {
-            int likeCount = likeCountMap.getOrDefault(post.getId(),0);
-            boolean liked = likedMap.getOrDefault(post.getId(), false);
-            PostResponse postResponse = getPostResponse(post, likeCount, liked);
-            response.addPost(postResponse);
+            Schedule schedule = Schedule.builder()
+                    .title(request.getTitle())
+                    .time(time)
+                    .contents(request.getContents())
+                    .locationName(request.getLocationName())
+                    .lat(request.getLat())
+                    .lng(request.getLng())
+                    .build();
+
+            post.addSchedule(schedule);
         }
-
-        return response;
     }
+
     // 엔티티 → 단건 응답 DTO 변환
-    public PostResponse getPostResponse(Post post, int likeCount, boolean liked) {
+    public PostResponse getPostResponse(Post post, List<String> tags, PostStatusInfo statusInfo) {
+        List<ScheduleInfo> scheduleInfos = new ArrayList<>();
+        post.getSchedules().forEach((schedule -> scheduleInfos.add(getScheduleInfo(schedule))));
+
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .contents(post.getContents())
                 .isPublic(post.isPublic())
-                .likeCount(likeCount)
-                .liked(liked)
+                .schedules(scheduleInfos)
+                .statusInfo(statusInfo)
+                .tags(tags)
                 .build();
     }
+
+    private ScheduleInfo getScheduleInfo(Schedule schedule) {
+        return ScheduleInfo.builder()
+                .title(schedule.getTitle())
+                .contents(schedule.getContents())
+                .locationName(schedule.getLocationName())
+                .time(schedule.getTime().format(DateTimeFormatter.ofPattern(TIME_FORMAT)))
+                .lat(schedule.getLat())
+                .lng(schedule.getLng())
+                .build();
+    }
+
     // 마이페이지용 - 단순 Post → PostResponse 변환 (제목 + 작성일)
     public PostResponse toPostSimpleResponse(Post post) {
         return PostResponse.builder()
@@ -69,6 +95,19 @@ public class PostMapper {
                 .collect(Collectors.toList());
     }
 
-    
+    // 엔티티 리스트 → 응답 리스트 변환
+    public PostsResponse getPostsResponse(List<Post> posts, Map<Long, List<String>> tagsMap,  Map<Long, PostStatusInfo> statusMap) {
+        PostsResponse response = new PostsResponse();
+
+        for (Post post : posts) {
+            PostStatusInfo status = statusMap.getOrDefault(post.getId(),
+                    new PostStatusInfo(0, false, false));
+            List<String> tags = tagsMap.get(post.getId());
+            PostResponse postResponse = getPostResponse(post, tags, status);
+            response.addPost(postResponse);
+        }
+
+        return response;
+    }
 }
 

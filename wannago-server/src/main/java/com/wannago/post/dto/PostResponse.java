@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 
 @Getter
@@ -20,8 +20,7 @@ public class PostResponse {
     private String author;
     private String contents;
     private boolean isPublic;
-    private int likeCount;
-    private boolean liked;
-    private LocalDateTime createdAt;
-     private boolean isAccepted;
+    private List<ScheduleInfo> schedules;
+    private List<String> tags;
+    private PostStatusInfo statusInfo;
 }
