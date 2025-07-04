@@ -7,6 +7,8 @@ import com.wannago.qna.answer.dto.AnswerResponse;
 import com.wannago.qna.answer.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,22 +16,40 @@ import java.util.List;
 @RequestMapping("/qna")
 @RequiredArgsConstructor
 public class AnswerController {
-  
+
     private final AnswerService answerService;
 
+    // 답변 등록
+    @PostMapping("/{qnaId}/answer")
+    public ResponseEntity<AnswerResponse> createAnswer(
+            @PathVariable Long qnaId,
+            @RequestBody AnswerRequest request
+    ) {
+        // 로그인 정보 가져오기
+        String loginId = getCurrentLoginId();
+        AnswerResponse response = answerService.createAnswer(qnaId,loginId, request);
+        return ResponseEntity.ok(response);
+    }
 
-    // 특정 질문의 모든 답변 조회.
-    @GetMapping("/{qnaId}/answers")
-    public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long askId) {
-        List<AnswerResponse> answers = answerService.getAnswersByAskId(askId);
-        return ResponseEntity.ok(answers);
-  
+    // 답변 수정
+    @PutMapping("/{qnaId}/answer/{answerId}")
+    public ResponseEntity<AnswerResponse> updateAnswer(
+            @PathVariable Long qnaId,
+            @PathVariable Long answerId,
+            @RequestBody AnswerRequest request
+    ) {
+        // 로그인 정보 가져오기
+        String loginId = getCurrentLoginId();
+        AnswerResponse response = answerService.updateAnswer(answerId,loginId, request);
+        return ResponseEntity.ok(response);
+    }
+
     // 답변 삭제
     @DeleteMapping("/{qnaId}/answers/{answerId}")
     public ResponseEntity<Void> deleteAnswer(
             @PathVariable Long qnaId,
             @PathVariable Long answerId
-            ) {
+    ) {
 
         // 로그인 확인
         String loginId = getCurrentLoginId();
@@ -43,13 +63,20 @@ public class AnswerController {
     public ResponseEntity<AnswerResponse> acceptAnswer(
             @PathVariable Long qnaId,
             @PathVariable Long answerId
-            ) {
+    ) {
 
         // 로그인 정보 가져오기
         String loginId = getCurrentLoginId();
 
         AnswerResponse response = answerService.acceptAnswer(answerId, loginId);
         return ResponseEntity.ok(response);
+    }
+
+    // 특정 질문의 모든 답변 조회
+    @GetMapping("/{qnaId}/answers")
+    public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long askId) {
+        List<AnswerResponse> answers = answerService.getAnswersByAskId(askId);
+        return ResponseEntity.ok(answers);
     }
 
     // 현재 로그인한 ID 조회
@@ -60,4 +87,5 @@ public class AnswerController {
         }
         return authentication.getName();
     }
+
 }
