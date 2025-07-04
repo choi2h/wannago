@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const POST_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/post`;
+const POSTS_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/posts`;
 
 const inputNewPost = (newPost) => {
     console.log('Add post!!!');
@@ -25,5 +26,17 @@ const selectPostById = async (id) => {
     .catch((err) => console.log(err));
 }
 
+const selectPosts = async (pageNo, orderCriteria) => {
+    return await axios.get(`${POSTS_API}?page=${pageNo}&criteria=${orderCriteria}`)
+    .then((response) => {
+        console.log(response.status);
+        console.log(response.data);
 
-export {inputNewPost, selectPostById};
+        return response.data;
+    })
+    .catch((err) => console.log(err));
+}
+
+
+
+export {inputNewPost, selectPostById, selectPosts};

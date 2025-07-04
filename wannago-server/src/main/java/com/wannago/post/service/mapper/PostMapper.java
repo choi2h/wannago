@@ -100,7 +100,7 @@ public class PostMapper {
     // 엔티티 리스트 → 응답 리스트 변환
     public PostsResponse getPostsResponse
         (Page<Post> posts, Map<Long, List<String>> tagsMap, Map<Long, Integer> likeMap) {
-        PostsResponse response = new PostsResponse();
+        PostsResponse response = new PostsResponse(posts.getTotalPages(), posts.getNumber());
 
         for (Post post : posts) {
             int likeCount = likeMap.getOrDefault(post.getId(), 0);
