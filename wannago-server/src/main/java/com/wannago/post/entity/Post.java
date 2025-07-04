@@ -8,9 +8,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity @Getter @ToString
+@Entity @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
@@ -41,7 +43,7 @@ public class Post {
     private LocalDateTime modifiedDate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Schedule> schedules;
+    private Set<DailySchedule> dailySchedules;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
     private List<PostTag> tags;
@@ -52,13 +54,13 @@ public class Post {
         this.title = title;
         this.contents = contents;
         this.isPublic = isPublic;
-        this.schedules = new ArrayList<>();
+        this.dailySchedules = new HashSet<>();
         this.tags = new ArrayList<>();
     }
 
-    public void addSchedule(Schedule schedule) {
-        schedule.setPost(this);
-        this.schedules.add(schedule);
+    public void addSchedule(DailySchedule dailySchedule) {
+        dailySchedule.setPost(this);
+        this.dailySchedules.add(dailySchedule);
     }
 
     public void addTag(Tag tag) {

@@ -1,16 +1,17 @@
 import { LocationOn4 } from "../assets/icons/LocationOn4";
 import '../assets/css/view-schedule.css';
 
-function ViewSchedule ({day, items}) {
+function ScheduleItem ({day, times}) {
+    console.log(`day: ${day}`);
     return (
         <div className="schedule">
-             <div className="schedule-day">{day}일차</div>
-             {items.map((item, idx) => <ScheduleItem key={idx} item={item}/>)}
+             <div className="schedule-day">{day}</div>
+             {times.sort((a,b) => a.time.localeCompare(b.time)).map((item, idx) => <ViewSchedule key={idx} item={item}/>)}
         </div>
     )
 }
 
-function ScheduleItem({item}) {
+function ViewSchedule({item}) {
     return (
         <div className="schedule-item">
             {/* 이미지 */}
@@ -39,4 +40,4 @@ function ScheduleItem({item}) {
     )
 }
 
-export default ViewSchedule;
+export default ScheduleItem;

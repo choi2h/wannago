@@ -18,7 +18,7 @@ public class ScheduleImage {
 
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
-    private Schedule schedule;
+    private TimeSchedule timeSchedule;
 
     @Column(name = "image_url", length = 1000, nullable = false)
     private String imageUrl;

@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("select p from Post p join fetch p.schedules where p.id = :postId")
+    @Query("SELECT distinct p " +
+            "FROM Post p " +
+            "JOIN FETCH p.dailySchedules d " +
+            "JOIN FETCH d.timeSchedules t " +
+            "WHERE p.id = :postId")
     Optional<Post> findByIdWithSchedules(@Param("postId") Long postId);
-
-
 }
