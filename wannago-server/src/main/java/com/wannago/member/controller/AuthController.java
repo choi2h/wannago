@@ -1,7 +1,5 @@
 package com.wannago.member.controller;
 
-import com.wannago.common.exception.CustomErrorCode;
-import com.wannago.common.exception.CustomException;
 import com.wannago.member.dto.JoinRequest;
 import com.wannago.member.dto.LoginRequest;
 import com.wannago.member.dto.MemberResponse;
@@ -11,7 +9,6 @@ import com.wannago.member.service.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
