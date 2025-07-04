@@ -1,4 +1,4 @@
-package com.wannago.qna.answer.repository;
+package com.wannago.qna.question.repository;
 
 import com.wannago.qna.entity.Ask;
 import org.springframework.data.jpa.repository.JpaRepository;
