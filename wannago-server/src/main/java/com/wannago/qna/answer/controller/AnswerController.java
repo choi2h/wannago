@@ -1,7 +1,5 @@
 package com.wannago.qna.answer.controller;
 
-import com.wannago.qna.answer.dto.AnswerRequest;
-import com.wannago.qna.answer.dto.AnswerResponse;
 import com.wannago.qna.answer.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,29 +14,18 @@ public class AnswerController {
   
     private final AnswerService answerService;
 
-    // 답변 수정
-    @PutMapping("/{qnaId}/answer/{answerId}")
-    public ResponseEntity<AnswerResponse> updateAnswer(
+    // 답변 삭제
+    @DeleteMapping("/{qnaId}/answers/{answerId}")
+    public ResponseEntity<Void> deleteAnswer(
             @PathVariable Long qnaId,
-            @PathVariable Long answerId,
-       @RequestBody AnswerRequest request
-    ) {
-        // 로그인 정보 가져오기
+            @PathVariable Long answerId
+            ) {
+
+        // 로그인 확인
         String loginId = getCurrentLoginId();
-        AnswerResponse response = answerService.updateAnswer(answerId,loginId, request);
-        return ResponseEntity.ok(response);
-    }
-  
-    // 답변 등록
-    @PostMapping("/{qnaId}/answer")
-    public ResponseEntity<AnswerResponse> createAnswer(
-            @PathVariable Long qnaId,
-            @RequestBody AnswerRequest request
-    ) {
-        // 로그인 정보 가져오기
-        String loginId = getCurrentLoginId();
-        AnswerResponse response = answerService.createAnswer(qnaId,loginId, request);
-        return ResponseEntity.ok(response);
+
+        answerService.deleteAnswer(answerId, loginId);
+        return ResponseEntity.ok().build();
     }
 
     // 현재 로그인한 ID 조회
