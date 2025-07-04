@@ -10,6 +10,7 @@ import MyPostPage from './pages/MyPostPage';
 import SignupPage from './pages/SignupPage';
 import MyPage from './pages/MyPage';
 import MyPageEdit from './pages/MyPageEdit';
+import Logout from './components/Logout';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/signup" element={<SignupPage/>}/>
         <Route path="/posts/:tab" element={<PostListPage/>}/>
-        <Route path="/post/detail" element={<PostDetailPage/>}/>
+        <Route path="/post/:id" element={<PostDetailPage/>}/>
         <Route path="/post/write" element={<PostWritePage/>}/>
         <Route path="/qnas" element={<QnaListPage/>}/>
         <Route path="/qna/write" element={<QnaWritePage/>}/>
@@ -27,6 +28,7 @@ function App() {
         <Route path="/my/:tab" element={<MyPostPage/>}/>
         <Route path="/mypage" element={<MyPage/>}/>
         <Route path="/mypage/edit" element={<MyPageEdit/>}/>
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>
   )

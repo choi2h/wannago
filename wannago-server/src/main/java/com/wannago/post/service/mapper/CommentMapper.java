@@ -4,6 +4,7 @@ import com.wannago.member.entity.Member;
 import com.wannago.post.dto.CommentRequest;
 import com.wannago.post.dto.CommentResponse;
 import com.wannago.post.entity.Comment;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -25,9 +26,10 @@ public class CommentMapper {
                 .build();
     }
 
-    // 요청 -> 엔티티로 변환 (대댓글용 - parentId를 받음)
+    // 요청 -> 대댓글 엔티티로 변환 (대댓글용 - parentId를 받음)
     public Comment getReply(Long postId, String parentId, CommentRequest req, Member member){
         return Comment.builder()
+                .id(new ObjectId().toString())
                 .postId(postId)
                 .parentId(parentId) // 대댓글은 parentId가 설정됨
                 .author(member.getLoginId().toString())
