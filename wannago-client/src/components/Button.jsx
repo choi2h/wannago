@@ -3,10 +3,8 @@ import '../assets/css/button.css';
 const getButtonByType = (type, text, onClick) => {
   if(type === 'secondary') {
     return (
-        <div className="secondary-button">
-          <div className="button-wrapper" onClick={onClick}>
-            <button className="button">{text}</button>
-          </div>
+        <div className="secondary-button" onClick={onClick}>
+            <div className="button">{text}</div>
         </div>
     )
   } else if( type === 'positive') {
@@ -21,6 +19,12 @@ const getButtonByType = (type, text, onClick) => {
         <div className="text-wrapper-20">{text}</div>
       </div>
     )
+  } else if (type === 'mini') {
+    return (
+        <div className="mini-button" onClick={onClick}>
+            <div className="button">{text}</div>
+        </div>
+    );
   }
 
   return '버튼';

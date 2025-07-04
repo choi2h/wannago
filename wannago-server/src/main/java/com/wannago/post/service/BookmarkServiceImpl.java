@@ -1,5 +1,6 @@
 package com.wannago.post.service;
 
+import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
 import com.wannago.member.entity.Member;
 import com.wannago.post.entity.Bookmark;

@@ -4,10 +4,30 @@
   gap: 20px;
   width: 100%;
   max-width: 800px;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 8px;
+  padding: 24px;
+  background-color: #ffffff;
+}
+
+.input-time-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 750px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 24px;
   background-color: #ffffff;
+}
+
+.daily-schedule-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .schedule-header {
@@ -20,7 +40,7 @@
 .day-label {
   font-size: 22px;
   font-weight: 600;
-  color: #4ade80;
+  color: #409f71;
   margin: 0;
 }
 

@@ -8,9 +8,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity @Getter @ToString
+@Entity @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
@@ -40,10 +42,10 @@ public class Post {
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Schedule> schedules;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
+    private Set<DailySchedule> dailySchedules;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PostTag> tags;
 
     @Builder
@@ -52,16 +54,32 @@ public class Post {
         this.title = title;
         this.contents = contents;
         this.isPublic = isPublic;
-        this.schedules = new ArrayList<>();
+        this.dailySchedules = new HashSet<>();
         this.tags = new ArrayList<>();
     }
 
-    public void addSchedule(Schedule schedule) {
-        schedule.setPost(this);
-        this.schedules.add(schedule);
+    public void addSchedule(DailySchedule dailySchedule) {
+        dailySchedule.setPost(this);
+        this.dailySchedules.add(dailySchedule);
     }
 
     public void addTag(Tag tag) {
         tags.add(PostTag.builder().post(this).tag(tag).build());
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void clearSchedules() {
+        this.dailySchedules.clear();
+    }
+
+    public void clearTags() {
+        this.tags.clear();
     }
 }
