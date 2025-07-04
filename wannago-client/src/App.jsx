@@ -19,7 +19,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/signup" element={<SignupPage/>}/>
         <Route path="/posts/:tab" element={<PostListPage/>}/>
-        <Route path="/post/detail" element={<PostDetailPage/>}/>
+        <Route path="/post/:id" element={<PostDetailPage/>}/>
         <Route path="/post/write" element={<PostWritePage/>}/>
         <Route path="/qnas" element={<QnaListPage/>}/>
         <Route path="/qna/write" element={<QnaWritePage/>}/>
