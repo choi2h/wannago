@@ -9,6 +9,7 @@ import Tag from "../components/Tag";
 import '../assets/css/post-detail.css';
 import { selectPostById } from '../service/post-service';
 import { useParams, useNavigate } from "react-router";
+import api from '../utils/axios';
 
 
 const comments = [
@@ -56,6 +57,23 @@ function PostDetailPage() {
     setIsBookmarked(!isBookmarked);
   };
 
+  const handleEdit = () => {
+    navigate(`/post/${id}`, {state: {post}});
+  }
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("정말 이 게시글을 삭제하시겠습니까?");
+    if(!confirmDelete) return;
+
+    try {
+      await api.delete(`/post/${id}`);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      alert("게시글 삭제 권한이 없습니다.");
+    }
+  }
+
   if(!post) {
     return <DefaultLayout><div> 게시글을 로딩중입니다. </div></DefaultLayout>
   }
@@ -100,7 +118,9 @@ function PostDetailPage() {
         </div>
 
         <div className="edit-delete-section">
-          <div className="text-wrapper-2">수정 | 삭제</div>
+          <span className="text-wrapper-2 edit-btn" onClick={handleEdit}>수정</span>
+          <span className="text-wrapper-2 divider">|</span>
+          <span className="text-wrapper-2 delete-btn" onClick={handleDelete}>삭제</span>
         </div>
         
         <Map/>
