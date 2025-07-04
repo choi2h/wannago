@@ -15,7 +15,7 @@ public class AnswerController {
     private final AnswerService answerService;
 
     // 특정 질문의 모든 답변 조회.
-    @GetMapping("/questions/{askId}/answers")
+    @GetMapping("/{qnaId}/answers")
     public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long askId) {
         List<AnswerResponse> answers = answerService.getAnswersByAskId(askId);
         return ResponseEntity.ok(answers);
