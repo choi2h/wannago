@@ -1,8 +1,10 @@
-package com.wannago.qna.repository;
+package com.wannago.qna.ask.repository;
 
-import com.wannago.entity.Ask;
+import com.wannago.qna.ask.entity.Ask;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface AskRepository extends JpaRepository<Ask, Long> {
-    List<Ask> findAllByOrderByModifiedAtDesc();
+    List<Ask> findAll();
 }
