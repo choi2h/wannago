@@ -1,0 +1,75 @@
+.schedule {
+  margin-top: 40px
+}
+
+.schedule-day {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+.schedule-item {
+  display: flex;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.time-wrapper {
+  flex-shrink: 0;
+  order: -1;
+}
+
+.time {
+  background-color: #22c55e;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.schedule-item .title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.location-on {
+  width: 16px;
+  height: 16px;
+  color: #6b7280;
+}
+
+.location-name {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.contentx {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
