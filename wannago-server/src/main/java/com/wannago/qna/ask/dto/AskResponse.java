@@ -1,7 +1,7 @@
 package com.wannago.qna.ask.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wannago.qna.ask.entity.Ask;
+import com.wannago.qna.entity.Ask;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
