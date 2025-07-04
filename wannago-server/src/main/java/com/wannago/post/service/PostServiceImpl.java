@@ -121,11 +121,11 @@ public class PostServiceImpl implements PostService {
         boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, memberId);
         return new PostStatusInfo(likeCount, isLiked, isBookmarked);
     }
-@Transactional(readOnly = true)
-public List<PostResponse> getMyPosts(String loginId) {
-    List<Post> myPosts = postRepository.findByAuthor(loginId);
-    return postMapper.toPostSimpleResponseList(myPosts);
-}
+//@Transactional(readOnly = true)
+//public List<PostResponse> getMyPosts(String loginId) {
+//    List<Post> myPosts = postRepository.findByAuthor(loginId);
+//    return postMapper.toPostSimpleResponseList(myPosts);
+//}
 
 
     private void setTags(Post post, List<String> inputTags) {
