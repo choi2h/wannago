@@ -1,4 +1,4 @@
-package com.wannago.service;
+package com.wannago.qna.service;
 
 import com.wannago.dto.AskRequestDto;
 import com.wannago.dto.AskResponseDto;
