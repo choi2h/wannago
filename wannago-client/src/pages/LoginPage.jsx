@@ -1,20 +1,45 @@
 import DefaultLayout from '../layouts/DefatulLayout';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../assets/css/login.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
+
 function LoginPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
+    console.log('Login attempt:', { name, password });
     // 여기에 로그인 로직 추가
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/login`, {
+        name,
+        password,
+      });
+
+      // 토큰 받아오기
+      const { accessToken, refreshToken } = response.data;
+      
+      // LocalStorage에 저장
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+
+      alert('로그인 성공!');
+      navigate('/'); // 메인 페이지로 이동
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      alert('로그인에 실패했습니다. 아이디 또는 비밀번호를 확인하세요.');
+    }
   };
 
   return (
@@ -25,14 +50,14 @@ function LoginPage() {
           
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
-              <label htmlFor="email" className="form-label">아이디</label>
+              <label htmlFor="name" className="form-label">이름</label>
               <input
-                id="email"
-                type="email"
+                id="name"
+                type="text"
                 className="form-input"
-                placeholder="mizanurrahman@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이름을 입력하세요"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -71,7 +96,7 @@ function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" className="login-button">
+            <button type="submit" className="login-button" disabled={!name || !password}>
               로그인
             </button>
           </form>

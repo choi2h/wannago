@@ -17,13 +17,20 @@ public enum CustomErrorCode {
     PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "M007", "입력된 비밀번호가 일치하지 않습니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
-    
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M010", "인증이 필요합니다."),
+
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "요청하신 게시글을 찾을 수 없습니다."),
+
+    //북마크 B
+    ALREADY_BOOKMARKED(HttpStatus.CONFLICT, "B001", "이미 북마크된 게시글입니다."),
 
     // 댓글 C
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "요청하신 댓글을 찾을 수 없습니다."),
     COMMENT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "C002", "댓글을 수정할 권한이 없습니다."),
+
+    // 답글 R
+    INVALID_COMMENT_OPERATION(HttpStatus.BAD_REQUEST, "R001", "대댓글에는 다시 대댓글을 달 수 없습니다."),
 
     // 질문 Q
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Q001", "요청하신 질문을 찾을 수 없습니다."),

@@ -32,7 +32,6 @@ const comments = [
   }
 ]
 
-
 function PostDetailPage() {
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
