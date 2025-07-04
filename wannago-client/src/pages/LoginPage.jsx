@@ -1,13 +1,11 @@
 import DefaultLayout from '../layouts/DefatulLayout';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../assets/css/login.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
 function LoginPage() {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +33,7 @@ function LoginPage() {
       localStorage.setItem('refreshToken', refreshToken);
 
       alert('로그인 성공!');
-      navigate('/'); // 메인 페이지로 이동
+      window.location.href = '/';
     } catch (error) {
       console.error('로그인 실패:', error);
       alert('로그인에 실패했습니다. 아이디 또는 비밀번호를 확인하세요.');
