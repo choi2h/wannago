@@ -1,6 +1,7 @@
 package com.wannago.post.service;
 
 
+import com.wannago.member.entity.Member;
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostsResponse;
@@ -14,5 +15,5 @@ public interface PostService {
 
     PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId);
 
-    void deletePost(Long postId, Long memberId);
+    void deletePost(Long postId, String memberId);
 }

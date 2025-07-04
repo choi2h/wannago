@@ -22,6 +22,7 @@ public enum CustomErrorCode {
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
     POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
+    NOT_POST_AUTHOR(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
 
     //북마크 B
     ALREADY_BOOKMARKED(HttpStatus.CONFLICT, "B001", "이미 북마크된 게시글입니다."),
