@@ -12,6 +12,8 @@ import com.wannago.post.repository.PostLikeRepository;
 import com.wannago.post.repository.PostRepository;
 import com.wannago.post.repository.TagRepository;
 import com.wannago.post.service.mapper.PostMapper;
+import com.wannago.qna.entity.Ask;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,12 @@ public class PostServiceImpl implements PostService {
         boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, memberId);
         return new PostStatusInfo(likeCount, isLiked, isBookmarked);
     }
+@Transactional(readOnly = true)
+public List<PostResponse> getMyPosts(String loginId) {
+    List<Post> myPosts = postRepository.findByAuthor(loginId);
+    return postMapper.toPostSimpleResponseList(myPosts);
+}
+
 
     private void setTags(Post post, List<String> inputTags) {
         for(String inputTag : inputTags) {

@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
@@ -74,6 +75,26 @@ public class PostMapper {
                 .build();
     }
 
+    // 마이페이지용 - 단순 Post → PostResponse 변환 (제목 + 작성일)
+    public PostResponse toPostSimpleResponse(Post post) {
+        return PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .createdAt(post.getCreatedDate())
+                .author(post.getAuthor())
+                .contents(post.getContents())
+                .isPublic(post.isPublic())
+                .likeCount(0)
+                .liked(false)
+                .build();
+    }
+
+    public List<PostResponse> toPostSimpleResponseList(List<Post> posts) {
+        return posts.stream()
+                .map(this::toPostSimpleResponse)
+                .collect(Collectors.toList());
+    }
+
     // 엔티티 리스트 → 응답 리스트 변환
     public PostsResponse getPostsResponse(List<Post> posts, Map<Long, List<String>> tagsMap,  Map<Long, PostStatusInfo> statusMap) {
         PostsResponse response = new PostsResponse();
@@ -88,6 +109,5 @@ public class PostMapper {
 
         return response;
     }
-
-
 }
+

@@ -1,9 +1,16 @@
+import { useNavigate } from 'react-router';
 import '../assets/css/post-list-frame.css';
 import Tag from './Tag';
 
 function PostItem ({post}) {
+  const navigate = useNavigate();
+  const onClickPostItem = () => {
+      // navigate(`/post/${post.id}`);
+      navigate(`/post/15`);
+  }
+
   return (
-    <article className="post-frame">
+    <article className="post-frame" onClick={onClickPostItem}>
       <header className="post-header">
         <h2 className="post-title">{post.title}</h2>
       </header>
