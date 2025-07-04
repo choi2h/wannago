@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AnswerServiceImpl  {
+public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerRepository answerRepository;
     private final AskRepository askRepository;
