@@ -45,4 +45,11 @@ public class Ask {
     @UpdateTimestamp
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
+
+    // 필드 값 변경을 위한 update 메서드 추가
+    public void update(Category category, String title, String contents) {
+        this.category = category;
+        this.title = title;
+        this.contents = contents;
+    }
 }
