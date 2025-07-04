@@ -5,6 +5,7 @@ import com.wannago.common.exception.CustomException;
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostStatusInfo;
+import com.wannago.post.dto.PostsResponse;
 import com.wannago.post.entity.Post;
 import com.wannago.post.entity.Tag;
 import com.wannago.post.repository.BookmarkRepository;
@@ -15,15 +16,23 @@ import com.wannago.post.service.mapper.PostMapper;
 import com.wannago.qna.entity.Ask;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service @Transactional
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
+    private static final int PAGE_SIZE = 15;
 
     private final PostLikeRepository postLikeRepository;
     private final BookmarkRepository bookmarkRepository;
@@ -40,6 +49,23 @@ public class PostServiceImpl implements PostService {
         }
 
         postRepository.save(post);
+    }
+
+    @Override
+    public PostsResponse getPosts(Integer pageNo, String criteria) {
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, criteria));
+        Page<Post> postPage = postRepository.findAll(pageable);
+
+        Map<Long, List<String>> tagsMap = new HashMap<>();
+        Map<Long, Integer> likeMap = new HashMap<>();
+        postPage.stream().forEach(post -> {
+            List<String> tag = tagRepository.getTagsByPost(post.getId());
+            tagsMap.put(post.getId(), tag);
+            int likeCount = postLikeRepository.countByPost_Id(post.getId());
+            likeMap.put(post.getId(), likeCount);
+        });
+
+        return postMapper.getPostsResponse(postPage, tagsMap, likeMap);
     }
 
     @Override
