@@ -99,7 +99,7 @@ public class PostMapper {
     }
 
     // 마이페이지용 - 단순 Post → PostResponse 변환 (제목 + 작성일)
-    public PostResponse toPostSimpleResponse(Post post) {
+    public PostResponse toPostSimpleResponse(Post post, PostStatusInfo statusInfo) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -107,14 +107,13 @@ public class PostMapper {
                 .author(post.getAuthor())
                 .contents(post.getContents())
                 .isPublic(post.isPublic())
-                .likeCount(0)
-                .liked(false)
+                .statusInfo(statusInfo)
                 .build();
     }
 
-    public List<PostResponse> toPostSimpleResponseList(List<Post> posts) {
+    public List<PostResponse> toPostSimpleResponseList(List<Post> posts, Map<Long, PostStatusInfo> statusMap) {
         return posts.stream()
-                .map(this::toPostSimpleResponse)
+                .map(post -> toPostSimpleResponse(post, statusMap.get(post.getId())))
                 .collect(Collectors.toList());
     }
 
