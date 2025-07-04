@@ -29,6 +29,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+        String method = request.getMethod();
+
+        if ((method.equals("POST") && (path.equals("/join") || path.equals("/login") || path.equals("/reissue"))) ||
+                (method.equals("GET") && (path.equals("/posts") || path.startsWith("/post/") || path.equals("/qnas") || path.startsWith("/qnas/")))) {
+            filterChain.doFilter(request, response);
+            return; // 토큰 검사 없이 필터 체인 계속
+        }
+
         String token = jwtTokenResolver.resolveAccessToken(request);
 
         // 토큰 없으면 인증 실패 예외 던짐
