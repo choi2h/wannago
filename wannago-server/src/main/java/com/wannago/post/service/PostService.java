@@ -8,4 +8,6 @@ public interface PostService {
     void insertPost(PostRequest postRequest);
 
     PostResponse getPostById(Long postId, Long memberId);
+
+    PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId);
 }

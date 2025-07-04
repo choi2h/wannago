@@ -30,7 +30,7 @@ public class PostMapper {
         return post;
     }
 
-    private void addSchedules(Post post, List<DailyScheduleInfo> scheduleRequests) {
+    public void addSchedules(Post post, List<DailyScheduleInfo> scheduleRequests) {
         for (DailyScheduleInfo request : scheduleRequests) {
             DailySchedule dailySchedule = DailySchedule.builder()
                     .day(request.getDay())
@@ -46,7 +46,6 @@ public class PostMapper {
 
     private TimeSchedule toTimeSchedule(TimeScheduleInfo timeScheduleInfo) {
         LocalTime time = LocalTime.parse(timeScheduleInfo.getTime(), DateTimeFormatter.ofPattern("HH:mm"));
-        System.out.println(timeScheduleInfo.getTime());
         return TimeSchedule.builder()
                     .title(timeScheduleInfo.getTitle())
                     .time(time)
@@ -62,7 +61,6 @@ public class PostMapper {
         List<DailyScheduleInfo> scheduleInfos = new ArrayList<>();
         post.getDailySchedules().forEach(dailySchedule ->
             scheduleInfos.add(toDailyScheduleInfo(dailySchedule)));
-        System.out.println(post.getDailySchedules());
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())

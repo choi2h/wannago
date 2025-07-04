@@ -16,11 +16,12 @@ import com.wannago.qna.entity.Ask;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service @Transactional
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
@@ -51,6 +52,30 @@ public class PostServiceImpl implements PostService {
         return postMapper.getPostResponse(post, tags, statusInfo);
     }
 
+    @Override
+    public PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
+
+
+        // request값으로 post수정
+        post.updateTitle(postRequest.getTitle());
+        post.updateContents(postRequest.getContents());
+
+        // 기존의 연관관계 배열값들 다 삭제
+        post.clearSchedules();
+        post.clearTags();
+
+        // 새로운 데이터로 넣어줌
+        postMapper.addSchedules(post, postRequest.getSchedules());
+        setTags(post, postRequest.getTags());
+
+        List<String> tags = post.getTags().stream()
+                .map(postTag -> postTag.getTag().getName()).toList();
+        PostStatusInfo statusInfo = getPostStatusInfo(postId, memberId);
+        return postMapper.getPostResponse(post, tags, statusInfo);
+    }
+
     private PostStatusInfo getPostStatusInfo(Long postId, Long memberId) {
         int likeCount = postLikeRepository.countByPost_Id(postId);
 
@@ -69,7 +94,6 @@ public List<PostResponse> getMyPosts(String loginId) {
 
     private void setTags(Post post, List<String> inputTags) {
         for(String inputTag : inputTags) {
-            System.out.println(inputTag);
             String name = inputTag.trim();
             Optional<Tag> tagOptional = tagRepository.findByName(name);
             Tag tag = tagOptional.orElseGet(() -> tagRepository.save(new Tag(name)));
