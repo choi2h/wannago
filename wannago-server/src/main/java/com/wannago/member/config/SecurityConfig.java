@@ -53,11 +53,10 @@ public class SecurityConfig {
         http.formLogin(auth -> auth.disable()); // 기본 로그인 폼 비활성화
         http.httpBasic(auth -> auth.disable()); // HTTP Basic 인증 비활성화
         http.authorizeHttpRequests(auth -> auth // 경로별 접근 권한 설정
-                //.requestMatchers("/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/post/*/like").authenticated()
-                .requestMatchers(HttpMethod.POST, "/post/*/bookmark").authenticated()
-                //.anyRequest().authenticated());
-                        .anyRequest().permitAll());
+                .requestMatchers(HttpMethod.POST, "/join","/login","/reissue").permitAll()
+                .requestMatchers(HttpMethod.GET, "/posts","/post/*","/qnas","/qnas/*").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .anyRequest().authenticated());
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 사용하지 않겠다
         http.addFilterBefore(new JwtAuthenticationFilter(tokenProvider, memberRepository, jwtTokenResolver), UsernamePasswordAuthenticationFilter.class); // Filter 적용
