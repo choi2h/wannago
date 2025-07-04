@@ -1,7 +1,7 @@
 package com.wannago.qna.answer.service;
 
 import com.wannago.qna.answer.repository.AnswerRepository;
-import com.wannago.qna.answer.repository.AskRepository;
+import com.wannago.qna.question.repository.AskRepository;
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
 import com.wannago.qna.answer.dto.AnswerResponse;
