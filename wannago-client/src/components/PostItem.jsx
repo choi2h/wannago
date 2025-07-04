@@ -5,8 +5,7 @@ import Tag from './Tag';
 function PostItem ({post}) {
   const navigate = useNavigate();
   const onClickPostItem = () => {
-      // navigate(`/post/${post.id}`);
-      navigate(`/post/22`);
+      navigate(`/post/${post.id}`);
   }
 
   return (

@@ -21,8 +21,7 @@ const selectPostById = async (id) => {
         console.log(response.data);
 
         return response.data;
-    })
-    .catch((err) => console.log(err));
+    });
 }
 
 
