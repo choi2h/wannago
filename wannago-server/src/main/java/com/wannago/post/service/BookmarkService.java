@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface BookmarkService {
 
-    boolean toggleBookmark(Long postId, Member member);
     boolean hasBookmarked(Long postId, Member member);
+    void addBookmark(Long postId, Member member);
     Map<Long, Boolean> getBookmarkedMap(List<Long> postIds, Member member);
 }
