@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function Logout() {
-    const navigate = useNavigate();
-
     useEffect(() => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
 
-        navigate('/');
-    }, [navigate]);
+        window.location.href = '/';
+    }, []);
 
     return null;
 }

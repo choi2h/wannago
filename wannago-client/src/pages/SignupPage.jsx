@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import DefaultLayout from '../layouts/DefatulLayout';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../assets/css/join.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
 function SignupPage() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -60,7 +58,7 @@ function SignupPage() {
 
       console.log('회원가입 성공:', response.data);
       alert('회원가입이 완료되었습니다!');
-      navigate('/login'); // ✅ 로그인 페이지로 이동
+      window.location.href = '/login';
     } catch (error) {
       console.error('회원가입 실패:', error);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
@@ -113,7 +111,7 @@ function SignupPage() {
               <input
                 id="name"
                 name="name"
-                type="name"
+                type="text"
                 className="form-input"
                 placeholder="이름을 입력하세요"
                 value={formData.name}
