@@ -1,6 +1,6 @@
 package com.wannago.qna.ask.repository;
 
-import com.wannago.qna.ask.entity.Ask;
+import com.wannago.qna.entity.Ask;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
