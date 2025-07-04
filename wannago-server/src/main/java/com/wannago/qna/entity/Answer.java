@@ -54,4 +54,9 @@ public class Answer {
     public void updateContents(String contents) {
         this.contents = contents;
     }
+
+    // 채택 처리를 위한 메서드
+    public void accept() {
+        this.isAccepted = true;
+    }
 }

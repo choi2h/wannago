@@ -7,20 +7,19 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 
-@Getter @Builder
+@Entity @Getter
+@Table(name = "time_schedule")
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity(name = "schedule")
-public class Schedule {
+public class TimeSchedule {
 
     @Id
-    @Column(name = "schedule_id")
+    @Column(name = "time_schedule_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne @Setter
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @JoinColumn(name = "daily_id", nullable = false)
+    private DailySchedule dailySchedule;
 
     @Column(name = "title", length = 100, nullable = false)
     private String title;
@@ -40,6 +39,16 @@ public class Schedule {
     @Column(name = "lng", precision=10, scale=7, nullable = false)
     private BigDecimal lng;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schedule")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "timeSchedule")
     private List<ScheduleImage> images;
+
+    @Builder
+    public TimeSchedule(String title, String contents, LocalTime time, String locationName, BigDecimal lat, BigDecimal lng) {
+        this.title = title;
+        this.contents = contents;
+        this.time = time;
+        this.locationName = locationName;
+        this.lat = lat;
+        this.lng = lng;
+    }
 }

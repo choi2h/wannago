@@ -1,14 +1,16 @@
 package com.wannago.post.dto;
 
+import java.time.LocalDateTime;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
 
 @Getter
-@ToString
+@Builder
 @AllArgsConstructor
 public class PostRequest {
     @NotBlank(message = "제목을 입력해주세요.")
@@ -20,9 +22,9 @@ public class PostRequest {
 
     @NotBlank
     private String author;
-
+  
     private List<String> tags;
 
     @NotNull @Size(min = 1, message = "일정은 1개이상 입력되어야 합니다.")
-    private List<ScheduleRequest> schedules;
+    private List<DailyScheduleInfo> schedules;
 }

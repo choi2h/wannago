@@ -19,9 +19,9 @@ import java.util.Date;
 public class TokenProvider {
     @Value("${jwt.secret}")
     private String secretKey;
-    private final long accessTokenValidity = 1000L * 20;
+    private static final long ACCESS_TOKEN_VALIDITY = 1000L * 20;
     //private final long accessTokenValidity = 1000L * 60 * 30; // 30분
-    private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
+    private static final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24 * 7; // 7일
 
     // 비밀 키 반환
     private Key getSigningKey() {
@@ -34,7 +34,7 @@ public class TokenProvider {
         return Jwts.builder()
                 .setSubject(loginId) // 토큰 제목
                 .setIssuedAt(new Date()) // 토큰 발급 시간
-                .setExpiration(new Date(System.currentTimeMillis()+accessTokenValidity)) // 만료시간
+                .setExpiration(new Date(System.currentTimeMillis()+ACCESS_TOKEN_VALIDITY)) // 만료시간
                 .signWith(getSigningKey())
                 .compact(); // 생성
     }
@@ -43,7 +43,7 @@ public class TokenProvider {
     public String generateRefreshToken() {
         return Jwts.builder()
                 .setIssuedAt(new Date()) // 토큰 발급 시간
-                .setExpiration(new Date(System.currentTimeMillis()+refreshTokenValidity)) // 만료시간
+                .setExpiration(new Date(System.currentTimeMillis()+REFRESH_TOKEN_VALIDITY)) // 만료시간
                 .signWith(getSigningKey())
                 .compact(); // 생성
     }

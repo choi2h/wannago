@@ -8,57 +8,8 @@ import Map from "../components/Map";
 import Tag from "../components/Tag";
 import '../assets/css/post-detail.css';
 import { selectPostById } from '../service/post-service';
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
-
-const schedules = [
-  {
-    day: 1,
-    items: [
-      {
-      time: '9시30분',
-      location: '속초 고속터미널',
-      title: '속초 고속터미널로 출발',
-      contents: '아침일찍 만나서 속초 고속터미널로 갈거임~'
-      },
-       {
-      time: '9시30분',
-      location: '속초 고속터미널',
-      title: '속초 고속터미널로 출발',
-      contents: '아침일찍 만나서 속초 고속터미널로 갈거임~'
-      },
-       {
-      time: '9시30분',
-      location: '속초 고속터미널',
-      title: '속초 고속터미널로 출발',
-      contents: '아침일찍 만나서 속초 고속터미널로 갈거임~'
-      },
-    ]
-  },
-  {
-    day: 2,
-    items: [
-      {
-      time: '9시30분',
-      location: '속초 고속터미널',
-      title: '속초 고속터미널로 출발',
-      contents: '아침일찍 만나서 속초 고속터미널로 갈거임~'
-      },
-       {
-      time: '9시30분',
-      location: '속초 고속터미널',
-      title: '속초 고속터미널로 출발',
-      contents: '아침일찍 만나서 속초 고속터미널로 갈거임~'
-      },
-       {
-      time: '9시30분',
-      location: '속초 고속터미널',
-      title: '속초 고속터미널로 출발',
-      contents: '아침일찍 만나서 속초 고속터미널로 갈거임~'
-      },
-    ]
-  }
-];
 
 const comments = [
   {
@@ -81,24 +32,21 @@ const comments = [
   }
 ]
 
-// const tags = [
-//   '태그1', '태그2', '태그3'
-// ]
-
 function PostDetailPage() {
+  const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { id } = useParams();
-  const [post, setPost] = useState(null); 
+  const [post, setPost] = useState(null);
   useEffect(() => {
-      console.log("Post!!");
-      const fetchPost = async () => {
-      try {
-        const selectPost = await selectPostById(id); // 비동기 호출
-        setPost(selectPost);
-        console.log(`post setting!!!! ${post}`);
-      } catch (error) {
-        console.error("게시글 불러오기 실패:", error);
-      }
+    console.log("Post!!");
+    const fetchPost = async () => {
+      await selectPostById(id)
+      .then((postResult) => setPost(postResult))
+      .catch((err) => {
+        console.error("게시글 불러오기 실패:", err);
+        alert("게시글을 가져올 수 없습니다.");
+        navigate('/');
+      })
     };
 
     fetchPost(); // 함수 실행
@@ -162,7 +110,7 @@ function PostDetailPage() {
         </p>
 
         {
-          schedules.map((schedule, idx) => <ScheduleItem key={idx} day={schedule.day} items={schedule.items}/>)
+          post.schedules.sort((a,b) => a.day[0] - b.day[0]).map((schedule, idx) => <ScheduleItem key={idx} day={schedule.day} times={schedule.timeSchedules}/>)
         }
         <div className="text-wrapper-9">댓글</div>
         {

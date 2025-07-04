@@ -28,12 +28,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String path = request.getRequestURI();
 
-        // 인증 필요 없는 경로 (회원가입, 로그인 등)
-        if (path.equals("/join") || path.equals("/login") || path.equals("/reissue")) {
+        String path = request.getRequestURI();
+        String method = request.getMethod();
+
+        if ((method.equals("POST") && (path.equals("/join") || path.equals("/login") || path.equals("/reissue"))) ||
+                (method.equals("GET") && (path.equals("/posts") || path.startsWith("/post/") || path.equals("/qnas") || path.startsWith("/qnas/")))) {
             filterChain.doFilter(request, response);
-            return;
+            return; // 토큰 검사 없이 필터 체인 계속
         }
 
         String token = jwtTokenResolver.resolveAccessToken(request);
@@ -48,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new BadCredentialsException("유효하지 않은 토큰");
         }
 
+        // member 객체를 SecurityContext 넣기
         try {
             String loginId = tokenProvider.getLoginIdFromToken(token);
             Member member = memberRepository.findByLoginId(loginId)
