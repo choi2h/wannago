@@ -3,8 +3,8 @@ package com.wannago.qna.ask.service;
 
 import com.wannago.qna.ask.dto.AskRequest;
 import com.wannago.qna.ask.dto.AskResponse;
-import com.wannago.qna.ask.entity.Ask;
-import com.wannago.qna.ask.entity.Category;
+import com.wannago.qna.entity.Ask;
+import com.wannago.qna.entity.Category;
 import com.wannago.qna.ask.repository.AskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,9 @@
-package com.wannago.qna.ask.entity;
+package com.wannago.qna.entity;
 
+import com.wannago.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,24 +15,26 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "ask")
+@Builder
+@Entity(name = "answer")
 @EntityListeners(AuditingEntityListener.class)
-public class Ask {
+public class Answer {
 
     @Id
-    @Column(name = "ask_id")
+    @Column(name = "answer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
-    private Category category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ask_id", nullable = false)
+    private Ask askId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member memberId;
 
     @Column(name = "author", length = 30, nullable = false)
     private String author;
-
-    @Column(name = "title", length = 100, nullable = false)
-    private String title;
 
     @Column(name = "contents", columnDefinition = "TEXT", nullable = false)
     private String contents;
@@ -46,15 +50,13 @@ public class Ask {
     @Column(name = "modified_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime modifiedDate;
 
-    // 필드 값 변경을 위한 update 메서드 추가
-    public void update(Category category, String title, String contents) {
-        this.category = category;
-        this.title = title;
+    // 답변 수정을 위한 메서드
+    public void updateContents(String contents) {
         this.contents = contents;
     }
-    public Ask(Category category, String title, String contents) {
-        this.category = category;
-        this.title = title;
-        this.contents = contents;
+
+    // 채택 처리를 위한 메서드
+    public void accept() {
+        this.isAccepted = true;
     }
 }
