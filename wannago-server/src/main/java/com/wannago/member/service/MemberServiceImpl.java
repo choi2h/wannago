@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
                 .name(member.getName())
                 .email(member.getEmail())
                 .loginId(member.getLoginId())
+                .birth(member.getBirth())
                 .createdAt(member.getCreatedDate())
                 .build();
     }
