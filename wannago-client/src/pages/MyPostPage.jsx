@@ -5,7 +5,7 @@ import PostItem from '../components/PostItem';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { fetchMyPosts, fetchMyQnas } from '../api/mypage'; // 새로 추가
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 function MyPostPage(){
   const navigate = useNavigate();
