@@ -16,4 +16,6 @@ public interface PostService {
     PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId);
 
     void deletePost(Long postId, String loginId);
+
+    PostsResponse getPostsByAuthor(String author, int pageNo);
 }

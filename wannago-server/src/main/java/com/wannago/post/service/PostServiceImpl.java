@@ -31,6 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
+    private static final String DEFAULT_POST_SORT_CRITERIA = "createdDate";
     private static final int PAGE_SIZE = 15;
 
     private final PostLikeRepository postLikeRepository;
@@ -55,16 +56,7 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, criteria));
         Page<Post> postPage = postRepository.findAll(pageable);
 
-        Map<Long, List<String>> tagsMap = new HashMap<>();
-        Map<Long, Integer> likeMap = new HashMap<>();
-        postPage.stream().forEach(post -> {
-            List<String> tag = tagRepository.getTagsByPost(post.getId());
-            tagsMap.put(post.getId(), tag);
-            int likeCount = postLikeRepository.countByPost_Id(post.getId());
-            likeMap.put(post.getId(), likeCount);
-        });
-
-        return postMapper.getPostsResponse(postPage, tagsMap, likeMap);
+        return getPostsResponseWithPostStatus(postPage);
     }
 
     @Override
@@ -81,7 +73,6 @@ public class PostServiceImpl implements PostService {
     public PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
-
 
         // request값으로 post수정
         post.updateTitle(postRequest.getTitle());
@@ -124,12 +115,12 @@ public class PostServiceImpl implements PostService {
         boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, memberId);
         return new PostStatusInfo(likeCount, isLiked, isBookmarked);
     }
-//@Transactional(readOnly = true)
-//public List<PostResponse> getMyPosts(String loginId) {
-//    List<Post> myPosts = postRepository.findByAuthor(loginId);
-//    return postMapper.toPostSimpleResponseList(myPosts);
-//}
 
+    public PostsResponse getPostsByAuthor(String loginId, int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, DEFAULT_POST_SORT_CRITERIA));
+        Page<Post> postPage = postRepository.findAllByAuthor(loginId, pageable);
+        return getPostsResponseWithPostStatus(postPage);
+    }
 
     private void setTags(Post post, List<String> inputTags) {
         for(String inputTag : inputTags) {
@@ -138,6 +129,19 @@ public class PostServiceImpl implements PostService {
             Tag tag = tagOptional.orElseGet(() -> tagRepository.save(new Tag(name)));
             post.addTag(tag);
         }
+    }
+
+    private PostsResponse getPostsResponseWithPostStatus(Page<Post> postPage) {
+        Map<Long, List<String>> tagsMap = new HashMap<>();
+        Map<Long, Integer> likeMap = new HashMap<>();
+        postPage.stream().forEach(post -> {
+            List<String> tag = tagRepository.getTagsByPost(post.getId());
+            tagsMap.put(post.getId(), tag);
+            int likeCount = postLikeRepository.countByPost_Id(post.getId());
+            likeMap.put(post.getId(), likeCount);
+        });
+
+        return postMapper.getPostsResponse(postPage, tagsMap, likeMap);
     }
 }
 

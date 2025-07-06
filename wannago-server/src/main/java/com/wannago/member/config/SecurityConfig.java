@@ -55,7 +55,7 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable); // HTTP Basic 인증 비활성화
         http.authorizeHttpRequests(auth -> auth // 경로별 접근 권한 설정
                 .requestMatchers(HttpMethod.POST, "/join","/login","/reissue").permitAll()
-                .requestMatchers(HttpMethod.GET, "/posts","/post/*","/qnas","/qnas/*").permitAll()
+                .requestMatchers(HttpMethod.GET, "/posts", "/posts/*", "/post/*","/qnas","/qnas/*").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
         http.sessionManagement(session -> session
