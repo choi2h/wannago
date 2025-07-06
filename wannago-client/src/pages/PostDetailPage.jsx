@@ -56,6 +56,14 @@ function PostDetailPage() {
     setIsBookmarked(!isBookmarked);
   };
 
+  const handleEdit = () => {
+    navigate(`/post/edit/${id}`, {state: {post}});
+  }
+
+  const handleDelete = () => {
+    console.log("삭제");
+  }
+
   if(!post) {
     return <DefaultLayout><div> 게시글을 로딩중입니다. </div></DefaultLayout>
   }
@@ -100,7 +108,9 @@ function PostDetailPage() {
         </div>
 
         <div className="edit-delete-section">
-          <div className="text-wrapper-2">수정 | 삭제</div>
+          <span className="text-wrapper-2 edit-btn" onClick={handleEdit}>수정</span>
+            <span className="text-wrapper-2">|</span>
+          <span className="text-wrapper-2 delete-btn" onClick={handleDelete}>삭제</span>
         </div>
         
         <Map/>

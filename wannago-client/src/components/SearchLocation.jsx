@@ -15,6 +15,30 @@ function SearchLocation({setPlaceInfo, setIsOpenModal}) {
     };
 
     useEffect(() => {
+        if (window.kakao && window.kakao.maps) {
+            // 이미 로드되어 있으면 재로드하지 않음
+            window.kakao.maps.load(() => { 
+                const mapContainer = document.getElementById("search-map");
+                const mapOption = {
+                    center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+                    level: 2
+                };
+
+                const mapInstance = new window.kakao.maps.Map(mapContainer, mapOption);
+                setMap(mapInstance);
+                setPs(new window.kakao.maps.services.Places());
+             });
+
+            
+             return;
+            // return () => {
+            //     if (script.parentNode) {
+            //         document.head.removeChild(script);
+            //     }
+            //     document.removeEventListener('keydown', handleKeyPress);
+            // };
+        }
+
         const script = document.createElement('script');
         script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAOMAP_API_KEY}&autoload=false&libraries=services`;
         script.async = true;
@@ -44,12 +68,13 @@ function SearchLocation({setPlaceInfo, setIsOpenModal}) {
 
         document.addEventListener('keydown', handleKeyPress);
 
-        return () => {
-            if (script.parentNode) {
-                document.head.removeChild(script);
-            }
-            document.removeEventListener('keydown', handleKeyPress);
-        };
+        // return () => {
+        //     if (script.parentNode) {
+        //         document.head.removeChild(script);
+        //     }
+        //     document.removeEventListener('keydown', handleKeyPress);
+        // };
+        return;
     }, []);
 
     const searchPlaces = (e) => {
