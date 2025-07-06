@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { selectPosts } from '../service/post-service';
 import Pagination from '../components/Pagination';
 
-function PostListPAge(){
+function PostListPage(){
   const { tab } = useParams();
   const [pagePost, setPagePost] = useState();
 
@@ -66,4 +66,4 @@ function PostListPAge(){
   );
 };
 
-export default PostListPAge;
+export default PostListPage;
