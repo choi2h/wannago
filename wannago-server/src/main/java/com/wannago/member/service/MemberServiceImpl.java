@@ -1,14 +1,16 @@
 package com.wannago.member.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
 import com.wannago.member.dto.MemberInfoResponse;
 import com.wannago.member.dto.MemberUpdateRequest;
 import com.wannago.member.entity.Member;
 import com.wannago.member.repository.MemberRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
                 .name(member.getName())
                 .email(member.getEmail())
                 .loginId(member.getLoginId())
-                .createdDate(member.getCreatedDate())
+                .createdAt(member.getCreatedDate())
                 .build();
     }
 

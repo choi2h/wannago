@@ -16,5 +16,5 @@ public class MemberInfoResponse {
     private String name;          // 이름
     private String email;         // 이메일 (선택 사항)
     private LocalDateTime createdAt; // 가입일
-    private LocalDateTime createdDate;
+    
 }
