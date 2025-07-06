@@ -9,7 +9,9 @@ import com.wannago.post.dto.PostsResponse;
 public interface PostService {
     void insertPost(PostRequest postRequest);
 
-    PostsResponse getPosts(Integer pageNo, String criteria);
+    PostsResponse getPosts(int pageNo, String criteria);
+
+    PostsResponse getPostsOrderByLikeCount(int pageNo);
 
     PostResponse getPostById(Long postId, Long memberId);
 

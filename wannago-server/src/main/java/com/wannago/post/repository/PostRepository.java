@@ -1,5 +1,6 @@
 package com.wannago.post.repository;
 
+import com.wannago.post.dto.PostWithLikeCount;
 import com.wannago.post.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     Page<Post> findAllByAuthor(String loginId, Pageable pageable);
+
+    @Query("SELECT new com.wannago.post.dto.PostWithLikeCount(p, COUNT(pl)) FROM Post p " +
+            "LEFT JOIN PostLike pl ON p.id = pl.post.id " +
+            "GROUP BY p.id ORDER BY COUNT(pl) DESC")
+    Page<PostWithLikeCount> findAllByLikeCount(Pageable pageable);
 }
