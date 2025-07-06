@@ -28,7 +28,7 @@ function ViewSchedule({item}) {
                     <div className="title">{item.title}</div>
                     <div className="location">
                         <LocationOn4 className="location-on" />
-                        <div className="location-name">{item.location}</div>
+                        <div className="location-name">{item.locationName}</div>
                     </div>
                     <p className="contentx">{item.contents}</p>
                 </div>

@@ -18,6 +18,7 @@ function TimeScheduleForm({newSchedule, updateTimeSchedule, idx}){
         <input 
           type="text" 
           placeholder="제목을 입력하세요" 
+          value={newSchedule.title}
           className="schedule-title-input"
           onChange={(event) => updateTimeSchedule('title', idx, event.target.value)}
         />
@@ -29,7 +30,7 @@ function TimeScheduleForm({newSchedule, updateTimeSchedule, idx}){
           <input 
             type="time" 
             className="time-input"
-            defaultValue="12:00"
+            defaultValue={newSchedule?.time || "12:00"}
             onChange={(event) => updateTimeSchedule('time', idx, event.target.value)}
           />
         </div>
@@ -54,6 +55,7 @@ function TimeScheduleForm({newSchedule, updateTimeSchedule, idx}){
         placeholder="내용을 입력하세요."
         className="schedule-content-input"
         rows="8"
+        value={newSchedule?.contents || ''}
         onChange={(event) =>updateTimeSchedule('contents', idx, event.target.value)}
       />
 
