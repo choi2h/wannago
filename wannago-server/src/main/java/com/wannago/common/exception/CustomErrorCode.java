@@ -1,8 +1,9 @@
 package com.wannago.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
@@ -18,7 +19,9 @@ public enum CustomErrorCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M010", "인증이 필요합니다."),
-
+    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M011", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M012", "잘못된 입력값입니다."),
+    
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
     POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),

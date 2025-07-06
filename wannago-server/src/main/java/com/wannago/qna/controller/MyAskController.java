@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wannago.member.entity.Member;
 import com.wannago.qna.dto.MyAskResponse;
-import com.wannago.qna.service.MyAskService;
+import com.wannago.qna.service.AskService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/mypage")
-public class MyQnaController {
+@RequestMapping("/mypage")
+public class MyAskController {
 
-    private final MyAskService myaskService;
+    private final AskService myaskService;
 
     // 내가 쓴 질문 목록 조회
     @GetMapping("/qnas")
