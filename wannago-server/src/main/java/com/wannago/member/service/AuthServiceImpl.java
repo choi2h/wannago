@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public MemberResponse join(JoinRequest joinRequest) {
         // 이름 값 체크
-        if (joinRequest.getName() == null || joinRequest.getName().trim().isEmpty() || !joinRequest.getName().matches("^[a-zA-Z0-9]{4,12}$")) {
+        if (joinRequest.getName() == null || joinRequest.getName().trim().isEmpty() || !joinRequest.getName().matches("^[가-힣a-zA-Z0-9]{4,12}$")) {
             throw new CustomException(CustomErrorCode.INVALID_INPUT);
         }
 
@@ -51,15 +51,24 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomException(CustomErrorCode.INVALID_INPUT);
         }
 
-        LocalDate birthDate = validateAndParseBirth(joinRequest.getBirth());
+        if (memberRepository.existsByEmail(joinRequest.getEmail())) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_EMAIL);
+        }
 
-        String loginId = generateLoginId(joinRequest.getName());
+        LocalDate birthDate = validateAndParseBirth(joinRequest.getBirth());
+        String email = joinRequest.getEmail();
+        String loginId = email.substring(0, email.indexOf("@"));
+
+        // loginId 중복 검사
+        if (memberRepository.existsByLoginId(loginId)) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_LOGINID);
+        }
 
         String encodedPassword = passwordEncoder.encode(joinRequest.getPassword());
 
         Member member = Member.builder()
                 .name(joinRequest.getName())
-                .email(joinRequest.getEmail())
+                .email(email)
                 .loginId(loginId)
                 .password(encodedPassword)
                 .birth(birthDate)
@@ -74,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public TokenResponse login(LoginRequest loginRequest) {
         // 회원 조회
-        Member member = memberRepository.findByName(loginRequest.getName())
+        Member member = memberRepository.findByLoginId(loginRequest.getLoginId())
                 .orElseThrow(() -> new CustomException(CustomErrorCode.MEMBER_NOT_FOUND));
 
         // 비밀번호 검증
@@ -110,9 +119,6 @@ public class AuthServiceImpl implements AuthService {
         return new TokenResponse(newAccessToken, newRefreshToken, loginId);
     }
 
-    private String generateLoginId(String name) {
-        return name.toLowerCase() + "_" + UUID.randomUUID().toString().substring(0, 8);
-    }
     private boolean isValidEmail(String email) {
         // 아이디 부분(앞부분) 영문/숫자만 허용
         String[] parts = email.split("@");
