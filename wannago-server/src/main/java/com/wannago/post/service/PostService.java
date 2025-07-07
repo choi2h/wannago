@@ -13,7 +13,7 @@ public interface PostService {
 
     PostResponse getPostById(Long postId, Long memberId);
 
-    PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId);
+    PostResponse updatePost(Long postId, PostRequest postRequest, Member member);
 
     void deletePost(Long postId, String loginId);
 

@@ -2,6 +2,7 @@ package com.wannago.post.service;
 
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
+import com.wannago.member.entity.Member;
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostStatusInfo;
@@ -70,9 +71,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId) {
+    public PostResponse updatePost(Long postId, PostRequest postRequest, Member member) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
+
+        if(!post.getAuthor().equals(member.getLoginId())) {
+            throw new CustomException(CustomErrorCode.NOT_POST_AUTHOR_FOR_UPDATE);
+        }
 
         // request값으로 post수정
         post.updateTitle(postRequest.getTitle());
@@ -88,7 +93,7 @@ public class PostServiceImpl implements PostService {
 
         List<String> tags = post.getTags().stream()
                 .map(postTag -> postTag.getTag().getName()).toList();
-        PostStatusInfo statusInfo = getPostStatusInfo(postId, memberId);
+        PostStatusInfo statusInfo = getPostStatusInfo(postId, member);
         return postMapper.getPostResponse(post, tags, statusInfo);
     }
 
@@ -100,16 +105,24 @@ public class PostServiceImpl implements PostService {
 
         //회원정보와 게시글 작성자 비교하여 자신 글이 맞는지 확인
         if (!post.getAuthor().equals(loginId)) {
-            throw new CustomException(CustomErrorCode.NOT_POST_AUTHOR);
+            throw new CustomException(CustomErrorCode.NOT_POST_AUTHOR_FOR_DELETE);
         }
 
         postRepository.delete(post);
     }
 
+    private PostStatusInfo getPostStatusInfo(Long postId, Member member) {
+        int likeCount = postLikeRepository.countByPost_Id(postId);
+
+        if(member == null) return new PostStatusInfo(likeCount, false, false);
+        boolean isLiked = postLikeRepository.existsByPost_IdAndMember_Id(postId, member.getId());
+        boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, member.getId());
+        return new PostStatusInfo(likeCount, isLiked, isBookmarked);
+    }
+
     private PostStatusInfo getPostStatusInfo(Long postId, Long memberId) {
         int likeCount = postLikeRepository.countByPost_Id(postId);
 
-        // TODO 추후 로그인 정보 개발 완료되면 수정
         if(memberId == null) return new PostStatusInfo(likeCount, false, false);
         boolean isLiked = postLikeRepository.existsByPost_IdAndMember_Id(postId, memberId);
         boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, memberId);
