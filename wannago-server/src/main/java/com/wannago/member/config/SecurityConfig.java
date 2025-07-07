@@ -1,12 +1,7 @@
 package com.wannago.member.config;
 
-import com.wannago.member.jwt.CustomAuthenticationEntryPoint;
-import com.wannago.member.jwt.JwtAuthenticationFilter;
-import com.wannago.member.jwt.JwtTokenResolver;
-import com.wannago.member.jwt.TokenProvider;
-import com.wannago.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,7 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.List;
+import com.wannago.member.jwt.CustomAuthenticationEntryPoint;
+import com.wannago.member.jwt.JwtAuthenticationFilter;
+import com.wannago.member.jwt.JwtTokenResolver;
+import com.wannago.member.jwt.TokenProvider;
+import com.wannago.member.repository.MemberRepository;
+
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 
 @Configuration // 이 클래스가 스프링 설정 클래스임을 의미
