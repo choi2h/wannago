@@ -2,11 +2,13 @@ package com.wannago.post.service;
 
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
+
 import com.wannago.member.entity.Member;
 import com.wannago.post.dto.PostRequest;
 import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostStatusInfo;
 import com.wannago.post.dto.PostsResponse;
+
 import com.wannago.post.entity.Post;
 import com.wannago.post.entity.Tag;
 import com.wannago.post.repository.BookmarkRepository;
@@ -53,11 +55,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostsResponse getPosts(Integer pageNo, String criteria) {
+    public PostsResponse getPosts(int pageNo, String criteria) {
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, criteria));
         Page<Post> postPage = postRepository.findAll(pageable);
 
         return getPostsResponseWithPostStatus(postPage);
+    }
+
+    public PostsResponse getPostsOrderByLikeCount(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
+        Page<PostWithLikeCount> postWithLikeCounts = postRepository.findAllByLikeCount(pageable);
+        Map<Long, List<String>> tagsMap = new HashMap<>();
+        postWithLikeCounts.forEach(postWithLikeCount -> {
+            List<String> tags = tagRepository.getTagsByPost(postWithLikeCount.getPost().getId());
+            tagsMap.put(postWithLikeCount.getPost().getId(), tags);
+        });
+
+        return postMapper.getPostsResponse(postWithLikeCounts, tagsMap);
     }
 
     @Override
