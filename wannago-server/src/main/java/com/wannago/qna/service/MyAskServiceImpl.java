@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MyAskServiceImpl implements MyAskService {
+public class MyAskServiceImpl implements AskService {
 
     private final MyAskRepository myaskRepository;
     private final MyAskMapper myaskMapper;

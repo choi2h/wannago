@@ -10,7 +10,7 @@ import java.util.List;
 
 import java.util.Optional;
 
-public interface AnswerRepository extends JpaRepository<Answer, Long> {
+public interface AskRepository extends JpaRepository<Answer, Long> {
 
     @Query("SELECT a FROM answer a WHERE a.askId = :ask ORDER BY a.isAccepted DESC, a.createdDate ASC")
     List<Answer> findByAskIdOrderByIsAcceptedDesc(@Param("ask") Ask ask);

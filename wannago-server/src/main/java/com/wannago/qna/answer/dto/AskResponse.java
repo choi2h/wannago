@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class AnswerResponse {
+public class AskResponse {
     private Long answerId;
     private Long memberId;
     private String author;
