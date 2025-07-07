@@ -33,14 +33,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String method = request.getMethod();
 
         if ((method.equals("POST") && (path.equals("/join") || path.equals("/login") || path.equals("/reissue")|| path.equals("/check-email"))) ||
-                (method.equals("GET") && (path.startsWith("/posts") || path.startsWith("/post/") ||(path.startsWith("/qna") || path.startsWith("/qna/") || path.equals("/qnas") || path.startsWith("/qnas/"))))) {
-
-
+                (method.equals("GET") && (path.startsWith("/posts") || (path.startsWith("/qna") || path.startsWith("/qna/") || path.equals("/qnas") || path.startsWith("/qnas/"))))) {
             filterChain.doFilter(request, response);
             return; // 토큰 검사 없이 필터 체인 계속
         }
 
         String token = jwtTokenResolver.resolveAccessToken(request);
+
+        if(method.equals("GET") && path.startsWith("/post/") && token == null) {
+            filterChain.doFilter(request, response);
+            return; // 토큰 검사 없이 필터 체인 계속
+        }
 
         // 토큰 없으면 인증 실패 예외 던짐
         if (!StringUtils.hasText(token)) {
