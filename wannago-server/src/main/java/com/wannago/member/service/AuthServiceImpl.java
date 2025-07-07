@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -117,6 +116,11 @@ public class AuthServiceImpl implements AuthService {
         String newAccessToken = tokenProvider.generateAccessToken(loginId);
         String newRefreshToken = tokenProvider.generateRefreshToken();
         return new TokenResponse(newAccessToken, newRefreshToken, loginId);
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        return memberRepository.existsByEmail(email);
     }
 
     private boolean isValidEmail(String email) {
