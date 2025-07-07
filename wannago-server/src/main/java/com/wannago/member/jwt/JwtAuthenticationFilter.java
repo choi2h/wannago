@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String method = request.getMethod();
 
-        if ((method.equals("POST") && (path.equals("/join") || path.equals("/login") || path.equals("/reissue")|| path.equals("/check-email") || path.equals("/posts")|| path.equals("/post"))) ||
+        if ((method.equals("POST") && (path.equals("/join") || path.equals("/login") || path.equals("/reissue")|| path.equals("/check-email"))) ||
                 (method.equals("GET") && (path.startsWith("/posts") || path.startsWith("/post/") || path.equals("/qnas") || path.startsWith("/qnas/")))) {
 
 
