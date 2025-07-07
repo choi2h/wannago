@@ -26,10 +26,38 @@ function SignupPage() {
     }));
   };
 
-  const handleEmailVerification = () => {
+  const handleEmailVerification = async () => {
     // 이메일 인증 로직
-    console.log('이메일 인증 요청:', formData.email);
-    setEmailVerified(true);
+    if (!formData.email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+    try {
+      const response = await axios.post(`${API_BASE_URL}/check-email`, {
+        email: formData.email
+      });
+
+      if (response.data.exists) {
+        alert('이미 사용 중인 이메일입니다.');
+        setEmailVerified(false);
+      } else {
+        alert('사용 가능한 이메일입니다.');
+        setEmailVerified(true);
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status===409) {
+          alert('이미 사용 중인 이메일입니다.');
+          setEmailVerified(false);
+        } else {
+          alert('이메일 중복확인 중 오류가 발생했습니다.');
+        }
+      } else {
+        alert('서버와 연결할 수 없습니다.');
+      }
+      console.error('이메일 중복: ', error);
+      setEmailVerified(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -60,7 +88,11 @@ function SignupPage() {
       alert('회원가입이 완료되었습니다!');
       window.location.href = '/login';
     } catch (error) {
-      console.error('회원가입 실패:', error);
+       // 서버가 응답했지만 status가 2xx가 아님
+       console.log('회원가입 실패:');
+       console.error('📦 응답 데이터:', error.response.data);
+       console.error('📡 상태 코드:', error.response.status);
+       console.error('📨 응답 헤더:', error.response.headers);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
   };

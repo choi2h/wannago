@@ -18,19 +18,20 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public void addPost(@Valid @RequestBody PostRequest postRequest) {
-        postService.insertPost(postRequest);
+    public void addPost(@Valid @RequestBody PostRequest postRequest, @AuthenticationPrincipal Member member) {
+        postService.insertPost(postRequest, member);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
-        PostResponse postResponse = postService.getPostById(id, 1L);
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id, @AuthenticationPrincipal Member member) {
+        PostResponse postResponse = postService.getPostById(id, member);
         return ResponseEntity.ok(postResponse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
-        PostResponse postResponse = postService.updatePost(id, postRequest, 1L);
+    public ResponseEntity<PostResponse> updatePost(
+            @PathVariable Long id, @RequestBody PostRequest postRequest, @AuthenticationPrincipal Member member) {
+        PostResponse postResponse = postService.updatePost(id, postRequest, member);
         return ResponseEntity.ok(postResponse);
     }
 

@@ -1,9 +1,6 @@
 package com.wannago.member.controller;
 
-import com.wannago.member.dto.JoinRequest;
-import com.wannago.member.dto.LoginRequest;
-import com.wannago.member.dto.MemberResponse;
-import com.wannago.member.dto.TokenResponse;
+import com.wannago.member.dto.*;
 import com.wannago.member.jwt.JwtTokenResolver;
 import com.wannago.member.service.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,5 +40,12 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok("로그아웃 성공");
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<EmailCheckResponse> checkEmail(@RequestBody EmailCheckRequest emailCheckRequest) {
+        boolean exists = authServiceImpl.checkEmail(emailCheckRequest.getEmail());
+        EmailCheckResponse emailCheckResponse = new EmailCheckResponse(exists);
+        return ResponseEntity.ok(emailCheckResponse);
     }
 }

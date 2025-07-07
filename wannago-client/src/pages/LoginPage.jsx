@@ -7,7 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
 
   const togglePasswordVisibility = () => {
@@ -16,12 +16,12 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt:', { name, password });
+    console.log('Login attempt:', { loginId, password });
     // 여기에 로그인 로직 추가
 
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, {
-        name,
+        loginId,
         password,
       });
 
@@ -31,10 +31,15 @@ function LoginPage() {
       // LocalStorage에 저장
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('loginId', loginId);
 
       alert('로그인 성공!');
       window.location.href = '/';
     } catch (error) {
+      console.log('로그인 실패:');
+       console.error('📦 응답 데이터:', error.response.data);
+       console.error('📡 상태 코드:', error.response.status);
+       console.error('📨 응답 헤더:', error.response.headers);
       console.error('로그인 실패:', error);
       alert('로그인에 실패했습니다. 아이디 또는 비밀번호를 확인하세요.');
     }
@@ -48,14 +53,14 @@ function LoginPage() {
           
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
-              <label htmlFor="name" className="form-label">이름</label>
+              <label htmlFor="loginId" className="form-label">아이디</label>
               <input
-                id="name"
+                id="loginId"
                 type="text"
                 className="form-input"
                 placeholder="이름을 입력하세요"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={loginId}
+                onChange={(e) => setLoginId(e.target.value)}
                 required
               />
             </div>
@@ -94,7 +99,7 @@ function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" className="login-button" disabled={!name || !password}>
+            <button type="submit" className="login-button" disabled={!loginId || !password}>
               로그인
             </button>
           </form>

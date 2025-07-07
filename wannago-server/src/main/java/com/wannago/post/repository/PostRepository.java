@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.wannago.member.entity.Member;
 import com.wannago.post.entity.Post;
 
 
@@ -31,9 +30,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "LEFT JOIN PostLike pl ON p.id = pl.post.id " +
             "GROUP BY p.id ORDER BY COUNT(pl) DESC")
     Page<PostWithLikeCount> findAllByLikeCount(Pageable pageable);
-  
-    List<Post> findByMemberOrderByCreatedDateDesc(Member member);
+
 
     Page<Post> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+
+
+    List<Post> findByAuthorOrderByCreatedDateDesc(String author);
 
 }

@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.wannago.common.exception.CustomErrorCode.BOOKMARK_NOT_FOUND;
 import static com.wannago.common.exception.CustomErrorCode.POST_NOT_FOUND;
 
 @Service
@@ -38,6 +40,23 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
         // 북마크 저장
         bookmarkRepository.save(new Bookmark(null, post, member));
+    }
+
+    @Override
+    @Transactional // 삭제 작업이므로 트랜잭션 추가
+    public void removeBookmark(Long postId, Member member) {
+        // 게시글 존재 여부 확인 (대상 게시글이 없으면 삭제할 북마크도 없음)
+        Post post = getPostOrThrow(postId);
+
+        // 해당 북마크 엔티티를 찾아서 삭제
+        // existsByPostAndMember 대신 실제 Bookmark 엔티티를 찾아야 합니다.
+        Optional<Bookmark> optionalBookmark = bookmarkRepository.findByPostAndMember(post, member);
+
+        if (optionalBookmark.isEmpty()) {
+            throw new CustomException(BOOKMARK_NOT_FOUND);
+        }
+
+        bookmarkRepository.delete(optionalBookmark.get());
     }
 
     // 게시글 단건 북마크 여부 확인
