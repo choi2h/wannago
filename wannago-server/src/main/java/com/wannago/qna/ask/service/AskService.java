@@ -26,7 +26,7 @@ public class AskService {
     @Transactional
     public Long createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
-        Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContents());
+        Ask ask = new Ask(member,category, requestDto.getTitle(), member.getLoginId(), requestDto.getContents());
         Ask savedAsk = askRepository.save(ask);
         return savedAsk.getId();
     }
