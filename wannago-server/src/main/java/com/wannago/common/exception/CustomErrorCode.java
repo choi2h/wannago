@@ -19,29 +19,19 @@ public enum CustomErrorCode {
 
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M010", "인증이 필요합니다."),
-   INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M011", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
-   INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M012", "잘못된 입력값입니다."),
+    EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M009", "잘못된 이메일입니다."),
+    MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M010", "회원을 찾을 수 없습니다."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M011", "인증이 필요합니다."),
+   INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M012", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
+   INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M013", "잘못된 입력값입니다."),
     
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
     POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
     NOT_POST_AUTHOR(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
     INVALID_SEARCH_KEYWORD(HttpStatus.BAD_REQUEST, "P004", "검색어를 입력해주세요."),
-
-    EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M008", "잘못된 이메일입니다."),
-    MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M009", "회원을 찾을 수 없습니다."),
-
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M010", "유효하지 않은 RefreshToken입니다."),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M011", "유효하지 않은 토큰입니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M012", "인증이 필요합니다."),
-    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M013", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
-
-    // 게시글 P
-    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
-    POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
-    NOT_POST_AUTHOR_FOR_DELETE(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
-    NOT_POST_AUTHOR_FOR_UPDATE(HttpStatus.UNAUTHORIZED, "P004", "게시글 수정 권한이 없습니다."),
+    NOT_POST_AUTHOR_FOR_DELETE(HttpStatus.UNAUTHORIZED, "P005", "게시글 삭제 권한이 없습니다."),
+    NOT_POST_AUTHOR_FOR_UPDATE(HttpStatus.UNAUTHORIZED, "P006", "게시글 수정 권한이 없습니다."),
 
 
     //북마크 B
