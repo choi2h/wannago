@@ -13,8 +13,6 @@ public enum CustomErrorCode {
     DUPLICATE_NAME(HttpStatus.BAD_REQUEST, "M002", "사용할 수 없는 아이디입니다."),
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "M003", "입력된 비밀번호가 일치하지 않습니다."),
     INVALID_INPUT(HttpStatus.BAD_REQUEST, "M004", "다시 작성해주세요"),
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M011", "입력값이 유효하지 않습니다."),
-    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M012", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
     EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M005", "잘못된 이메일입니다."),
     MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M006", "회원을 찾을 수 없습니다."),
     PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "M007", "입력된 비밀번호가 일치하지 않습니다."),
