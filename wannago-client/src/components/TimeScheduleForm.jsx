@@ -66,10 +66,10 @@ function TimeScheduleForm({newSchedule, updateTimeSchedule, idx}){
           className="media-file-input"
           id="media-input"
         />
-        <label htmlFor="media-input" className="media-input-label">
+        {/* <label htmlFor="media-input" className="media-input-label">
           <VuesaxLinearGallery className="media-icon" />
           이미지 추가
-        </label>
+        </label> */}
       </div>
       {
         isOpenLocationModal ? 

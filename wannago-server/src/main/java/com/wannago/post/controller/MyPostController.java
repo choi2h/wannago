@@ -25,4 +25,12 @@ public class MyPostController {
         PostsResponse response = postService.getMyPosts(pageNo, member);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/bookmark")
+    public ResponseEntity<PostsResponse> getRecentPosts(
+            @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
+            @AuthenticationPrincipal Member member) {
+        PostsResponse response = postService.getPostsByBookmark(pageNo, member);
+        return ResponseEntity.ok(response);
+    }
 }
