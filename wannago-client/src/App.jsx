@@ -26,7 +26,7 @@ function App() {
         <Route path="/post/write" element={<PostWritePage/>}/>
         <Route path="/qnas" element={<QnaListPage/>}/>
         <Route path="/qna/write" element={<QnaWritePage/>}/>
-        <Route path="/qnas/detail" element={<QnaDetailPage/>}/>
+        <Route path="/qnas/:qnaId" element={<QnaDetailPage/>}/>
         <Route path="/my/:tab" element={<MyPostPage/>}/>
         <Route path="/mypage" element={<MyPage/>}/>
         <Route path="/mypage/edit" element={<MyPageEdit/>}/>
