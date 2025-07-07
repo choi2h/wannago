@@ -17,7 +17,9 @@ public class PostsController {
     public ResponseEntity<PostsResponse> getRecentPosts(
             @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
             @RequestParam(required = false, defaultValue = "createdDate", value = "criteria") String criteria) {
-        PostsResponse response = postService.getPosts(pageNo, criteria);
+        PostsResponse response;
+        if(criteria.equals("likeCount")) response = postService.getPostsOrderByLikeCount(pageNo);
+         else response = postService.getPosts(pageNo, criteria);
         return ResponseEntity.ok(response);
     }
 
