@@ -161,6 +161,7 @@ public class AnswerServiceImpl implements AnswerService {
                 .author(answer.getAuthor())
                 .contents(answer.getContents())
                 .isAccepted(answer.isAccepted())
+                .loginId(answer.getMemberId().getLoginId())
                 .createdDate(answer.getCreatedDate())
                 .modifiedDate(answer.getModifiedDate())
                 .build();

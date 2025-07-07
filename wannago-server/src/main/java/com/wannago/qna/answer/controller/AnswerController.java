@@ -2,18 +2,18 @@ package com.wannago.qna.answer.controller;
 
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
+import com.wannago.member.entity.Member;
 import com.wannago.qna.answer.dto.AnswerRequest;
 import com.wannago.qna.answer.dto.AnswerResponse;
 import com.wannago.qna.answer.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/qna")
+@RequestMapping("/qnas")
 @RequiredArgsConstructor
 public class AnswerController {
 
@@ -23,11 +23,11 @@ public class AnswerController {
     @PostMapping("/{qnaId}/answer")
     public ResponseEntity<AnswerResponse> createAnswer(
             @PathVariable Long qnaId,
-            @RequestBody AnswerRequest request
+            @RequestBody AnswerRequest request,
+            @AuthenticationPrincipal Member member
     ) {
-        // 로그인 정보 가져오기
-        String loginId = getCurrentLoginId();
-        AnswerResponse response = answerService.createAnswer(qnaId,loginId, request);
+        validateMember(member);
+        AnswerResponse response = answerService.createAnswer(qnaId, member.getLoginId(), request);
         return ResponseEntity.ok(response);
     }
 
@@ -36,11 +36,11 @@ public class AnswerController {
     public ResponseEntity<AnswerResponse> updateAnswer(
             @PathVariable Long qnaId,
             @PathVariable Long answerId,
-            @RequestBody AnswerRequest request
+            @RequestBody AnswerRequest request,
+            @AuthenticationPrincipal Member member
     ) {
-        // 로그인 정보 가져오기
-        String loginId = getCurrentLoginId();
-        AnswerResponse response = answerService.updateAnswer(answerId,loginId, request);
+        validateMember(member);
+        AnswerResponse response = answerService.updateAnswer(answerId, member.getLoginId(), request);
         return ResponseEntity.ok(response);
     }
 
@@ -48,13 +48,11 @@ public class AnswerController {
     @DeleteMapping("/{qnaId}/answers/{answerId}")
     public ResponseEntity<Void> deleteAnswer(
             @PathVariable Long qnaId,
-            @PathVariable Long answerId
+            @PathVariable Long answerId,
+            @AuthenticationPrincipal Member member
     ) {
-
-        // 로그인 확인
-        String loginId = getCurrentLoginId();
-
-        answerService.deleteAnswer(answerId, loginId);
+        validateMember(member);
+        answerService.deleteAnswer(answerId, member.getLoginId());
         return ResponseEntity.ok().build();
     }
 
@@ -62,30 +60,25 @@ public class AnswerController {
     @PostMapping("/{qnaId}/answer/{answerId}")
     public ResponseEntity<AnswerResponse> acceptAnswer(
             @PathVariable Long qnaId,
-            @PathVariable Long answerId
+            @PathVariable Long answerId,
+            @AuthenticationPrincipal Member member
     ) {
-
-        // 로그인 정보 가져오기
-        String loginId = getCurrentLoginId();
-
-        AnswerResponse response = answerService.acceptAnswer(answerId, loginId);
+        validateMember(member);
+        AnswerResponse response = answerService.acceptAnswer(answerId, member.getLoginId());
         return ResponseEntity.ok(response);
     }
 
     // 특정 질문의 모든 답변 조회
     @GetMapping("/{qnaId}/answers")
-    public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long askId) {
-        List<AnswerResponse> answers = answerService.getAnswersByAskId(askId);
+    public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long qnaId) {
+        List<AnswerResponse> answers = answerService.getAnswersByAskId(qnaId);
         return ResponseEntity.ok(answers);
     }
 
-    // 현재 로그인한 ID 조회
-    private String getCurrentLoginId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
+    // 멤버 유효성 검증
+    private void validateMember(Member member) {
+        if (member == null) {
             throw new CustomException(CustomErrorCode.MEMBER_NOT_EXIST);
         }
-        return authentication.getName();
     }
-
 }

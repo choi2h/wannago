@@ -138,6 +138,62 @@
   background-color: #357a5c;
 }
 
+/* 답변 수정/삭제 버튼 컨테이너 - 미디어 쿼리 밖으로 이동 */
+.answer-controls {
+  display: flex;
+  gap: 12px;
+}
+
+/* 공통 버튼 스타일 - 미디어 쿼리 밖으로 이동 */
+.answer-controls button {
+  min-width: 60px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+/* 수정 버튼 - 미디어 쿼리 밖으로 이동 */
+.edit-button {
+  background-color: #2a8ef7;
+  color: #fff;
+}
+
+.edit-button:hover:not(:disabled) {
+  background-color: #1c6ed9;
+  box-shadow: 0 4px 10px rgba(42, 142, 247, 0.6);
+}
+
+.edit-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+/* 삭제 버튼 - 미디어 쿼리 밖으로 이동 */
+.delete-button {
+  background-color: #f05454;
+  color: #fff;
+}
+
+.delete-button:hover:not(:disabled) {
+  background-color: #c73e3e;
+  box-shadow: 0 4px 10px rgba(240, 84, 84, 0.6);
+}
+
+.delete-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
 /* AskViewer 관련 스타일 (view.css) */
 .view {
   width: 100%;
@@ -200,4 +256,108 @@
   white-space: pre-line;
   line-height: 1.6;
   margin: 0;
+}
+
+/* 로그인 필요 메시지 */
+.login-required {
+  text-align: center;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.login-required p {
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.login-required button {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.login-required button:hover {
+  background: #1976d2;
+}
+
+/* 로딩 및 에러 스타일 */
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #2196f3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #666;
+  font-size: 14px;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.error-container button {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.error-container button:hover {
+  background: #1976d2;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .answer-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .answer-actions {
+    align-self: flex-start;
+  }
+
+  .accepted-badge {
+    position: static;
+    align-self: flex-start;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+
+  .edit-actions {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
 }
