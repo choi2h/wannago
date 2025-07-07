@@ -30,12 +30,12 @@ function MyPostPage() {
 
       try {
         if (tab === 'post') {
-          const posts = await fetchMyPosts();
-          setPostList(posts || []);
-        } else if (tab === 'qna') {
-          const qnas = await fetchMyQnas();
-          setQnaList(qnas || []);
-        }
+  const posts = await fetchMyPosts(loginId); // ✅ 수정!
+  setPostList(Array.isArray(posts) ? posts : []);
+} else if (tab === 'qna') {
+  const qnas = await fetchMyQnas(loginId); // ✅ 수정!
+  setQnaList(Array.isArray(qnas) ? qnas : []);
+}
       } catch (err) {
         console.error("마이페이지 데이터 로딩 실패:", err);
       }
