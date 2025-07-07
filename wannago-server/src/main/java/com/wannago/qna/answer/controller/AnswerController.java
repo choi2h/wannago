@@ -13,28 +13,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/qnas")
+@RequestMapping("/qna")
 @RequiredArgsConstructor
 public class AnswerController {
 
     private final AnswerService answerService;
 
     // 답변 등록
-    @PostMapping("/{qnaId}/answer")
+    @PostMapping("/{id}/answer")
     public ResponseEntity<AnswerResponse> createAnswer(
-            @PathVariable Long qnaId,
+            @PathVariable Long id,
             @RequestBody AnswerRequest request,
             @AuthenticationPrincipal Member member
     ) {
         validateMember(member);
-        AnswerResponse response = answerService.createAnswer(qnaId, member.getLoginId(), request);
+        AnswerResponse response = answerService.createAnswer(id, member.getLoginId(), request);
         return ResponseEntity.ok(response);
     }
 
     // 답변 수정
-    @PutMapping("/{qnaId}/answer/{answerId}")
+    @PutMapping("/{id}/answer/{answerId}")
     public ResponseEntity<AnswerResponse> updateAnswer(
-            @PathVariable Long qnaId,
+            @PathVariable Long id,
             @PathVariable Long answerId,
             @RequestBody AnswerRequest request,
             @AuthenticationPrincipal Member member
@@ -45,9 +45,9 @@ public class AnswerController {
     }
 
     // 답변 삭제
-    @DeleteMapping("/{qnaId}/answers/{answerId}")
+    @DeleteMapping("/{id}/answer/{answerId}")
     public ResponseEntity<Void> deleteAnswer(
-            @PathVariable Long qnaId,
+            @PathVariable Long id,
             @PathVariable Long answerId,
             @AuthenticationPrincipal Member member
     ) {
@@ -57,9 +57,9 @@ public class AnswerController {
     }
 
     // 답변 채택
-    @PostMapping("/{qnaId}/answer/{answerId}")
+    @PostMapping("/{id}/answer/{answerId}")
     public ResponseEntity<AnswerResponse> acceptAnswer(
-            @PathVariable Long qnaId,
+            @PathVariable Long id,
             @PathVariable Long answerId,
             @AuthenticationPrincipal Member member
     ) {
@@ -69,9 +69,9 @@ public class AnswerController {
     }
 
     // 특정 질문의 모든 답변 조회
-    @GetMapping("/{qnaId}/answers")
-    public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long qnaId) {
-        List<AnswerResponse> answers = answerService.getAnswersByAskId(qnaId);
+    @GetMapping("/{id}/answer")
+    public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long id) {
+        List<AnswerResponse> answers = answerService.getAnswersByAskId(id);
         return ResponseEntity.ok(answers);
     }
 
