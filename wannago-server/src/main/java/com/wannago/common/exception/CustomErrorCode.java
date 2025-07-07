@@ -18,6 +18,7 @@ public enum CustomErrorCode {
     PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "M007", "입력된 비밀번호가 일치하지 않습니다."),
     EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M008", "잘못된 이메일입니다."),
     MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M009", "회원을 찾을 수 없습니다."),
+    
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M010", "유효하지 않은 RefreshToken입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M011", "유효하지 않은 토큰입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M012", "인증이 필요합니다."),
