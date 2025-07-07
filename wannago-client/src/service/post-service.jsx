@@ -52,6 +52,18 @@ const selectPosts = async (pageNo, orderCriteria) => {
     .catch((err) => console.log(err));
 }
 
+const selectPostsByKeyword = async (pageNo, keyword) => {
+    return await api.get(`/posts/search?keyword=${keyword}&page=${pageNo}`)
+    .then((response) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response.data);
+
+        return response.data;
+    })
+    .catch((err) => console.log(err));
+}
+
 const modifyPost = async (post) => {
     return await api.put(`${POST_API}/${post.id}`, {...post, author: 'me'})
     .then((response) => {
@@ -179,6 +191,7 @@ export {
     inputNewPost, 
     selectPostById, 
     selectPosts, 
+    selectPostsByKeyword,
     modifyPost, 
     deletePost,
     togglePostLike,
