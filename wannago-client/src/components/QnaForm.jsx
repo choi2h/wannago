@@ -1,79 +1,30 @@
-/*import { useState } from 'react';
-import '../assets/css/input-post.css';
-
-function QnaForm () {
-  const categories = ["맛집", "액티비티", "기타", "명소"];
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setIsDropdownOpen(false);
-  };
-
-  return (
-     <div className="input-post">
-        <div className="category-dropdown">
-          <div 
-            className="category-button"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
-            <span className={selectedCategory ? 'selected' : 'placeholder'}>
-              {selectedCategory || '카테고리를 선택해주세요.'}
-            </span>
-            <svg 
-              className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2"
-            >
-              <polyline points="6,9 12,15 18,9"/>
-            </svg>
-          </div>
-          
-          {isDropdownOpen && (
-            <div className="dropdown-menu">
-              {categories.map((category, index) => (
-                <div 
-                  key={index}
-                  className="dropdown-item"
-                  onClick={() => handleCategorySelect(category)}
-                >
-                  {category}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <input 
-          type="text" 
-          placeholder="제목을 입력하세요." 
-          className="title-input"
-        />
-
-        <div className="divider" />
-        
-        <textarea 
-          placeholder="내용을 입력하세요."
-          className="content-input"
-          rows="15"
-        />
-    </div>
-  );
-};
-
-export default QnaForm;
-*/
-
 import { useState } from 'react';
 import '../assets/css/input-post.css';
 
+const categories = [
+  { 
+    name: "전체",
+    api: "all"
+  }, 
+  {
+    name: "맛집",
+    api: "food"
+  }, 
+  {
+    name: "액티비티",
+    api: "activity"
+  },
+  {
+    name: "명소",
+    api: "location"
+  },
+  {
+    name: "기타",
+    api: "other"
+  }];
+
 // 부모 컴포넌트(QnaWritePage)로부터 필요한 데이터와 함수, 상태를 props로 받아옵니다.
 function QnaForm({ qnaData, handleChange, isEditMode }) {
-  const categories = ["FOOD", "ACTIVITY", "OTHER", "LOCATION"];
-  
   // 드롭다운 메뉴가 열렸는지 닫혔는지만 관리하는 내부 state
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -104,8 +55,8 @@ function QnaForm({ qnaData, handleChange, isEditMode }) {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           {/* 선택된 값은 부모로부터 받은 qnaData.category를 사용합니다. */}
-          <span className={qnaData.category ? 'selected' : 'placeholder'}>
-            {qnaData.category || '카테고리를 선택해주세요.'}
+          <span>
+            {qnaData.category.name || '카테고리를 선택해주세요.'}
           </span>
           <svg 
             className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
@@ -120,15 +71,17 @@ function QnaForm({ qnaData, handleChange, isEditMode }) {
         
         {isDropdownOpen && (
           <div className="dropdown-menu">
-            {categories.map((category, index) => (
-              <div 
-                key={index}
-                className="dropdown-item"
-                onClick={() => handleCategorySelect(category)}
-              >
-                {category}
-              </div>
-            ))}
+            {
+              categories.slice(1).map((category, index) => (
+                <div 
+                  key={index}
+                  className="dropdown-item"
+                  onClick={() => handleCategorySelect(category)}
+                >
+                  {category.name}
+                </div>
+              ))
+            }
           </div>
         )}
       </div>

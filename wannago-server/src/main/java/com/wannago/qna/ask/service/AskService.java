@@ -3,6 +3,7 @@ package com.wannago.qna.ask.service;
 
 import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
+import com.wannago.member.entity.Member;
 import com.wannago.qna.ask.dto.AskRequest;
 import com.wannago.qna.ask.dto.AskResponse;
 import com.wannago.qna.ask.dto.AsksResponse;
@@ -25,9 +26,9 @@ public class AskService {
 
     // 질문 등록
     @Transactional
-    public AskResponse createAsk(AskRequest requestDto) {
+    public AskResponse createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
-        Ask ask = new Ask(category, requestDto.getTitle(), requestDto.getContent());
+        Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContent());
         Ask savedAsk = askRepository.save(ask);
         return new AskResponse(savedAsk);
     }

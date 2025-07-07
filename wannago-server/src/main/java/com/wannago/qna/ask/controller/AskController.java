@@ -1,11 +1,13 @@
 package com.wannago.qna.ask.controller;
 
 
+import com.wannago.member.entity.Member;
 import com.wannago.qna.ask.dto.AskRequest;
 import com.wannago.qna.ask.dto.AskResponse;
 import com.wannago.qna.ask.service.AskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class AskController {
 
     //질문 등록
     @PostMapping
-    public ResponseEntity<AskResponse> createAsk(@RequestBody AskRequest requestDto) {
-        return ResponseEntity.ok(askService.createAsk(requestDto));
+    public void createAsk(@RequestBody AskRequest requestDto, @AuthenticationPrincipal Member member) {
+        askService.createAsk(requestDto, member);
     }
 
     //질문 수정

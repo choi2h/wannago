@@ -26,18 +26,14 @@ function QnaListPage() {
     {
       name: "기타",
       api: "other"
-    }]; // "전체" 카테고리 추가
+    }];
+    
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   // API 호출
   useEffect(() => {
     const fetchQnaList = async () => {
-      await getQnaList(selectedCategory.api)
-        .then((response) => {
-          setQnaList(response);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const asks = await getQnaList(selectedCategory.api);
+      setQnaList(asks);
     };
 
     fetchQnaList();

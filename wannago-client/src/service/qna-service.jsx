@@ -2,15 +2,15 @@ import { HttpStatusCode } from 'axios';
 import api from '../utils/axios';
 
 const getQnaList = async (category) => {
-    api.get(`/qnas?category=${category}`)
+    return api.get(`/qnas?category=${category}`)
     .then((response) => {
-        console.log("success to requeset for get qna list.", response)
-        return response.data;
+        console.log("success to requeset for get qna list.", response.data.asks);
+        return response.data.asks;
     });
 };
 
 const inputQna = async (qna) => {
-    api.post('/qna', qna)
+    api.post('/qna', {...qna, category: qna.category.api})
         .then((response) => {
             if(response.status === HttpStatusCode.Ok) {
                 console.log('질문 작성을 완료했습니다!');
