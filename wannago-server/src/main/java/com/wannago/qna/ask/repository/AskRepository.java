@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface AskRepository extends JpaRepository<Ask, Long> {
     List<Ask> findAllByCategory(Category category);
+
+    List<Ask> findAllByAuthorOrderByIdDesc(String author); 
 }
