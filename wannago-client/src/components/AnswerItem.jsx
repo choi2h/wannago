@@ -51,11 +51,7 @@ function AnswerItem({
   };
 
   // 답변 작성자 여부 확인
-  const isAnswerAuthor = currentUser && (
-    answer.author === currentUser.name ||
-    answer.author === currentUser.id ||
-    answer.userId === currentUser.id
-  );
+  const isAnswerAuthor = currentUser && answer.loginId === currentUser.loginId;
 
   // IS_Accept 값 확인 (DB에서 1이면 채택, 0이면 미채택)
   const isAccepted = answer.accepted === true

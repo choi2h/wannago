@@ -15,6 +15,7 @@ public class AnswerResponse {
     private String author;
     private String contents;
     private boolean isAccepted;
+    private String loginId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;

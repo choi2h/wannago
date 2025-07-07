@@ -116,7 +116,7 @@ function QnaDetailPage() {
     try {
       setIsSubmitting(true);
 
-      // answer-service.js의 inputNewAnswer 함수에 맞춘 데이터 구조
+
       const answerData = {
         contents: contents.trim(),
         author: currentUser.loginId,
