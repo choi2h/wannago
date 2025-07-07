@@ -99,25 +99,6 @@ public class PostMapper {
                 .build();
     }
 
-    // 마이페이지용 - 단순 Post → PostResponse 변환 (제목 + 작성일)
-    public PostResponse toPostSimpleResponse(Post post, PostStatusInfo statusInfo) {
-        return PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .createdAt(post.getCreatedDate())
-                .author(post.getAuthor())
-                .contents(post.getContents())
-                .isPublic(post.isPublic())
-                .statusInfo(statusInfo)
-                .build();
-    }
-
-    public List<PostResponse> toPostSimpleResponseList(List<Post> posts, Map<Long, PostStatusInfo> statusMap) {
-        return posts.stream()
-                .map(post -> toPostSimpleResponse(post, statusMap.get(post.getId())))
-                .collect(Collectors.toList());
-    }
-
     // 엔티티 리스트 → 응답 리스트 변환
     public PostsResponse getPostsResponse
         (Page<Post> posts, Map<Long, List<String>> tagsMap, Map<Long, Integer> likeMap) {

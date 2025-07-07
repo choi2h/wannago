@@ -68,6 +68,13 @@ public class PostServiceImpl implements PostService {
         return getPostsResponseWithPostStatus(postPage);
     }
 
+    public PostsResponse getMyPosts(int pageNo, Member member) {
+        // 사용자가 작성한 게시글 목록 조회 (최신순 정렬)
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, DEFAULT_POST_SORT_CRITERIA));
+        Page<Post> posts = postRepository.findByAuthorOrderByCreatedDateDesc(member.getLoginId(), pageable);
+        return getPostsResponseWithPostStatus(posts);
+    }
+
     public PostsResponse getPostsOrderByLikeCount(int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
         Page<PostWithLikeCount> postWithLikeCounts = postRepository.findAllByLikeCount(pageable);
@@ -137,15 +144,6 @@ public class PostServiceImpl implements PostService {
         if(member == null) return new PostStatusInfo(likeCount, false, false);
         boolean isLiked = postLikeRepository.existsByPost_IdAndMember_Id(postId, member.getId());
         boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, member.getId());
-        return new PostStatusInfo(likeCount, isLiked, isBookmarked);
-    }
-
-    private PostStatusInfo getPostStatusInfo(Long postId, Long memberId) {
-        int likeCount = postLikeRepository.countByPost_Id(postId);
-
-        if(memberId == null) return new PostStatusInfo(likeCount, false, false);
-        boolean isLiked = postLikeRepository.existsByPost_IdAndMember_Id(postId, memberId);
-        boolean isBookmarked = bookmarkRepository.existsByPost_IdAndMember_Id(postId, memberId);
         return new PostStatusInfo(likeCount, isLiked, isBookmarked);
     }
 

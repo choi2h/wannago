@@ -53,8 +53,8 @@ function MyPostPage() {
                 const responseData = await fetcher(loginId, pageToFetch, ITEMS_PER_PAGE);
 
                 if (responseData && typeof responseData === 'object') {
-                    setList(Array.isArray(responseData.content) ? responseData.content : []);
-                    setTotalPages(responseData.totalPages || 1);
+                    setList(responseData);
+                    // setTotalPages(responseData.totalPages || 1);
                 } else {
                     // 비정상 응답 처리
                     setList([]);
@@ -110,13 +110,14 @@ function MyPostPage() {
     const renderContent = () => {
         if (isLoading) return <p className="loading-message">데이터를 불러오는 중입니다...</p>;
         if (error) return <p className="error-message">{error}</p>;
+        console.log(list);
         if (list.length === 0) return <p className="no-data-message">{tab === 'post' ? '작성한 게시글이 없습니다.' : '작성한 질문이 없습니다.'}</p>;
 
         return (
             <section className="qna-list-section">
                 {tab === 'post'
                     ? list.map(post => <PostItem key={post.postId} post={post} />) // [수정] 고유 ID로 key 설정
-                    : list.map(qna => <QnaItem key={qna.askId} qna={qna} />)         // [수정] 고유 ID로 key 설정
+                    : list.map(qna => <QnaItem key={qna.askId} qna={qna} onClick={(id) => navigate(`/qna/${id}`)}/>)         // [수정] 고유 ID로 key 설정
                 }
             </section>
         );
