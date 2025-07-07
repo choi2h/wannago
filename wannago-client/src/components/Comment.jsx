@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import '../assets/css/comment.css';
 
-function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment }) {
+function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment, loginId }) {
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.contents);
 
   const isTopLevelComment = comment.parentId === null;
+  const isAuthor = comment.author === loginId; // ⭐ 로그인 사용자와 작성자 비교
 
   const handleReplyClick = () => {
     setShowReplyInput(!showReplyInput);
@@ -43,24 +44,28 @@ function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment
             <span className="comment-separator">·</span>
             <span className="comment-time">{comment.time || comment.createdAt}</span>
           </div>
-          <div className="comment-actions">
-            {isEditing ? (
-              <>
-                <button className="action-button" onClick={handleSaveEdit}>저장</button>
-                <button className="action-button" onClick={() => setIsEditing(false)}>취소</button>
-              </>
-            ) : (
-              <>
-                {isTopLevelComment && (
-                  <>
+
+          {/* ⭐ 조건부 버튼 렌더링: 작성자일 때만 */}
+          {isAuthor && (
+            <div className="comment-actions">
+              {isEditing ? (
+                <>
+                  <button className="action-button" onClick={handleSaveEdit}>저장</button>
+                  <button className="action-button" onClick={() => setIsEditing(false)}>취소</button>
+                </>
+              ) : (
+                <>
+                  {isTopLevelComment && (
                     <button className="action-button" onClick={handleReplyClick}>답글</button>
+                  )}
+                  {isTopLevelComment && (
                     <button className="action-button" onClick={handleEditClick}>수정</button>
-                  </>
-                )}
-                <button className="action-button" onClick={handleDeleteClick}>삭제</button>
-              </>
-            )}
-          </div>
+                  )}
+                  <button className="action-button" onClick={handleDeleteClick}>삭제</button>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {isEditing ? (
@@ -97,6 +102,7 @@ function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment
                 comment={subComment}
                 postId={postId}
                 onDeleteComment={onDeleteComment}
+                loginId={loginId} // ⭐ 전달
               />
             ))}
           </div>
@@ -106,7 +112,9 @@ function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment
   );
 }
 
-function SubComment({ comment, postId, onDeleteComment }) {
+function SubComment({ comment, postId, onDeleteComment, loginId }) {
+  const isAuthor = comment.author === loginId; // ⭐ 대댓글도 비교
+
   const handleDeleteClick = () => {
     onDeleteComment(comment.id);
   };
@@ -119,14 +127,17 @@ function SubComment({ comment, postId, onDeleteComment }) {
           <span className="subcomment-separator">·</span>
           <span className="subcomment-time">{comment.time || comment.createdAt}</span>
         </div>
-        <div className="subcomment-actions">
-          <button className="action-button" onClick={handleDeleteClick}>삭제</button>
-        </div>
+
+        {/* ⭐ 대댓글 삭제 버튼: 작성자 본인일 때만 */}
+        {isAuthor && (
+          <div className="subcomment-actions">
+            <button className="action-button" onClick={handleDeleteClick}>삭제</button>
+          </div>
+        )}
       </div>
 
       <p className="subcomment-content" style={{ whiteSpace: 'pre-line' }}>
         {comment.contents}
-        
       </p>
     </div>
   );

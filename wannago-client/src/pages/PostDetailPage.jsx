@@ -21,6 +21,7 @@ import {
 import { useParams, useNavigate } from "react-router";
 
 function PostDetailPage() {
+   const loginId = localStorage.getItem('loginId'); 
     const navigate = useNavigate();
     const { id } = useParams();
     const [post, setPost] = useState(null);
@@ -340,6 +341,7 @@ function PostDetailPage() {
                             onAddReply={handleAddReply}
                             onUpdateComment={handleUpdateComment}
                             onDeleteComment={handleDeleteComment}
+                            loginId={loginId} // 추가
                         />
                     ))
                 }
