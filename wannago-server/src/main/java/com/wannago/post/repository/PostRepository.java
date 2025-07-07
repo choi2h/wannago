@@ -30,6 +30,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "LEFT JOIN PostLike pl ON p.id = pl.post.id " +
             "GROUP BY p.id ORDER BY COUNT(pl) DESC")
     Page<PostWithLikeCount> findAllByLikeCount(Pageable pageable);
-  
-    List<Post> findByMemberOrderByCreatedDateDesc(Member member);
+
+    List<Post> findByAuthorOrderByCreatedDateDesc(String author);
 }

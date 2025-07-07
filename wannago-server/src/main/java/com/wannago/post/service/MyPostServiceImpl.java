@@ -6,14 +6,11 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
 import com.wannago.member.entity.Member;
 import com.wannago.member.repository.MemberRepository;
 import com.wannago.post.dto.MyPostResponse;
 import com.wannago.post.entity.Post;
 import com.wannago.post.repository.PostRepository;
-
-
 
 @Service
 @RequiredArgsConstructor
