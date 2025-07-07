@@ -28,8 +28,9 @@ public class AskController {
 
     //질문 수정
     @PutMapping("/{id}")
-    public ResponseEntity<AskResponse> updateAsk(@PathVariable Long id, @RequestBody AskRequest requestDto) {
-        return ResponseEntity.ok(askService.updateAsk(id, requestDto));
+    public ResponseEntity<AskResponse> updateAsk(
+            @PathVariable Long id, @RequestBody AskRequest requestDto, @AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok(askService.updateAsk(id, requestDto, member));
     }
 
     //질문 삭제

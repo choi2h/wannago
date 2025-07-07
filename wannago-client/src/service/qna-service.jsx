@@ -30,11 +30,11 @@ const getQna = async (id) => {
         });
 }
 
-const modifyQna = async (id, post) => {
-     api.post(`/qna/${id}`, post)
+const updateQna = async (id, qna) => {
+     api.put(`/qna/${id}`, {...qna, category: qna.category.api})
         .then((response) => {
             return response;
         });
 }
 
-export {getQnaList, getQna, inputQna, modifyQna};
+export {getQnaList, getQna, inputQna, updateQna};

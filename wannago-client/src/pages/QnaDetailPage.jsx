@@ -4,6 +4,7 @@ import AskViewer from '../components/AskViewer';
 import AnswerItem from '../components/AnswerItem';
 import Input from '../components/Input';
 import DefaultLayout from '../layouts/DefatulLayout';
+import QNA_CATEGORY from '../utils/QnaCategory';
 import '../assets/css/qna-detail.css';
 import { getQna } from '../service/qna-service';
 
@@ -59,6 +60,24 @@ function QnaDetailPage() {
     fetchAskDetail();
   }, [id]); // id값이 바뀔 때마다 API를 다시 호출합니다.
 
+  const handleEdit = () => {
+    navigate(`/qna/edit/${id}`, {state: {ask : {...ask, category: getCategory(ask.category)}}});
+  }
+
+  const handleDelete = () => {
+    console.log("삭제");
+  }
+
+   const getCategory = (category) => {
+    let result = QNA_CATEGORY[0];
+    QNA_CATEGORY.forEach((qnaCategory) => {
+      console.log(qnaCategory.api.toUpperCase() + " " + category.toUpperCase(), "=>",  qnaCategory.api.toUpperCase() === category.toUpperCase());
+      if(qnaCategory.api.toUpperCase() === category.toUpperCase()) result = qnaCategory;
+    })
+
+    return result;
+  }
+
   if(!ask) {
     return (
       <DefaultLayout>
@@ -71,12 +90,12 @@ function QnaDetailPage() {
     <DefaultLayout>
       <div className="qna-detail">
   
-        <AskViewer ask={ask} />
+        <AskViewer ask={ask} onClickEdit={handleEdit} onClickDelete={handleDelete}/>
 
         <div className="answers-section">
           <div className="answers-count">{answers.length}개 답변</div>
           <div className="answers-list">
-            {answers.map((ans, idx) => <AnswerItem key={idx} answer={ans} />)}
+            {answers.map((ans, idx) => <AnswerItem key={idx} answer={ans}/>)}
           </div>
           <div className="reply-section">
             <div className="reply-title">답변 작성하기</div>

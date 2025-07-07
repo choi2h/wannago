@@ -26,18 +26,22 @@ public class AskService {
     @Transactional
     public Long createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
-        Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContent());
+        Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContents());
         Ask savedAsk = askRepository.save(ask);
         return savedAsk.getId();
     }
 
     // 질문 수정
     @Transactional
-    public AskResponse updateAsk(Long id, AskRequest requestDto) {
+    public AskResponse updateAsk(Long id, AskRequest requestDto, Member member) {
         Ask ask = findAskById(id);
 
+        if(!ask.getAuthor().equals(member.getLoginId())) {
+            throw new CustomException(CustomErrorCode.INVALID_AUTH_FOR_UPDATE_ASK);
+        }
+
         Category category = Category.getCategory(requestDto.getCategory());
-        ask.update(category, requestDto.getTitle(), requestDto.getContent());
+        ask.update(category, requestDto.getTitle(), requestDto.getContents());
         return new AskResponse(ask);
     }
 

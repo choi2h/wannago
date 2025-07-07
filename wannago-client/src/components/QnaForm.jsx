@@ -1,27 +1,6 @@
 import { useState } from 'react';
 import '../assets/css/input-post.css';
-
-const categories = [
-  { 
-    name: "전체",
-    api: "all"
-  }, 
-  {
-    name: "맛집",
-    api: "food"
-  }, 
-  {
-    name: "액티비티",
-    api: "activity"
-  },
-  {
-    name: "명소",
-    api: "location"
-  },
-  {
-    name: "기타",
-    api: "other"
-  }];
+import QNA_CATEGORY from '../utils/QnaCategory';
 
 // 부모 컴포넌트(QnaWritePage)로부터 필요한 데이터와 함수, 상태를 props로 받아옵니다.
 function QnaForm({ qnaData, handleChange, isEditMode }) {
@@ -72,7 +51,7 @@ function QnaForm({ qnaData, handleChange, isEditMode }) {
         {isDropdownOpen && (
           <div className="dropdown-menu">
             {
-              categories.slice(1).map((category, index) => (
+              QNA_CATEGORY.slice(1).map((category, index) => (
                 <div 
                   key={index}
                   className="dropdown-item"
@@ -103,8 +82,8 @@ function QnaForm({ qnaData, handleChange, isEditMode }) {
         placeholder="내용을 입력하세요."
         className="content-input"
         rows="15"
-        name="content" // ★★★ 상태 업데이트를 위한 name 속성
-        value={qnaData.content} // 부모로부터 받은 값
+        name="contents" // ★★★ 상태 업데이트를 위한 name 속성
+        value={qnaData.contents} // 부모로부터 받은 값
         onChange={handleChange} // 부모로부터 받은 함수
       />
     </form>
