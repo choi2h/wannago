@@ -1,81 +1,86 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // ❗ URL의 파라미터(id)를 가져오기 위해 import
+import { useNavigate, useParams } from 'react-router-dom'; // ❗ URL의 파라미터(id)를 가져오기 위해 import
 import AskViewer from '../components/AskViewer';
-// import Input from '../components/Input';
-// import AnswerItem from '../components/AnswerItem';
+import AnswerItem from '../components/AnswerItem';
+import Input from '../components/Input';
 import DefaultLayout from '../layouts/DefatulLayout';
 import '../assets/css/qna-detail.css';
+import { getQna } from '../service/qna-service';
 
-// ❗ 답변(Answer) 관련 기능은 현재 백엔드에 없으므로, 주석 처리하거나 삭제해야 합니다.
-/*
-const answers = [ ... ];
-*/
+const answers = [
+  {
+    author: "작성자1",
+    createdTime: "2025.06.26",
+    isAccepted: false,
+    contents: "안녕하세요 진짜 맛있는 해물 짬뽕 찾고 있습니다.\n" +
+              "레드오크호텔 앞에있다고 알겠는데, 계속해서 어디인지 기억내게, 해쪽오\n" +
+              "기보니 없었던 해물 덮밥음이고 어디가 맞았는지 모르겠어요\n" +
+              "혹시 내일 정말 중에서 해물음은 어떤곳인지???\n" +
+              "해일이랑 기부실 해물 먹고, 중에서 주진 해주세요\n" +
+              "꼭 내일 정말 부탁드리겠습니다"
+  },
+  {
+    author: "작성자2",
+    createdTime: "2025.06.26",
+    isAccepted: false,
+    contents: "안녕하세요 진짜 맛있는 해물 짬뽕 찾고 있습니다.\n" +
+              "레드오크호텔 앞에있다고 알겠는데, 계속해서 어디인지 기억내게, 해쪽오\n" +
+              "기보니 없었던 해물 덮밥음이고 어디가 맞았는지 모르겠어요\n" +
+              "혹시 내일 정말 중에서 해물음은 어떤곳인지???\n" +
+              "해일이랑 기부실 해물 먹고, 중에서 주진 해주세요\n" +
+              "꼭 내일 정말 부탁드리겠습니다"
+  },
+  {
+    author: "작성자3",
+    createdTime: "2025.06.26",
+    isAccepted: false,
+    contents: "안녕하세요 진짜 맛있는 해물 짬뽕 찾고 있습니다.\n" +
+              "레드오크호텔 앞에있다고 알겠는데, 계속해서 어디인지 기억내게, 해쪽오\n" +
+              "기보니 없었던 해물 덮밥음이고 어디가 맞았는지 모르겠어요\n" +
+              "혹시 내일 정말 중에서 해물음은 어떤곳인지???\n" +
+              "해일이랑 기부실 해물 먹고, 중에서 주진 해주세요\n" +
+              "꼭 내일 정말 부탁드리겠습니다"
+  }
+]
+
 
 function QnaDetailPage() {
-  const { id } = useParams(); // ❗ URL에서 질문의 id 값을 가져옵니다. (예: /qna/1 -> id는 1)
-  const [askDetail, setAskDetail] = useState(null); // API로 받은 질문 상세 데이터
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [ask, setAsk] = useState();
 
   useEffect(() => {
     const fetchAskDetail = async () => {
-      setIsLoading(true);
-      try {
-        // ❗ 백엔드의 GET /qna/{id} 엔드포인트를 호출합니다.
-        const response = await fetch(`http://localhost:8080/qna/${id}`);
-        if (!response.ok) {
-          throw new Error('질문을 불러오는 데 실패했습니다.');
-        }
-        const data = await response.json();
-        setAskDetail(data); // 상태에 데이터 저장
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
+      const response = await getQna(id);
+      console.log(response);
+      setAsk(response);
     };
 
     fetchAskDetail();
   }, [id]); // id값이 바뀔 때마다 API를 다시 호출합니다.
 
-  if (isLoading) {
+  if(!ask) {
     return (
       <DefaultLayout>
-        <div className="qna-detail">
-          <p>질문 내용을 불러오는 중입니다...</p>
-        </div>
+        <span>게시글을 불러오는 중입니다..</span>
       </DefaultLayout>
-    );
-  }
-
-  if (!askDetail) {
-    return (
-      <DefaultLayout>
-        <div className="qna-detail">
-          <p>해당 질문을 찾을 수 없습니다.</p>
-        </div>
-      </DefaultLayout>
-    );
+    )
   }
 
   return (
     <DefaultLayout>
       <div className="qna-detail">
-        {/* ❗ API로 받아온 askDetail 데이터를 AskViewer 컴포넌트에 전달합니다. */}
-        <AskViewer ask={askDetail} />
+  
+        <AskViewer ask={ask} />
 
-        {/* --- 답변 기능 관련 안내 ---
-          현재 Spring Boot 백엔드에는 답변을 조회하거나 작성하는 API가 없습니다.
-          따라서 이 부분은 백엔드에 답변(Answer) 관련 CRUD 기능이 추가된 후에 연동할 수 있습니다.
-          우선은 UI에서 제외하거나 주석 처리해두는 것을 권장합니다.
-        */}
         <div className="answers-section">
-          <div className="answers-count">0개 답변</div>
+          <div className="answers-count">{answers.length}개 답변</div>
           <div className="answers-list">
-            {/* 답변 데이터가 없으므로 비워둡니다. */}
+            {answers.map((ans, idx) => <AnswerItem key={idx} answer={ans} />)}
           </div>
           <div className="reply-section">
             <div className="reply-title">답변 작성하기</div>
-            {/* <Input typeText="답변" onSubmit={() => {}}/> */}
+            <Input typeText="답변" onSubmit={() => {console.log("답변 작성 버튼 클릭!!!!!!")}}/>
           </div>
         </div>
       </div>

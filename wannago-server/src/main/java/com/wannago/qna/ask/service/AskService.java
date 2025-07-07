@@ -14,9 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +24,11 @@ public class AskService {
 
     // 질문 등록
     @Transactional
-    public AskResponse createAsk(AskRequest requestDto, Member member) {
+    public Long createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
         Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContent());
         Ask savedAsk = askRepository.save(ask);
-        return new AskResponse(savedAsk);
+        return savedAsk.getId();
     }
 
     // 질문 수정

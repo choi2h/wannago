@@ -1,9 +1,21 @@
 import '../assets/css/qna-detail.css';
+import QNA_CATEGORY from '../utils/QnaCategory';
 
 function AskViewer ({ ask }) {
+
+  const getCategoryName = (category) => {
+    let name = "기타";
+    QNA_CATEGORY.forEach((qnaCategory) => {
+      console.log(qnaCategory.api.toUpperCase() + " " + category.toUpperCase(), "=>",  qnaCategory.api.toUpperCase() === category.toUpperCase());
+      if(qnaCategory.api.toUpperCase() === category.toUpperCase()) name = qnaCategory.name;
+    })
+
+    return name;
+  }
+  
   return (
     <div className="view">
-      <div className="category-label">{ask.category}</div>
+      <div className="category-label">{getCategoryName(ask.category)}</div>
       <div className="question-title">Q. {ask.title}</div>
 
       <div className="author-info">

@@ -1,8 +1,8 @@
 import '../assets/css/qna-list-frame.css';
 
-function QnaItem ({qna}) {
+function QnaItem ({qna, onClick}) {
   return (
-    <article className="qna-frame"> {/* div 대신 article 태그 사용 */}
+    <article className="qna-frame" onClick={onClick(qna.id)}> {/* div 대신 article 태그 사용 */}
       <header className="qna-header">
         <h2 className="qna-title">{qna.title}</h2> {/* 제목은 h2 태그로 */}
         <div className={`qna-status ${qna.isAccepted ? "accepted" : "pending"}`}> {/* 상태에 따라 클래스 동적 할당 */}

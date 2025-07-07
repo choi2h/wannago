@@ -23,9 +23,10 @@ const inputQna = async (qna) => {
 }
 
 const getQna = async (id) => {
-    api.get(`/qna/${id}`)
+    return api.get(`/qna/${id}`)
         .then((response) => {
-            return response;
+            console.log(`Get qna ${id}`, response)
+            return response.data;
         });
 }
 

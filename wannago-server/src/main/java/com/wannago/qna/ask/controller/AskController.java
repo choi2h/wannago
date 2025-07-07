@@ -21,8 +21,9 @@ public class AskController {
 
     //질문 등록
     @PostMapping
-    public void createAsk(@RequestBody AskRequest requestDto, @AuthenticationPrincipal Member member) {
-        askService.createAsk(requestDto, member);
+    public ResponseEntity<Long> createAsk(@RequestBody AskRequest requestDto, @AuthenticationPrincipal Member member) {
+        Long id = askService.createAsk(requestDto, member);
+        return ResponseEntity.ok(id);
     }
 
     //질문 수정
