@@ -16,16 +16,18 @@ function AskViewer ({ ask, onClickEdit, onClickDelete }) {
     <div className="view">
       <div className="category-label">{getCategoryName(ask.category)}</div>
       <div className="question-title">Q. {ask.title}</div>
+      <div className="author-info">
+        <div className="author-name">{ask.author}</div>
+        <div className="author-date">{ask.createdDate}</div>
+      </div>
+      {
+        localStorage.getItem("loginId") === ask.author ? 
         <div className="edit-delete-section">
           <span className="text-wrapper-2 edit-btn" onClick={onClickEdit}>수정</span>
             <span className="text-wrapper-2">|</span>
           <span className="text-wrapper-2 delete-btn" onClick={onClickDelete}>삭제</span>
-        </div>
-
-      <div className="author-info">
-        <div className="author-name">{ask.author}</div>
-        <div className="author-date">{ask.createdTime}</div>
-      </div>
+        </div> : ''
+      }
 
       <p className="question-contents">{ask.contents}</p>
     </div>

@@ -15,14 +15,15 @@ import {
 
 import QNA_CATEGORY from '../utils/QnaCategory';
 import '../assets/css/qna-detail.css';
-import { getQna } from '../service/qna-service';
+import { deleteQna, getQna } from '../service/qna-service';
+import { HttpStatusCode } from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
 const getQnaDetail = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/qna/${id}`);
-  if (!response.ok) throw new Error('질문을 불러오는데 실패했습니다.');
-  return response.json();
+  const response = await getQna(id);
+  if (response.status !== HttpStatusCode.Ok) throw new Error('질문을 불러오는데 실패했습니다.');
+  return response.data;
 };
 
 function QnaDetailPage() {
@@ -71,16 +72,9 @@ function QnaDetailPage() {
         setLoading(false);
       }
     };
-    
-    const fetchAskDetail = async () => {
-      const response = await getQna(id);
-      console.log(response);
-      setAsk(response);
-    };
 
     if (id) {
       loadData();
-      fetchAskDetail();
     }
   }, [id]);
 
@@ -243,8 +237,23 @@ function QnaDetailPage() {
   }
 
   const handleDelete = () => {
-    console.log("삭제");
-  }
+    if(localStorage.getItem('loginId') !== ask.author) {
+      console.log('삭제 권한이 없습니다.');
+      return;
+    }
+
+    const confirmDelete = window.confirm("정말 이 질문을 삭제하시겠습니까?");
+    if(!confirmDelete) return;
+
+    deleteQna(id).then((response) => {
+        console.log(response);
+        if(response.status === HttpStatusCode.Ok) {
+            navigate("/qnas");
+        } else {
+            alert("질문 삭제에 실패했습니다.");
+        }
+    });
+}
 
    const getCategory = (category) => {
     let result = QNA_CATEGORY[0];

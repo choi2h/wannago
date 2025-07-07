@@ -27,8 +27,12 @@ public class AskService {
     public Long createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
         Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContents());
-        Ask savedAsk = askRepository.save(ask);
-        return savedAsk.getId();
+        try {
+            ask = askRepository.save(ask);
+        } catch (Exception e) {
+            throw new CustomException(CustomErrorCode.FAIL_TO_WRITE_ASK);
+        }
+        return ask.getId();
     }
 
     // 질문 수정
@@ -46,8 +50,13 @@ public class AskService {
     }
 
     @Transactional
-    public void deleteAsk(Long id) {
+    public void deleteAsk(Long id, Member member) {
         Ask ask = findAskById(id);
+
+        if(!ask.getAuthor().equals(member.getLoginId())) {
+            throw new CustomException(CustomErrorCode.INVALID_AUTH_FOR_DELETE_ASK);
+        }
+
         askRepository.delete(ask);
     }
 

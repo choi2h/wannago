@@ -42,7 +42,7 @@ function QnaEditPage() {
     console.log(ask);
     await updateQna(ask.id, ask).then(() => {
       console.log("질문 수정 완료!");
-      navigate(`/qna/${ask.id}`)
+      navigate(`/qna/${ask.id}`, {replace: true})
     }
     ).catch(() => {
       alert('질문을 작성하지 못했습니다.');
