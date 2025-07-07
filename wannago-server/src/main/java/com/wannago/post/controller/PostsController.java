@@ -29,4 +29,13 @@ public class PostsController {
         PostsResponse response = postService.getPostsByAuthor(author, pageNo);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<PostsResponse> searchPosts(
+            @RequestParam String keyword,
+            @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
+
+        PostsResponse response = postService.searchPosts(keyword, pageNo);
+        return ResponseEntity.ok(response);
+    }
 }
