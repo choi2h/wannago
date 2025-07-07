@@ -15,6 +15,7 @@ public class AskResponse {
     private final String contents;
     @JsonFormat(pattern = "yyyy.MM.dd")
     private final LocalDateTime createdDate;
+    private final boolean isAccepted;
 
 
     public AskResponse(Ask ask) {
@@ -25,5 +26,6 @@ public class AskResponse {
         this.author = ask.getAuthor();
         this.contents = ask.getContents();
         this.createdDate = ask.getCreatedDate();
+        this.isAccepted = ask.isAccepted();
     }
 }
