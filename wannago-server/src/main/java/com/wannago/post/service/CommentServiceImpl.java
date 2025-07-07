@@ -103,7 +103,7 @@ public class CommentServiceImpl implements CommentService{
         // 로그인한 사용자가 해당 댓글의 작성자인지 검증
         validateAuthor(comment,member);
         // 댓글 수정
-        comment.updateContent(commentRequest.getContent());
+        comment.updateContent(commentRequest.getContents());
         // 수정된 댓글 저장
         commentRepository.save(comment);
         // 댓글 DTO 반환

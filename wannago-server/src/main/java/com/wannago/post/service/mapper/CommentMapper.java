@@ -20,7 +20,7 @@ public class CommentMapper {
                 .postId(postId)
                 .parentId(null) // 댓글은 parentId가 null
                 .author(member.getLoginId().toString())
-                .contents(req.getContent().trim())
+                .contents(req.getContents().trim())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .build();
@@ -33,7 +33,7 @@ public class CommentMapper {
                 .postId(postId)
                 .parentId(parentId) // 대댓글은 parentId가 설정됨
                 .author(member.getLoginId().toString())
-                .contents(req.getContent().trim())
+                .contents(req.getContents().trim())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .build();
