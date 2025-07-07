@@ -68,4 +68,8 @@ public class Ask {
         this.contents = contents;
         this.isAccepted = false;
     }
+
+    public void accept(){
+        this.isAccepted = true;
+    }
 }
