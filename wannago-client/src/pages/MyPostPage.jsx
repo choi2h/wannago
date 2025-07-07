@@ -136,7 +136,7 @@ function MyPostPage() {
                             {/* [수정] navigate 함수를 사용하여 페이지 새로고침 방지 */}
                             <a href="#" onClick={(e) => {
                                 e.preventDefault();
-                                navigate(`/my/${category.tab}?page=1`);
+                                navigate(`/mypage/${category.tab}?page=1`);
                             }}>{category.name}</a>
                         </div>
                     ))}

@@ -29,7 +29,7 @@ function App() {
         <Route path="/qna/write" element={<QnaWritePage/>}/>
         <Route path="/qna/edit/:id" element={<QnaEditPage/>}/>
         <Route path="/qna/:id" element={<QnaDetailPage/>}/>
-        <Route path="/my/:tab" element={<MyPostPage/>}/>
+        <Route path="/mypage/:tab" element={<MyPostPage/>}/>
         <Route path="/mypage" element={<MyPage/>}/>
         <Route path="/mypage/edit" element={<MyPageEdit/>}/>
         <Route path="/logout" element={<Logout />} />
