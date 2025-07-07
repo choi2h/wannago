@@ -141,4 +141,28 @@ public class PostMapper {
 
         return response;
     }
+
+    // 엔티티 리스트 → 응답 리스트 변환
+    public PostsResponse getPostsResponse(Page<PostWithLikeCount> posts, Map<Long, List<String>> tagsMap) {
+        PostsResponse response = new PostsResponse(posts.getTotalPages(), posts.getNumber());
+
+        for (PostWithLikeCount postWithLikeCount : posts) {
+            Post post = postWithLikeCount.getPost();
+            List<String> tags = tagsMap.get(post.getId());
+            PostSummaryInfo postInfo = PostSummaryInfo.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .author(post.getAuthor())
+                    .contents(post.getContents())
+                    .isPublic(post.isPublic())
+                    .createdAt(post.getCreatedDate())
+                    .likeCount((int) postWithLikeCount.getLikeCount())
+                    .tags(tags)
+                    .build();
+
+            response.addPost(postInfo);
+        }
+
+        return response;
+    }
 }

@@ -20,10 +20,19 @@ function PostListPage(){
     }
   }
 
+  const getCriteria = () => {
+    if(tab === 'recent') {
+        return "createdDate";
+    } else if (tab === 'rank') {
+        return 'likeCount';
+    }
+  }
+
   const getPosts = async(pageNo) => {
     console.log("move-page ====> " + pageNo);
       try {
-        const pagePost = await selectPosts(pageNo, "createdDate");
+        const criteria = getCriteria();
+        const pagePost = await selectPosts(pageNo, criteria);
         setPagePost(pagePost);
       } catch(error) {
         console.error("게시글 불러오기 실패:", error);
