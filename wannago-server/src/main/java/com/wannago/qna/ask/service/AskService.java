@@ -27,8 +27,12 @@ public class AskService {
     public Long createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
         Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContents());
-        Ask savedAsk = askRepository.save(ask);
-        return savedAsk.getId();
+        try {
+            ask = askRepository.save(ask);
+        } catch (Exception e) {
+            throw new CustomException(CustomErrorCode.FAIL_TO_WRITE_ASK);
+        }
+        return ask.getId();
     }
 
     // 질문 수정

@@ -10,13 +10,10 @@ const getQnaList = async (category) => {
 };
 
 const inputQna = async (qna) => {
-    api.post('/qna', {...qna, category: qna.category.api})
+    return api.post('/qna', {...qna, category: qna.category.api})
         .then((response) => {
-            if(response.status === HttpStatusCode.Ok) {
-                console.log('질문 작성을 완료했습니다!');
-            } else {
-                console.log('질문 작성을 실패했습니다.');
-            }
+            console.log(response);
+            return response;
         }).catch((error) => {
             console.log('질문 작성을 실패했습니다.' + error);
         });
@@ -26,12 +23,12 @@ const getQna = async (id) => {
     return api.get(`/qna/${id}`)
         .then((response) => {
             console.log(`Get qna ${id}`, response)
-            return response.data;
+            return response;
         });
 }
 
 const updateQna = async (id, qna) => {
-     api.put(`/qna/${id}`, {...qna, category: qna.category.api})
+     return api.put(`/qna/${id}`, {...qna, category: qna.category.api})
         .then((response) => {
             return response;
         });

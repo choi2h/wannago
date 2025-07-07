@@ -5,6 +5,7 @@ import DefaultLayout from '../layouts/DefatulLayout';
 import '../assets/css/post-write.css';
 import { inputQna } from '../service/qna-service';
 import { useState } from 'react';
+import { HttpStatusCode } from 'axios';
 
 function QnaWritePage() {
   const navigate = useNavigate();
@@ -37,7 +38,17 @@ function QnaWritePage() {
       return;
     }
 
-    inputQna(qnaData);
+    await inputQna(qnaData).then((result) => {
+      console.log('작성 완료했다고!!!!');
+      console.log(result.data);
+      if(result.status === HttpStatusCode.Ok) {
+        alert('질문 작성을 완료했습니다.');
+        const id = result.data;
+        navigate(`/qna/${id}`);
+      } else {
+        alert('질문 작성을 할 수 없습니다.');
+      }
+    });
   };
 
   return (
