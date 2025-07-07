@@ -31,5 +31,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "GROUP BY p.id ORDER BY COUNT(pl) DESC")
     Page<PostWithLikeCount> findAllByLikeCount(Pageable pageable);
 
+
+    Page<Post> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+
+
     List<Post> findByAuthorOrderByCreatedDateDesc(String author);
+
 }

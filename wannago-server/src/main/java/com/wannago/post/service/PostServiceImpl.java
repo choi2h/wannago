@@ -167,6 +167,22 @@ public class PostServiceImpl implements PostService {
 
         return postMapper.getPostsResponse(postPage, tagsMap, likeMap);
     }
+
+
+    public PostsResponse searchPosts(String keyword, int pageNo) {
+        // 키워드 유효성 검증
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new CustomException(CustomErrorCode.INVALID_SEARCH_KEYWORD);
+        }
+
+        String trimmedKeyword = keyword.trim();
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, DEFAULT_POST_SORT_CRITERIA));
+
+        // 제목으로만 검색
+        Page<Post> postPage = postRepository.findByTitleContainingIgnoreCase(trimmedKeyword, pageable);
+
+        return getPostsResponseWithPostStatus(postPage);
+    }
 }
 
 

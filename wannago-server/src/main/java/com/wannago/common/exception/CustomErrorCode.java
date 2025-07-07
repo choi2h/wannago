@@ -16,6 +16,19 @@ public enum CustomErrorCode {
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "M005", "사용할 수 없는 이메일입니다."),
     DUPLICATE_LOGINID(HttpStatus.BAD_REQUEST, "M006", "사용할 수 없는 로그인아이디입니다."),
     PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "M007", "입력된 비밀번호가 일치하지 않습니다."),
+
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M010", "인증이 필요합니다."),
+   INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M011", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
+   INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M012", "잘못된 입력값입니다."),
+    
+    // 게시글 P
+    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
+    POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
+    NOT_POST_AUTHOR(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
+    INVALID_SEARCH_KEYWORD(HttpStatus.BAD_REQUEST, "P004", "검색어를 입력해주세요."),
+
     EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M008", "잘못된 이메일입니다."),
     MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M009", "회원을 찾을 수 없습니다."),
 
@@ -29,6 +42,7 @@ public enum CustomErrorCode {
     POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
     NOT_POST_AUTHOR_FOR_DELETE(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
     NOT_POST_AUTHOR_FOR_UPDATE(HttpStatus.UNAUTHORIZED, "P004", "게시글 수정 권한이 없습니다."),
+
 
     //북마크 B
     ALREADY_BOOKMARKED(HttpStatus.CONFLICT, "B001", "이미 북마크된 게시글입니다."),

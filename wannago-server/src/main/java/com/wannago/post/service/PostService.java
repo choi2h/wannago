@@ -20,4 +20,6 @@ public interface PostService {
     void deletePost(Long postId, String loginId);
 
     PostsResponse getPostsByAuthor(String author, int pageNo);
+
+    PostsResponse searchPosts(String keyword, int pageNo);
 }
