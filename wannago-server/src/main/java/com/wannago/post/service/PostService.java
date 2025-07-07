@@ -7,11 +7,11 @@ import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostsResponse;
 
 public interface PostService {
-    void insertPost(PostRequest postRequest);
+    void insertPost(PostRequest postRequest, Member member);
 
     PostsResponse getPosts(Integer pageNo, String criteria);
 
-    PostResponse getPostById(Long postId, Long memberId);
+    PostResponse getPostById(Long postId, Member member);
 
     PostResponse updatePost(Long postId, PostRequest postRequest, Long memberId);
 

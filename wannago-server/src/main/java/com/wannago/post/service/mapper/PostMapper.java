@@ -1,5 +1,6 @@
 package com.wannago.post.service.mapper;
 
+import com.wannago.member.entity.Member;
 import com.wannago.post.dto.*;
 import com.wannago.post.entity.DailySchedule;
 import com.wannago.post.entity.Post;
@@ -19,10 +20,10 @@ public class PostMapper {
     private static final String TIME_FORMAT = "HH:mm";
 
     // 요청 → 엔티티 변환
-    public Post getPost(PostRequest postRequest, boolean isPublic) {
+    public Post getPost(PostRequest postRequest, Member member, boolean isPublic) {
         Post post =  Post.builder()
                 .title(postRequest.getTitle())
-                .author(postRequest.getAuthor())
+                .author(member.getLoginId())
                 .contents(postRequest.getContents())
                 .isPublic(isPublic)
                 .build();
