@@ -4,10 +4,7 @@ import com.wannago.common.exception.CustomErrorCode;
 import com.wannago.common.exception.CustomException;
 
 import com.wannago.member.entity.Member;
-import com.wannago.post.dto.PostRequest;
-import com.wannago.post.dto.PostResponse;
-import com.wannago.post.dto.PostStatusInfo;
-import com.wannago.post.dto.PostsResponse;
+import com.wannago.post.dto.*;
 
 import com.wannago.post.entity.Post;
 import com.wannago.post.entity.Tag;
