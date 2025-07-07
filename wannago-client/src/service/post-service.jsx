@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from '../utils/axios';
 
 const POST_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/post`;
 const POSTS_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/posts`;
@@ -7,7 +8,7 @@ const inputNewPost = (newPost) => {
     console.log('Add post!!!');
     console.log(JSON.stringify(newPost));
 
-    axios.post(POST_API, {...newPost, author: 'me'})
+    api.post('/post', {...newPost, author: 'me'})
     .then((response) => {
         console.log("Success to add new post!!");
         console.log(response.status);
@@ -37,7 +38,7 @@ const selectPosts = async (pageNo, orderCriteria) => {
 }
 
 const modifyPost = async (post) => {
-    return await axios.put(`${POST_API}/${post.id}`, {...post, author: 'me'})
+    return await api.put(`${POST_API}/${post.id}`, {...post, author: 'me'})
     .then((response) => {
         console.log("Success to add new post!!");
         console.log(response.status);
