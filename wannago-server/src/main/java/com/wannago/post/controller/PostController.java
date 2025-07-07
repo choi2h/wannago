@@ -18,8 +18,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public void addPost(@Valid @RequestBody PostRequest postRequest, @AuthenticationPrincipal Member member) {
-        postService.insertPost(postRequest, member);
+    public ResponseEntity<Long> addPost(@Valid @RequestBody PostRequest postRequest, @AuthenticationPrincipal Member member) {
+        Long id = postService.insertPost(postRequest, member);
+        return ResponseEntity.ok(id);
     }
 
     @GetMapping("/{id}")

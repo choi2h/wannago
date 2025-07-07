@@ -10,10 +10,11 @@ public class AskResponse {
     private final Long id;
     private String loginId;
     private final String category;
+    private final String author;
     private final String title;
     private final String contents;
     @JsonFormat(pattern = "yyyy.MM.dd")
-    private final LocalDateTime createdAt;
+    private final LocalDateTime createdDate;
 
 
     public AskResponse(Ask ask) {
@@ -21,7 +22,8 @@ public class AskResponse {
         this.loginId = ask.getMember().getLoginId();
         this.category = ask.getCategory().name();
         this.title = ask.getTitle();
+        this.author = ask.getAuthor();
         this.contents = ask.getContents();
-        this.createdAt = ask.getCreatedDate();
+        this.createdDate = ask.getCreatedDate();
     }
 }

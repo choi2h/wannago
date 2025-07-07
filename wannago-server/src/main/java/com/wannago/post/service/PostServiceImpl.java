@@ -15,6 +15,7 @@ import com.wannago.post.repository.TagRepository;
 import com.wannago.post.service.mapper.PostMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service @Transactional
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
@@ -42,13 +44,20 @@ public class PostServiceImpl implements PostService {
 
     // 게시글 등록
     @Override
-    public void insertPost(PostRequest postRequest, Member member) {
+    public Long insertPost(PostRequest postRequest, Member member) {
         Post post = postMapper.getPost(postRequest, member, true);
         if(postRequest.getTags() != null && !postRequest.getTags().isEmpty()) {
             setTags(post, postRequest.getTags());
         }
 
-        postRepository.save(post);
+        try {
+            post = postRepository.save(post);
+        } catch(Exception e) {
+            log.error("Fail to write post", e.getMessage());
+            throw new CustomException(CustomErrorCode.FAIL_TO_WRITE_POST);
+        }
+
+        return post.getId();
     }
 
     @Override

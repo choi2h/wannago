@@ -35,8 +35,8 @@ public class AskController {
 
     //질문 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAsk(@PathVariable Long id) {
-        askService.deleteAsk(id);
+    public ResponseEntity<String> deleteAsk(@PathVariable Long id, @AuthenticationPrincipal Member member) {
+        askService.deleteAsk(id, member);
         return ResponseEntity.ok("질문이 삭제되었습니다.");
     }
 

@@ -16,11 +16,14 @@ import {
     addReply,
     getAllCommentsWithReplies,
     updateComment,
-    deleteComment
+    deleteComment,
+    deletePost
 } from '../service/post-service';
 import { useParams, useNavigate } from "react-router";
+import { HttpStatusCode } from "axios";
 
 function PostDetailPage() {
+   const loginId = localStorage.getItem('loginId'); 
     const navigate = useNavigate();
     const { id } = useParams();
     const [post, setPost] = useState(null);
@@ -31,6 +34,7 @@ function PostDetailPage() {
     const [liked, setLiked] = useState(false);
     // 댓글
     const [comments, setComments] = useState([]);
+    const loginId = localStorage.getItem("loginId");
 
     // 댓글 입력 필드의 상태 (InputComment로 전달)
     const [newCommentContent, setNewCommentContent] = useState('');
@@ -250,12 +254,32 @@ function PostDetailPage() {
     };
 
     const handleEdit = () => {
+        if(loginId !== post.author) {
+            alert('수정 권한이 없습니다.');
+            return;
+        }
+
         navigate(`/post/edit/${id}`, { state: { post } });
     }
 
     const handleDelete = () => {
-        console.log("삭제");
+        if(loginId !== post.author) {
+            alert('삭제 권한이 없습니다.');
+            return;
+        }
+
+        const confirmDelete = window.confirm("정말 이 게시글을 삭제하시겠습니까?");
+        if(!confirmDelete) return;
+
         // 여기에 게시글 삭제 로직 추가 (예: confirm 후 deletePost API 호출)
+        deletePost(id).then((response) => {
+            console.log(response);
+            if(response.status === HttpStatusCode.Ok) {
+                navigate("/");
+            } else {
+                alert("게시글 삭제에 실패했습니다.");
+            }
+        });
     }
 
     if (!post) {
@@ -303,11 +327,15 @@ function PostDetailPage() {
                     </div>
                 </div>
 
-                <div className="edit-delete-section">
-                    <span className="text-wrapper-2 edit-btn" onClick={handleEdit}>수정</span>
-                    <span className="text-wrapper-2">|</span>
-                    <span className="text-wrapper-2 delete-btn" onClick={handleDelete}>삭제</span>
-                </div>
+                {
+                    loginId === post.author ?
+                          <div className="edit-delete-section">
+                            <span className="text-wrapper-2 edit-btn" onClick={handleEdit}>수정</span>
+                            <span className="text-wrapper-2">|</span>
+                            <span className="text-wrapper-2 delete-btn" onClick={handleDelete}>삭제</span>
+                        </div> : ''
+                }
+              
 
                 <Map />
 
@@ -340,6 +368,7 @@ function PostDetailPage() {
                             onAddReply={handleAddReply}
                             onUpdateComment={handleUpdateComment}
                             onDeleteComment={handleDeleteComment}
+                            loginId={loginId} // 추가
                         />
                     ))
                 }

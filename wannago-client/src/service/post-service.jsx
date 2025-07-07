@@ -1,3 +1,4 @@
+import { HttpStatusCode } from "axios";
 import api from "../utils/axios";
 
 const POST_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/post`;
@@ -8,22 +9,36 @@ const inputNewPost = (newPost) => {
     console.log('Add post!!!');
     console.log(JSON.stringify(newPost));
 
-    api.post(POST_API, {...newPost, author: 'me'})
+    return api.post('/post', {...newPost, author: 'me'})
     .then((response) => {
-        console.log("Success to add new post!!");
         console.log(response.status);
+        return response;
     })
     .catch((err)=> console.log(err));
 }
 
 const selectPostById = async (id) => {
-    return await api.get(`${POST_API}/${id}`)
+    return await api.get(`/post/${id}`)
     .then((response) => {
         console.log(response.status);
         console.log(response.data);
 
         return response.data;
     });
+}
+
+const deletePost = async (id) => {
+    return await api.delete(`/post/${id}`)
+    .then((response) => {
+        console.log(response);
+        if(response.status === HttpStatusCode.Ok) {
+            console.log("게시글 삭제 완료");
+        }
+
+        return response;
+    }).catch((error) => {
+        console.log("게시글 삭제 실패", error);
+    })
 }
 
 const selectPosts = async (pageNo, orderCriteria) => {
@@ -165,6 +180,7 @@ export {
     selectPostById, 
     selectPosts, 
     modifyPost, 
+    deletePost,
     togglePostLike,
     addPostBookmark,
     removePostBookmark,

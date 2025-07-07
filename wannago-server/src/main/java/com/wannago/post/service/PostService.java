@@ -7,7 +7,7 @@ import com.wannago.post.dto.PostResponse;
 import com.wannago.post.dto.PostsResponse;
 
 public interface PostService {
-    void insertPost(PostRequest postRequest, Member member);
+    Long insertPost(PostRequest postRequest, Member member);
 
     PostsResponse getPosts(int pageNo, String criteria);
 
