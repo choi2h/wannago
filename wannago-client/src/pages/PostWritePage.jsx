@@ -21,7 +21,7 @@ function PostWritePage () {
             timeSchedules : [
                 {
                   title : '',
-                  time : '',
+                  time : '12:00',
                   contents : '',
                   locationName: '',
                   lat: 0,
