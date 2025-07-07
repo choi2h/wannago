@@ -32,6 +32,7 @@ public enum CustomErrorCode {
     INVALID_SEARCH_KEYWORD(HttpStatus.BAD_REQUEST, "P004", "검색어를 입력해주세요."),
     NOT_POST_AUTHOR_FOR_DELETE(HttpStatus.UNAUTHORIZED, "P005", "게시글 삭제 권한이 없습니다."),
     NOT_POST_AUTHOR_FOR_UPDATE(HttpStatus.UNAUTHORIZED, "P006", "게시글 수정 권한이 없습니다."),
+    FAIL_TO_WRITE_POST(HttpStatus.SERVICE_UNAVAILABLE, "P007", "게시글을 작성할 수 없습니다."),
 
 
     //북마크 B
