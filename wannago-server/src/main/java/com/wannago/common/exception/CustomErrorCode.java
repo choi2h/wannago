@@ -22,7 +22,7 @@ public enum CustomErrorCode {
     INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M011", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M012", "잘못된 입력값입니다."),
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "M013", "사용할 수 없는 이메일입니다."),
-    DUPLICATE_LOGINID(HttpStatus.BAD_REQUEST, "M014", "사용할 수 없는 이메일입니다."),
+    DUPLICATE_LOGINID(HttpStatus.BAD_REQUEST, "M014", "사용할 수 없는 로그인아이디입니다."),
     
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
