@@ -9,7 +9,7 @@ const inputNewPost = (newPost) => {
     console.log('Add post!!!');
     console.log(JSON.stringify(newPost));
 
-    api.post('/post', {...newPost, author: 'me'})
+    return api.post('/post', {...newPost, author: 'me'})
     .then((response) => {
         console.log(response.status);
         return response;

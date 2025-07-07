@@ -6,6 +6,7 @@ import '../assets/css/post-write.css';
 import { useState } from 'react';
 import { inputNewPost } from '../service/post-service';
 import { Navigate, useNavigate } from 'react-router';
+import { HttpStatusCode } from 'axios';
 
 function PostWritePage () {
   const navigate = useNavigate();
@@ -35,7 +36,18 @@ function PostWritePage () {
   const completeWirtePost = () => {
     console.log("작성 완료했대!!");
     const schedules = newPost.schedules.map((schedule, idx) => {return {...schedule, day: `${idx+1}일차`}});
-    inputNewPost({...newPost, schedules});
+    inputNewPost({...newPost, schedules}).then((result) => {
+      if(result.status === HttpStatusCode.Ok) {
+        console.log('게시글 작성이 완료되었습니다.');
+        const id = result.data;
+        navigate(`/post/${id}`);
+      } else {
+        console.log('게시글 작성에 실패했습니다.');
+      }
+    }).catch((err) => {
+      console.log('게시글 작성에 실패했습니다.');
+      console.log(err);
+    });;
   }
 
   const updateSchedule = (preIdx, newSchedule) => {
