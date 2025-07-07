@@ -25,6 +25,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     Page<Post> findAllByAuthor(String loginId, Pageable pageable);
-    List<Post> findByAuthorOrderByCreatedDateDesc(String loginId);
+    List<Post> findByAuthorOrderByCreatedDateDesc(String author);
 
 }
