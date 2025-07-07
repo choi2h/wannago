@@ -24,8 +24,9 @@ import com.wannago.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-@Configuration
-@EnableWebSecurity
+
+@Configuration // 이 클래스가 스프링 설정 클래스임을 의미
+@EnableWebSecurity // Spring Security 활성화
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -34,47 +35,38 @@ public class SecurityConfig {
     private final JwtTokenResolver jwtTokenResolver;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    // 비밀번호 암호화 하기 위한 BCrypt 빈 등록
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // 보안 필터 체인
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-            // [개선] Authorization 헤더를 명시적으로 허용하는 것이 더 안전합니다.
-            configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-            configuration.setAllowCredentials(true);
+            configuration.setAllowedOrigins(List.of("http://localhost:5173")); // 프론트 도메인
+            configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE")); // 허용 HTTP 메서드
+            configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 허용
+            configuration.setAllowCredentials(true); // 인증정보 포함 허용
             return configuration;
         }));
-        
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.formLogin(AbstractHttpConfigurer::disable);
-        http.httpBasic(AbstractHttpConfigurer::disable);
-        
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/join", "/login", "/reissue", "/check-email").permitAll()
-                .requestMatchers(HttpMethod.GET, "/posts", "/post", "/posts/*", "/post/*", "/post/**", "/posts/**", "/qna/**", "/qnas", "/qnas/*").permitAll()
+        http.csrf(AbstractHttpConfigurer::disable); // CSRF 공격 방지 기능 비활성화
+        http.formLogin(AbstractHttpConfigurer::disable); // 기본 로그인 폼 비활성화
+        http.httpBasic(AbstractHttpConfigurer::disable); // HTTP Basic 인증 비활성화
+        http.authorizeHttpRequests(auth -> auth // 경로별 접근 권한 설정
+                .requestMatchers(HttpMethod.POST, "/join","/login","/reissue","/check-email").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/posts",  "/post","/posts/*", "/post/*", "/post/**","/posts/**","/qna/**","/qnas","/qnas/*").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                
-                // [추가된 핵심 코드]
-                // /mypage/로 시작하는 모든 경로는 반드시 인증이 필요하다고 명시합니다.
-                .requestMatchers("/mypage/**").authenticated()
-                
-                // 기존 규칙은 그대로 유지하여, 다른 인증이 필요한 경로들도 문제없이 동작하게 합니다.
-                .anyRequest().authenticated()
-        );
-        
+                .anyRequest().authenticated());
         http.sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-                
-        http.addFilterBefore(new JwtAuthenticationFilter(tokenProvider, memberRepository, jwtTokenResolver), UsernamePasswordAuthenticationFilter.class);
-        
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 사용하지 않겠다
+        http.addFilterBefore(new JwtAuthenticationFilter(tokenProvider, memberRepository, jwtTokenResolver), UsernamePasswordAuthenticationFilter.class); // Filter 적용
         http.exceptionHandling(ex -> ex
+                // 인증실패
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
+                // 권한 없음
                 .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN)));
 
         return http.build();
