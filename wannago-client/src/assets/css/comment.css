@@ -26,9 +26,16 @@
 
 .comment-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
   font-size: 14px;
+  position: relative;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 6px;
 }
 
 .comment-author {
