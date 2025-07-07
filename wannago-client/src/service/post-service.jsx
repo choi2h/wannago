@@ -36,6 +36,15 @@ const selectPosts = async (pageNo, orderCriteria) => {
     .catch((err) => console.log(err));
 }
 
+const modifyPost = async (post) => {
+    return await axios.put(`${POST_API}/${post.id}`, {...post, author: 'me'})
+    .then((response) => {
+        console.log("Success to add new post!!");
+        console.log(response.status);
+    })
+    .catch((err)=> console.log(err));
+}
 
 
-export {inputNewPost, selectPostById, selectPosts};
+
+export {inputNewPost, selectPostById, selectPosts, modifyPost};

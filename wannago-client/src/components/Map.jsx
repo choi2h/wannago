@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import '../assets/css/post-detail.css';
 
 function Map () {
     useEffect(() => {
@@ -34,7 +35,7 @@ function Map () {
      }, []);
 
   return (
-    <div id="map-wrapper" style={{ width: '100%', height: '400px' }}>
+    <div id="map-wrapper" style={{ width: '100%', height: '400px', margin: '10px 0'}}>
     </div>
   );
 }

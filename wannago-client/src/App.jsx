@@ -3,6 +3,7 @@ import PostListPage from './pages/PostListPage';
 import LoginPage from './pages/LoginPage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostWritePage from './pages/PostWritePage';
+import PostEditPage from './pages/PostEditPage';
 import QnaListPage from './pages/QnaListPage';
 import QnaWritePage from './pages/QnaWritePage';
 import QnaDetailPage from './pages/QnaDetailPage';
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signup" element={<SignupPage/>}/>
         <Route path="/posts/:tab" element={<PostListPage/>}/>
         <Route path="/post/:id" element={<PostDetailPage/>}/>
+        <Route path="/post/edit/:id" element={<PostEditPage/>}/>
         <Route path="/post/write" element={<PostWritePage/>}/>
         <Route path="/qnas" element={<QnaListPage/>}/>
         <Route path="/qna/write" element={<QnaWritePage/>}/>
