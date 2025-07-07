@@ -10,4 +10,5 @@ public interface BookmarkService {
     boolean hasBookmarked(Long postId, Member member);
     void addBookmark(Long postId, Member member);
     Map<Long, Boolean> getBookmarkedMap(List<Long> postIds, Member member);
+    void removeBookmark(Long postId, Member member);
 }
