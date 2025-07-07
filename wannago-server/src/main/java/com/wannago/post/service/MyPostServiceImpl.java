@@ -31,7 +31,7 @@ public class MyPostServiceImpl implements MyPostService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         // 사용자가 작성한 게시글 목록 조회 (최신순 정렬)
-        List<Post> posts = postRepository.findByAuthorOrderByCreatedDateDesc(member.getLoginId());
+        List<Post> posts = postRepository.findByAuthorOrderByCreatedDateDesc(loginId);
 
 
         // 게시글 ID만 추출
