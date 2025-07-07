@@ -1,79 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../assets/css/qna-list.css';
 import DefaultLayout from '../layouts/DefatulLayout';
 import QnaItem from '../components/QnaItem';
 
-const Qnas = [
-  {
-    title : "여행 계획 세우기 좋은 앱 추천해주세요!",
-    createdDate : "2025.06.26",
-    author : "김여행",
-    isAccepted : false,
-    contents : "안녕하세요! 이번 여름휴가 때 제주도로 여행을 가려고 하는데, 여행 계획 세우기 좋은 앱이나 웹사이트가 있을까요? 숙소 예약부터 맛집, 관광지 정보까지 한 번에 볼 수 있으면 좋겠어요. 추천 부탁드립니다!"
-  },
-  {
-    title : "제주도 동쪽 맛집 추천 부탁드려요!",
-    createdDate : "2025.06.26",
-    author : "박미식",
-    isAccepted : false,
-    contents : "제주도 동쪽으로 여행 가는데, 현지인 추천 맛집이 궁금해요! 특히 해산물이나 흑돼지 맛집 위주로 알려주시면 감사하겠습니다. 웨이팅이 길어도 맛있으면 괜찮아요!"
-  },
-  {
-    title : "제주도에서 스쿠버 다이빙 체험할 수 있는 곳 추천!",
-    createdDate : "2025.06.26",
-    author : "최액티",
-    isAccepted : true,
-    contents : "스쿠버 다이빙을 한 번도 해본 적 없는데, 제주도에서 초보자도 쉽게 체험할 수 있는 곳이 있을까요? 장비 대여나 강습 포함된 패키지로 추천해주시면 좋겠어요. 바다 풍경이 예쁜 곳이면 더 좋고요!"
-  },
-  {
-    title : "제주도 서쪽 가볼 만한 숨은 명소 알려주세요!",
-    createdDate : "2025.06.26",
-    author : "이지도",
-    isAccepted : true,
-    contents : "제주도 서쪽으로 여행 가는데, 너무 유명한 곳 말고 현지인만 아는 숨은 명소나 예쁜 카페, 조용한 해변 같은 곳이 있을까요? 사진 찍기 좋은 곳이면 더 환영입니다!"
-  }
-];
-
-function QnaListPage(){
-  // 실제 앱에서는 카테고리 선택 상태를 관리하는 state가 필요합니다.
-  const categories = ["맛집", "액티비티", "기타", "명소"];
+function QnaListPage() {
+  const [qnaList, setQnaList] = useState([]); // API로 받은 전체 질문 목록
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const categories = ["전체", "맛집", "액티비티", "기타", "명소"]; // "전체" 카테고리 추가
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+
+  // API 호출
+  useEffect(() => {
+    const fetchQnaList = async () => {
+      setIsLoading(true); // 데이터 불러오기 시작
+      try {
+        // 백엔드의 GET /qna 엔드포인트 호출
+        const response = await fetch('http://localhost:8080/qna'); 
+        if (!response.ok) {
+          throw new Error('네트워크 응답이 올바르지 않습니다.');
+        }
+        const data = await response.json();
+        setQnaList(data); // 상태에 데이터 저장
+      } catch (error) {
+        console.error("질문 목록을 가져오는 중 오류가 발생했습니다:", error);
+      } finally {
+        setIsLoading(false); // 데이터 불러오기 완료
+      }
+    };
+
+    fetchQnaList();
+  }, []); // 컴포넌트가 처음 렌더링될 때 한 번만 실행
 
   const updateSelectedCategory = (category) => {
     setSelectedCategory(category);
-  }
+  };
+
+  // 선택된 카테고리에 따라 qnaList를 필터링
+  const filteredList = selectedCategory === "전체"
+    ? qnaList
+    : qnaList.filter(qna => qna.category === selectedCategory);
 
   return (
     <DefaultLayout>
       <div className="qna-page-container">
-        <h1 className="page-main-title">Q&amp;A</h1>
+        <h1 className="page-main-title">Q&A</h1>
         
         <nav className="category-menu-bar">
           {categories.map((category) => (
             <div 
-              name={category}
               key={category} 
               className={`menu-item ${selectedCategory === category ? "selected" : ""}`}
               onClick={() => updateSelectedCategory(category)}
             >
-              <a href="#">{category}</a> {/* 실제 앱에서는 라우팅 링크가 될 수 있습니다. */}
+              {/* a 태그 대신 div나 button으로 의미를 명확히 할 수 있습니다. */}
+              <span>{category}</span>
             </div>
           ))}
         </nav>
 
         <section className="qna-list-section">
-          { Qnas.map((qna, idx) => <QnaItem key={idx} qna={qna}/>)}
+          {isLoading ? (
+            <p>로딩 중...</p>
+          ) : filteredList.length > 0 ? (
+            // ❗ 주석 처리된 Qnas 대신, API로 받아와 필터링된 filteredList를 사용합니다.
+            // ❗ key는 고유한 값인 qna.id를 사용해야 합니다.
+            filteredList.map((qna) => <QnaItem key={qna.id} qna={qna} />)
+          ) : (
+            <p>등록된 질문이 없습니다.</p> // 빈 목록일 때 표시할 메시지
+          )}
         </section>
         
+        {/* 페이지네이션은 백엔드 API에 페이지 기능이 추가된 후 구현해야 합니다. */}
         <nav className="pagination"> 
-          <ul className="pagination-list">
-            <li className="pagination-page selected"><a href="#">1</a></li>
-            <li className="pagination-page"><a href="#">2</a></li>
-            <li className="pagination-page"><a href="#">3</a></li>
-            <li className="pagination-gap"><span>...</span></li>
-            <li className="pagination-page"><a href="#">67</a></li>
-            <li className="pagination-page"><a href="#">68</a></li>
-          </ul>
+          {/* ... 페이지네이션 UI ... */}
         </nav>
       </div>
     </DefaultLayout>
