@@ -71,6 +71,7 @@
 
 /* SubComments Container */
 .subcomments-container {
+  margin-left: 30px; /* 대댓글 들여쓰기 */
   background: #fafafa;
   /* border-top: 1px solid #f0f0f0; */
 }
@@ -131,6 +132,40 @@
 
 .subcomment-menu:hover {
   background-color: #f0f0f0;
+}
+
+.reply-input-container {
+    margin-top: 10px;
+    margin-left: 0px; /* 부모 댓글과 같은 레벨 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.reply-textarea {
+    width: 100%;
+    margin-bottom: 8px;
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
+.reply-submit-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.reply-submit-button:hover {
+    background-color: #218838;
+}
+
+/* Comment menu icon (three dots) is replaced by action buttons */
+.comment-menu, .subcomment-menu {
+    display: none; /* Hide menu icon as we now have explicit buttons */
 }
 
 /* Responsive Design */

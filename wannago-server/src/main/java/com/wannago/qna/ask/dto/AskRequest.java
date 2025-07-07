@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class AskRequest {
     private String category;
     private String title;
-    private String content;
+    private String contents;
 }

@@ -1,10 +1,10 @@
-// QnaDetailPage.js
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AskViewer from '../components/AskViewer';
-import Input from '../components/Input';
 import AnswerItem from '../components/AnswerItem';
+import Input from '../components/Input';
 import DefaultLayout from '../layouts/DefatulLayout';
+
 import {
   inputNewAnswer,
   selectAnswersByQnaId,
@@ -12,7 +12,10 @@ import {
   deleteAnswer,
   acceptAnswer
 } from '../service/answer-service';
+
+import QNA_CATEGORY from '../utils/QnaCategory';
 import '../assets/css/qna-detail.css';
+import { getQna } from '../service/qna-service';
 
 const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
@@ -23,9 +26,10 @@ const getQnaDetail = async (qnaId) => {
 };
 
 function QnaDetailPage() {
-  const { qnaId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  const [ask, setAsk] = useState();
   const [answers, setAnswers] = useState([]);
   const [ask, setAsk] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +42,7 @@ function QnaDetailPage() {
     const token = localStorage.getItem('accessToken');
     const loginId = localStorage.getItem('loginId');
 
+    fetchAskDetail();
     if (token && loginId) {
       setCurrentUser({
         name: loginId,
@@ -68,11 +73,18 @@ function QnaDetailPage() {
         setLoading(false);
       }
     };
+    
+    const fetchAskDetail = async () => {
+      const response = await getQna(id);
+      console.log(response);
+      setAsk(response);
+    };
 
-    if (qnaId) {
+    if (id) {
       loadData();
+      fetchAskDetail();
     }
-  }, [qnaId]);
+  }, [id]);
 
   // 답변 정렬 (채택된 답변이 먼저 오도록)
   const sortAnswers = (answers) => {
@@ -226,12 +238,38 @@ function QnaDetailPage() {
         </div>
       </DefaultLayout>
     );
+
+  const handleEdit = () => {
+    navigate(`/qna/edit/${id}`, {state: {ask : {...ask, category: getCategory(ask.category)}}});
+  }
+
+  const handleDelete = () => {
+    console.log("삭제");
+  }
+
+   const getCategory = (category) => {
+    let result = QNA_CATEGORY[0];
+    QNA_CATEGORY.forEach((qnaCategory) => {
+      console.log(qnaCategory.api.toUpperCase() + " " + category.toUpperCase(), "=>",  qnaCategory.api.toUpperCase() === category.toUpperCase());
+      if(qnaCategory.api.toUpperCase() === category.toUpperCase()) result = qnaCategory;
+    })
+
+    return result;
+  }
+
+  if(!ask) {
+    return (
+      <DefaultLayout>
+        <span>게시글을 불러오는 중입니다..</span>
+      </DefaultLayout>
+    )
   }
 
   return (
     <DefaultLayout>
       <div className="qna-detail">
-        <AskViewer ask={ask} />
+    
+        <AskViewer ask={ask} onClickEdit={handleEdit} onClickDelete={handleDelete}/>
 
         <div className="answers-section">
           <div className="answers-count">

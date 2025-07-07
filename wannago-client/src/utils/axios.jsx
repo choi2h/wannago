@@ -49,7 +49,6 @@ api.interceptors.response.use(
     // AccessToken이 만료되었을 경우
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      
       const refreshToken = localStorage.getItem('refreshToken');
       const accessToken = localStorage.getItem('accessToken');
       // 새로운 AccessToken을 발급받습니다.

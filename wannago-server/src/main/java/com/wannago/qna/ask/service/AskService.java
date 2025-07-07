@@ -1,8 +1,12 @@
 package com.wannago.qna.ask.service;
 
 
+import com.wannago.common.exception.CustomErrorCode;
+import com.wannago.common.exception.CustomException;
+import com.wannago.member.entity.Member;
 import com.wannago.qna.ask.dto.AskRequest;
 import com.wannago.qna.ask.dto.AskResponse;
+import com.wannago.qna.ask.dto.AsksResponse;
 import com.wannago.qna.entity.Ask;
 import com.wannago.qna.entity.Category;
 import com.wannago.qna.ask.repository.AskRepository;
@@ -11,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,20 +24,24 @@ public class AskService {
 
     // 질문 등록
     @Transactional
-    public AskResponse createAsk(AskRequest requestDto) {
+    public Long createAsk(AskRequest requestDto, Member member) {
         Category category = Category.getCategory(requestDto.getCategory());
-        Ask ask = new Ask(category, requestDto.getTitle(), requestDto.getContent());
+        Ask ask = new Ask(category, requestDto.getTitle(), member.getLoginId(), requestDto.getContents());
         Ask savedAsk = askRepository.save(ask);
-        return new AskResponse(savedAsk);
+        return savedAsk.getId();
     }
 
     // 질문 수정
     @Transactional
-    public AskResponse updateAsk(Long id, AskRequest requestDto) {
+    public AskResponse updateAsk(Long id, AskRequest requestDto, Member member) {
         Ask ask = findAskById(id);
 
+        if(!ask.getAuthor().equals(member.getLoginId())) {
+            throw new CustomException(CustomErrorCode.INVALID_AUTH_FOR_UPDATE_ASK);
+        }
+
         Category category = Category.getCategory(requestDto.getCategory());
-        ask.update(category, requestDto.getTitle(), requestDto.getContent());
+        ask.update(category, requestDto.getTitle(), requestDto.getContents());
         return new AskResponse(ask);
     }
 
@@ -45,11 +52,22 @@ public class AskService {
     }
 
     @Transactional(readOnly = true) // 읽기 전용
-    public List<AskResponse> getAsks() {
+    public AsksResponse getAsks(String category) {
+        Category categoryEntity = Category.getCategory(category);
+        if(categoryEntity == null) {
+            throw new CustomException(CustomErrorCode.INVALID_CATEGORY);
+        }
 
-        return askRepository.findAll().stream()
-                .map(AskResponse::new)
-                .collect(Collectors.toList());
+        List<Ask> asks;
+        if(categoryEntity.equals(Category.ALL)) asks = askRepository.findAll();
+        else asks = askRepository.findAllByCategory(categoryEntity);
+
+        AsksResponse response = new AsksResponse();
+        asks.forEach(ask -> {
+            response.addAskResponse(new AskResponse(ask));
+        });
+
+        return response;
     }
 
     @Transactional(readOnly = true)

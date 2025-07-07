@@ -88,7 +88,11 @@ function SignupPage() {
       alert('회원가입이 완료되었습니다!');
       window.location.href = '/login';
     } catch (error) {
-      console.error('회원가입 실패:', error);
+       // 서버가 응답했지만 status가 2xx가 아님
+       console.log('회원가입 실패:');
+       console.error('📦 응답 데이터:', error.response.data);
+       console.error('📡 상태 코드:', error.response.status);
+       console.error('📨 응답 헤더:', error.response.headers);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
   };

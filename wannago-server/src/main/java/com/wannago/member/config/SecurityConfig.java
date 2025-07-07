@@ -56,6 +56,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth // 경로별 접근 권한 설정
                 .requestMatchers(HttpMethod.POST, "/join","/login","/reissue","/check-email").permitAll()
                 .requestMatchers(HttpMethod.GET, "/posts", "/posts/*", "/post/*","/qnas","/qnas/*","/qnas/**").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/posts",  "/post","/posts/*", "/post/*", "/post/**","/posts/**","/qnas","/qnas/*").permitAll()
+
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
         http.sessionManagement(session -> session

@@ -7,21 +7,19 @@ import java.time.LocalDateTime;
 
 @Getter
 public class AskResponse {
-    private Long id;
-    private String title;
-    private String content;
-
+    private final Long id;
+    private final String category;
+    private final String title;
+    private final String contents;
     @JsonFormat(pattern = "yyyy.MM.dd")
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    @JsonFormat(pattern = "yyyy.MM.dd")
-    private LocalDateTime modifiedAt;
 
     public AskResponse(Ask ask) {
         this.id = ask.getId();
+        this.category = ask.getCategory().name();
         this.title = ask.getTitle();
-        this.content = ask.getContents();
+        this.contents = ask.getContents();
         this.createdAt = ask.getCreatedDate();
-        this.modifiedAt = ask.getModifiedDate();
     }
 }
