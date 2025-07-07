@@ -36,12 +36,6 @@ public class AskController {
         return ResponseEntity.ok("질문이 삭제되었습니다.");
     }
 
-    //질문 목록 조회
-    @GetMapping
-    public ResponseEntity<List<AskResponse>> getAsks() {
-        return ResponseEntity.ok(askService.getAsks());
-    }
-
     //질문 상세 조회
     @GetMapping("/{id}")
     public ResponseEntity<AskResponse> getAsk(@PathVariable Long id) {

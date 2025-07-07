@@ -1,8 +1,11 @@
 package com.wannago.qna.ask.service;
 
 
+import com.wannago.common.exception.CustomErrorCode;
+import com.wannago.common.exception.CustomException;
 import com.wannago.qna.ask.dto.AskRequest;
 import com.wannago.qna.ask.dto.AskResponse;
+import com.wannago.qna.ask.dto.AsksResponse;
 import com.wannago.qna.entity.Ask;
 import com.wannago.qna.entity.Category;
 import com.wannago.qna.ask.repository.AskRepository;
@@ -10,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,11 +49,22 @@ public class AskService {
     }
 
     @Transactional(readOnly = true) // 읽기 전용
-    public List<AskResponse> getAsks() {
+    public AsksResponse getAsks(String category) {
+        Category categoryEntity = Category.getCategory(category);
+        if(categoryEntity == null) {
+            throw new CustomException(CustomErrorCode.INVALID_CATEGORY);
+        }
 
-        return askRepository.findAll().stream()
-                .map(AskResponse::new)
-                .collect(Collectors.toList());
+        List<Ask> asks;
+        if(categoryEntity.equals(Category.ALL)) asks = askRepository.findAll();
+        else asks = askRepository.findAllByCategory(categoryEntity);
+
+        AsksResponse response = new AsksResponse();
+        asks.forEach(ask -> {
+            response.addAskResponse(new AskResponse(ask));
+        });
+
+        return response;
     }
 
     @Transactional(readOnly = true)

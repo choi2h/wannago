@@ -40,6 +40,7 @@ public enum CustomErrorCode {
 
     // 질문 Q
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Q001", "요청하신 질문을 찾을 수 없습니다."),
+    INVALID_CATEGORY(HttpStatus.NOT_FOUND, "Q002", "요청하신 카테고리를 찾을 수 없습니다."),
 
     // 질문-답변 A
     ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "A001", "요청하신 답변을 찾을 수 없습니다."),
