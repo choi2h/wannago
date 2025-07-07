@@ -31,6 +31,7 @@ function LoginPage() {
       // LocalStorage에 저장
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('loginId', loginId);
 
       alert('로그인 성공!');
       window.location.href = '/';
