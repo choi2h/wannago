@@ -39,8 +39,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 예외 처리
         if (request.getName().isBlank() || request.getPassword().isBlank() || request.getPasswordConfirm().isBlank()) {
-            // TODO CustomErrorCode.INVALID_INPUT_VALUE 누락
-//            throw new CustomException(CustomErrorCode.INVALID_INPUT_VALUE);
+            throw new CustomException(CustomErrorCode.INVALID_INPUT_VALUE);
         }
 
         if (!request.getPassword().equals(request.getPasswordConfirm())) {
@@ -48,8 +47,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         if (request.getPassword().length() < 6 || request.getPassword().length() > 20) {
-            // TODO CustomErrorCode.INVALID_PASSWORD_LENGTH 누락
-//            throw new CustomException(CustomErrorCode.INVALID_PASSWORD_LENGTH);
+        throw new CustomException(CustomErrorCode.INVALID_PASSWORD_LENGTH);
         }
 
         // 정보 수정

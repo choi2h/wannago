@@ -8,7 +8,7 @@ const inputNewPost = (newPost) => {
     console.log('Add post!!!');
     console.log(JSON.stringify(newPost));
 
-    axios.post(POST_API, {...newPost, author: 'me'})
+    api.post('/post', {...newPost, author: 'me'})
     .then((response) => {
         console.log("Success to add new post!!");
         console.log(response.status);

@@ -45,8 +45,8 @@ public class PostServiceImpl implements PostService {
 
     // 게시글 등록
     @Override
-    public void insertPost(PostRequest postRequest) {
-        Post post = postMapper.getPost(postRequest, true);
+    public void insertPost(PostRequest postRequest, Member member) {
+        Post post = postMapper.getPost(postRequest, member, true);
         if(postRequest.getTags() != null && !postRequest.getTags().isEmpty()) {
             setTags(post, postRequest.getTags());
         }
@@ -75,12 +75,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getPostById(Long postId, Long memberId) {
+    public PostResponse getPostById(Long postId, Member member) {
         Post post = postRepository
                     .findByIdWithSchedules(postId)
                     .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
         List<String> tags = tagRepository.getTagsByPost(postId);
-        PostStatusInfo statusInfo = getPostStatusInfo(postId, memberId);
+        PostStatusInfo statusInfo = getPostStatusInfo(postId, member);
         return postMapper.getPostResponse(post, tags, statusInfo);
     }
 
