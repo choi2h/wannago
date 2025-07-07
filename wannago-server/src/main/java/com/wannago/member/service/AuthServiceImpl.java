@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public MemberResponse join(JoinRequest joinRequest) {
         // 이름 값 체크
-        if (joinRequest.getName() == null || joinRequest.getName().trim().isEmpty() || !joinRequest.getName().matches("^[가-힣a-zA-Z0-9]{4,12}$")) {
+        if (joinRequest.getName() == null || joinRequest.getName().trim().isEmpty() || !joinRequest.getName().matches("^[가-힣a-zA-Z0-9]{3,12}$")) {
             throw new CustomException(CustomErrorCode.INVALID_INPUT);
         }
 
