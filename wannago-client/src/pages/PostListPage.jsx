@@ -53,7 +53,8 @@ function PostListPage(){
         <h1 className="page-main-title">{getPageTitle()}</h1>
     
         <section className="qna-list-section">
-          { pagePost.posts.map((post, idx) => <PostItem key={idx} post={post}/>)} {/* QnaListFrame -> PostListFrame으로 변경 */}
+          {/* fix: 옵셔널 체이닝 적용 */}
+          { pagePost?.posts?.map((post, idx) => <PostItem key={idx} post={post} />) }
         </section>
         
         {/* <nav className="pagination"> 

@@ -35,6 +35,10 @@ function LoginPage() {
       alert('로그인 성공!');
       window.location.href = '/';
     } catch (error) {
+      console.log('로그인 실패:');
+       console.error('📦 응답 데이터:', error.response.data);
+       console.error('📡 상태 코드:', error.response.status);
+       console.error('📨 응답 헤더:', error.response.headers);
       console.error('로그인 실패:', error);
       alert('로그인에 실패했습니다. 아이디 또는 비밀번호를 확인하세요.');
     }
