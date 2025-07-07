@@ -1,8 +1,12 @@
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'; // ❗ URL의 파라미터(id)를 가져오기 위해 import
 import AskViewer from '../components/AskViewer';
-import Input from '../components/Input';
 import AnswerItem from '../components/AnswerItem';
+import Input from '../components/Input';
 import DefaultLayout from '../layouts/DefatulLayout';
+import QNA_CATEGORY from '../utils/QnaCategory';
 import '../assets/css/qna-detail.css';
+import { getQna } from '../service/qna-service';
 
 const answers = [
   {
@@ -40,28 +44,58 @@ const answers = [
   }
 ]
 
-const ask = {
-  category : "맛집",
-  title : "애월 맛집 괜찮은곳이요",
-  author: "작성자",
-  createdTime: "2025.06.26",
-  contents: "안녕하세요 진짜 맛있는 애월 맛집 찾고 있습니다.\n" +
-        "핸드폰으로 막 알아보고 있는데.. 계속해서 어디로 가야할까..하네요\n" +
-        "가보지 않았던 애월 맛집들이라 어디가 맛있는지 모르겠어요\n" +
-        "혹시 애월 맛집 중에서 괜찮은곳 있을까요??\n" +
-        "왠만하면 가보신 애월 맛집 중에서 추천 해주세요\n" +
-        "꼭 애월 맛집 부탁드리겠습니다"
-}
 
 function QnaDetailPage() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [ask, setAsk] = useState();
+
+  useEffect(() => {
+    const fetchAskDetail = async () => {
+      const response = await getQna(id);
+      console.log(response);
+      setAsk(response);
+    };
+
+    fetchAskDetail();
+  }, [id]); // id값이 바뀔 때마다 API를 다시 호출합니다.
+
+  const handleEdit = () => {
+    navigate(`/qna/edit/${id}`, {state: {ask : {...ask, category: getCategory(ask.category)}}});
+  }
+
+  const handleDelete = () => {
+    console.log("삭제");
+  }
+
+   const getCategory = (category) => {
+    let result = QNA_CATEGORY[0];
+    QNA_CATEGORY.forEach((qnaCategory) => {
+      console.log(qnaCategory.api.toUpperCase() + " " + category.toUpperCase(), "=>",  qnaCategory.api.toUpperCase() === category.toUpperCase());
+      if(qnaCategory.api.toUpperCase() === category.toUpperCase()) result = qnaCategory;
+    })
+
+    return result;
+  }
+
+  if(!ask) {
+    return (
+      <DefaultLayout>
+        <span>게시글을 불러오는 중입니다..</span>
+      </DefaultLayout>
+    )
+  }
+
   return (
     <DefaultLayout>
       <div className="qna-detail">
-        <AskViewer ask={ask} />
+  
+        <AskViewer ask={ask} onClickEdit={handleEdit} onClickDelete={handleDelete}/>
+
         <div className="answers-section">
           <div className="answers-count">{answers.length}개 답변</div>
           <div className="answers-list">
-            {answers.map((ans, idx) => <AnswerItem key={idx} answer={ans} />)}
+            {answers.map((ans, idx) => <AnswerItem key={idx} answer={ans}/>)}
           </div>
           <div className="reply-section">
             <div className="reply-title">답변 작성하기</div>

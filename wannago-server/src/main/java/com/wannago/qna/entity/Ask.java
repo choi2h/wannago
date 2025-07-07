@@ -2,6 +2,7 @@ package com.wannago.qna.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,9 +53,13 @@ public class Ask {
         this.title = title;
         this.contents = contents;
     }
-    public Ask(Category category, String title, String contents) {
+
+    @Builder
+    public Ask(Category category, String title, String author, String contents) {
         this.category = category;
         this.title = title;
+        this.author = author;
         this.contents = contents;
+        this.isAccepted = false;
     }
 }
