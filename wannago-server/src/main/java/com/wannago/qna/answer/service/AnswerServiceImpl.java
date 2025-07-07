@@ -123,6 +123,8 @@ public class AnswerServiceImpl implements AnswerService {
         // 답변 존재 여부 확인 및 해당 답변 객체 가져오기
         Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.ANSWER_NOT_FOUND));
+        Ask ask = askRepository.findById(answer.getAskId().getId())
+                .orElseThrow(() -> new CustomException(CustomErrorCode.QUESTION_NOT_FOUND));
 
         // 이미 채택된 답변이 있는지 확인
         if (answerRepository.existsByAskIdAndIsAcceptedTrue(answer.getAskId())) {
@@ -137,6 +139,9 @@ public class AnswerServiceImpl implements AnswerService {
         // 답변 채택 처리
         answer.accept();
         Answer acceptedAnswer = answerRepository.save(answer);
+
+        ask.accept();
+        Ask acceptedAsk = askRepository.save(ask);
 
        // log.info("답변 채택 완료: answerId={}, questionAuthor={}", answerId, currentUser);
         return convertToResponse(acceptedAnswer);

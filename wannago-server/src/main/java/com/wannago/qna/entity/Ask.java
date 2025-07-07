@@ -1,5 +1,6 @@
 package com.wannago.qna.entity;
 
+import com.wannago.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,10 @@ public class Ask {
     @Column(name = "ask_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
@@ -55,11 +60,16 @@ public class Ask {
     }
 
     @Builder
-    public Ask(Category category, String title, String author, String contents) {
+    public Ask(Member member, Category category, String title, String author, String contents) {
+        this.member = member;
         this.category = category;
         this.title = title;
         this.author = author;
         this.contents = contents;
         this.isAccepted = false;
+    }
+
+    public void accept(){
+        this.isAccepted = true;
     }
 }

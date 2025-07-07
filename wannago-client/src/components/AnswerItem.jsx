@@ -53,8 +53,16 @@ function AnswerItem({
   // 답변 작성자 여부 확인
   const isAnswerAuthor = currentUser && answer.loginId === currentUser.loginId;
 
+
+
   // IS_Accept 값 확인 (DB에서 1이면 채택, 0이면 미채택)
   const isAccepted = answer.accepted === true
+ console.log('🔍 AnswerItem 진입');
+  console.log('  currentUser:', currentUser);
+  console.log('  answer:', answer);
+  console.log('  isQuestionAuthor:', isQuestionAuthor);
+  console.log('  hasAcceptedAnswer:', hasAcceptedAnswer);
+  console.log('  isAccepted:', isAccepted);
 
   // 답변 상태 결정
   const getAnswerStatus = () => {
@@ -65,7 +73,7 @@ function AnswerItem({
       return { text: "", className: "not-accepted" };
     } else {
       // 아직 채택된 답변이 없는 경우
-      return { text: "⏳ 채택대기", className: "waiting" };
+      return { text: "", className: "waiting" };/* ⏳ 채택대기 */
     }
   };
 

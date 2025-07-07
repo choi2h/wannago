@@ -77,7 +77,18 @@ function QnaDetailPage() {
       loadData();
     }
   }, [id]);
-
+ // ✅ ✅ ✅ 여기 아래에 추가하세요!
+  useEffect(() => {
+    if (ask && currentUser) {
+      console.log('🔎 ask:', ask);
+      console.log('🔎 currentUser:', currentUser);
+      console.log('🔎 비교값:',
+        currentUser?.loginId,
+        ask?.loginId,
+        currentUser?.loginId === ask?.loginId
+      );
+    }
+  }, [ask, currentUser]);
   // 답변 정렬 (채택된 답변이 먼저 오도록)
   const sortAnswers = (answers) => {
     return [...answers].sort((a, b) => {
