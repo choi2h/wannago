@@ -1,116 +1,150 @@
-import '../assets/css/qna-list.css';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import DefaultLayout from '../layouts/DefatulLayout';
-import QnaItem from '../components/QnaItem';
 import PostItem from '../components/PostItem';
-import { useParams, useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
-import { fetchMyPosts, fetchMyQnas } from '../api/mypage';
+import QnaItem from '../components/QnaItem';
+import { fetchMyPosts, fetchMyQnas } from '../api/mypage'; // API import 경로는 확인해주세요
+import '../assets/css/qna-list.css';
+
+// 한 페이지에 보여줄 항목 수
+const ITEMS_PER_PAGE = 10;
+// 페이지네이션 그룹에 표시할 페이지 수
+const PAGE_GROUP_SIZE = 5;
 
 function MyPostPage() {
-  const navigate = useNavigate();
-  const loginId = localStorage.getItem("loginId"); // ✅ 로컬스토리지에서 로그인 ID 확인
-  const { tab } = useParams(); // tab 값: post 또는 qna
+    const navigate = useNavigate();
+    const { tab = 'post' } = useParams(); // URL에 탭 정보가 없으면 'post'를 기본값으로
+    const [searchParams, setSearchParams] = useSearchParams();
 
-  const [postList, setPostList] = useState([]);
-  const [qnaList, setQnaList] = useState([]);
+    // --- 상태 관리 ---
+    const [list, setList] = useState([]); // 게시글 또는 질문 목록
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
-  // 로그인 안 했으면 로그인 페이지로 이동
-  useEffect(() => {
-    if (!loginId) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
-      return;
-    }
-  }, [loginId]);
+    const loginId = localStorage.getItem("loginId");
 
-  // 탭 변경 시 게시글 또는 질문 목록 불러오기
-  useEffect(() => {
-    const loadData = async () => {
-      if (!loginId) return;
+    // --- 데이터 로딩 및 라우팅 로직 ---
 
-      try {
-        if (tab === 'post') {
-  const posts = await fetchMyPosts(loginId); // ✅ 수정!
-  setPostList(Array.isArray(posts) ? posts : []);
-} else if (tab === 'qna') {
-  const qnas = await fetchMyQnas(loginId); // ✅ 수정!
-  setQnaList(Array.isArray(qnas) ? qnas : []);
-}
-      } catch (err) {
-        console.error("마이페이지 데이터 로딩 실패:", err);
-      }
+    useEffect(() => {
+        if (!loginId) {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+        }
+    }, [loginId, navigate]);
+
+    useEffect(() => {
+        const pageParam = parseInt(searchParams.get('page') || '1', 10);
+        setCurrentPage(pageParam);
+    }, [searchParams]);
+
+    useEffect(() => {
+        if (!loginId) return;
+
+        const loadData = async () => {
+            setIsLoading(true);
+            setError(null);
+            const pageToFetch = currentPage - 1; // API는 0-based 페이지
+
+            try {
+                const fetcher = tab === 'post' ? fetchMyPosts : fetchMyQnas;
+                // [수정] API 호출 시 page와 size 인자를 모두 전달
+                const responseData = await fetcher(loginId, pageToFetch, ITEMS_PER_PAGE);
+
+                if (responseData && typeof responseData === 'object') {
+                    setList(Array.isArray(responseData.content) ? responseData.content : []);
+                    setTotalPages(responseData.totalPages || 1);
+                } else {
+                    // 비정상 응답 처리
+                    setList([]);
+                    setTotalPages(1);
+                }
+            } catch (err) {
+                console.error(`❌ 마이페이지 ${tab} 데이터 로딩 실패:`, err);
+                setError("데이터를 불러오는 데 실패했습니다.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadData();
+    }, [tab, loginId, currentPage, navigate]);
+
+    // --- 렌더링 함수 ---
+
+    const handlePageClick = (pageNumber) => {
+        setSearchParams({ page: pageNumber.toString() });
     };
 
-    loadData();
-  }, [tab, loginId]);
+    const renderPagination = () => {
+        if (totalPages <= 1) return null;
 
-  const categories = [
-    { name: "나의 여행", tab: "post" },
-    { name: "나의 질문", tab: "qna" }
-  ];
+        const pageNumbers = [];
+        const startPage = Math.floor((currentPage - 1) / PAGE_GROUP_SIZE) * PAGE_GROUP_SIZE + 1;
+        const endPage = Math.min(startPage + PAGE_GROUP_SIZE - 1, totalPages);
 
-  const selectedCategory = categories.find(category => category.tab === tab)?.name;
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
 
-  const getList = () => {
-    if (tab === 'post') {
-      return (
-        <section className="qna-list-section">
-          {postList.length > 0 ? (
-            postList.map((post, idx) => (
-              <PostItem key={idx} post={post} />
-            ))
-          ) : (
-            <p>게시글이 없습니다.</p>
-          )}
-        </section>
-      );
-    } else if (tab === 'qna') {
-      return (
-        <section className="qna-list-section">
-          {qnaList.length > 0 ? (
-            qnaList.map((qna, idx) => (
-              <QnaItem key={idx} qna={qna} />
-            ))
-          ) : (
-            <p>질문이 없습니다.</p>
-          )}
-        </section>
-      );
-    }
-    return null;
-  };
+        return (
+            <nav className="pagination">
+                <ul className="pagination-list">
+                    {currentPage > 1 && (
+                        <li><a href="#" onClick={(e) => { e.preventDefault(); handlePageClick(currentPage - 1); }}>이전</a></li>
+                    )}
+                    {pageNumbers.map(number => (
+                        <li key={number} className={number === currentPage ? "selected" : ""}>
+                            <a href="#" onClick={(e) => { e.preventDefault(); handlePageClick(number); }}>{number}</a>
+                        </li>
+                    ))}
+                    {currentPage < totalPages && (
+                        <li><a href="#" onClick={(e) => { e.preventDefault(); handlePageClick(currentPage + 1); }}>다음</a></li>
+                    )}
+                </ul>
+            </nav>
+        );
+    };
 
-  return (
-    <DefaultLayout>
-      <div className="qna-page-container">
-        <h1 className="page-main-title">내가 쓴 글</h1>
+    const renderContent = () => {
+        if (isLoading) return <p className="loading-message">데이터를 불러오는 중입니다...</p>;
+        if (error) return <p className="error-message">{error}</p>;
+        if (list.length === 0) return <p className="no-data-message">{tab === 'post' ? '작성한 게시글이 없습니다.' : '작성한 질문이 없습니다.'}</p>;
 
-        <nav className="category-menu-bar">
-          {categories.map((category) => (
-            <div 
-              key={category.name} 
-              className={`menu-item ${selectedCategory === category.name ? "selected" : ""}`}
-            >
-              <a href={`/my/${category.tab}`}>{category.name}</a>
+        return (
+            <section className="qna-list-section">
+                {tab === 'post'
+                    ? list.map(post => <PostItem key={post.postId} post={post} />) // [수정] 고유 ID로 key 설정
+                    : list.map(qna => <QnaItem key={qna.askId} qna={qna} />)         // [수정] 고유 ID로 key 설정
+                }
+            </section>
+        );
+    };
+
+    return (
+        <DefaultLayout>
+            <div className="qna-page-container">
+                <h1 className="page-main-title">내가 쓴 글</h1>
+                <nav className="category-menu-bar">
+                    {[
+                        { name: "나의 여행", tab: "post" },
+                        { name: "나의 질문", tab: "qna" }
+                    ].map(category => (
+                        <div key={category.tab} className={`menu-item ${tab === category.tab ? "selected" : ""}`}>
+                            {/* [수정] navigate 함수를 사용하여 페이지 새로고침 방지 */}
+                            <a href="#" onClick={(e) => {
+                                e.preventDefault();
+                                navigate(`/my/${category.tab}?page=1`);
+                            }}>{category.name}</a>
+                        </div>
+                    ))}
+                </nav>
+                {renderContent()}
+                {renderPagination()}
             </div>
-          ))}
-        </nav>
-
-        {getList()}
-
-        <nav className="pagination">
-          <ul className="pagination-list">
-            <li className="pagination-page selected"><a href="#">1</a></li>
-            <li className="pagination-page"><a href="#">2</a></li>
-            <li className="pagination-page"><a href="#">3</a></li>
-            <li className="pagination-gap"><span>...</span></li>
-            <li className="pagination-page"><a href="#">67</a></li>
-            <li className="pagination-page"><a href="#">68</a></li>
-          </ul>
-        </nav>
-      </div>
-    </DefaultLayout>
-  );
+        </DefaultLayout>
+    );
 }
 
 export default MyPostPage;
