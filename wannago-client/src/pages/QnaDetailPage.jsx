@@ -31,7 +31,6 @@ function QnaDetailPage() {
 
   const [ask, setAsk] = useState();
   const [answers, setAnswers] = useState([]);
-  const [ask, setAsk] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,7 +41,6 @@ function QnaDetailPage() {
     const token = localStorage.getItem('accessToken');
     const loginId = localStorage.getItem('loginId');
 
-    fetchAskDetail();
     if (token && loginId) {
       setCurrentUser({
         name: loginId,
@@ -61,8 +59,8 @@ function QnaDetailPage() {
         setLoading(true);
         setError(null);
         const [askData, answersData] = await Promise.all([
-          getQnaDetail(qnaId),
-          selectAnswersByQnaId(qnaId)
+          getQnaDetail(id),
+          selectAnswersByQnaId(id)
         ]);
         setAsk(askData);
         setAnswers(sortAnswers(answersData));
@@ -238,6 +236,7 @@ function QnaDetailPage() {
         </div>
       </DefaultLayout>
     );
+  }
 
   const handleEdit = () => {
     navigate(`/qna/edit/${id}`, {state: {ask : {...ask, category: getCategory(ask.category)}}});
