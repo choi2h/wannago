@@ -9,4 +9,5 @@ public interface AuthService {
     MemberResponse join(JoinRequest joinRequest);
     TokenResponse login(LoginRequest loginRequest);
     TokenResponse reissue(String refreshToken, String accessToken);
+    boolean checkEmail(String email);
 }

@@ -58,6 +58,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/posts",  "/post","/posts/*", "/post/*", "/post/**","/posts/**", "/post/***","/posts/***", "/post/****","/posts/****","/post/*****","/post/*****", "/qnas","/qnas/*").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/posts",  "/post","/posts/*", "/post/*", "/post/**","/posts/**", "/post/***","/posts/***", "/post/****","/posts/****","/post/*****","/post/*****").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/posts",  "/post","/posts/*", "/post/*", "/post/**","/posts/**", "/post/***","/posts/***", "/post/****","/posts/****","/post/*****","/post/*****").permitAll()
+
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
         http.sessionManagement(session -> session

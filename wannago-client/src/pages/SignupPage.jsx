@@ -26,10 +26,38 @@ function SignupPage() {
     }));
   };
 
-  const handleEmailVerification = () => {
+  const handleEmailVerification = async () => {
     // 이메일 인증 로직
-    console.log('이메일 인증 요청:', formData.email);
-    setEmailVerified(true);
+    if (!formData.email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+    try {
+      const response = await axios.post(`${API_BASE_URL}/check-email`, {
+        email: formData.email
+      });
+
+      if (response.data.exists) {
+        alert('이미 사용 중인 이메일입니다.');
+        setEmailVerified(false);
+      } else {
+        alert('사용 가능한 이메일입니다.');
+        setEmailVerified(true);
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status===409) {
+          alert('이미 사용 중인 이메일입니다.');
+          setEmailVerified(false);
+        } else {
+          alert('이메일 중복확인 중 오류가 발생했습니다.');
+        }
+      } else {
+        alert('서버와 연결할 수 없습니다.');
+      }
+      console.error('이메일 중복: ', error);
+      setEmailVerified(false);
+    }
   };
 
   const handleSubmit = async (e) => {
