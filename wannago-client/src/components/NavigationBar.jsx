@@ -42,8 +42,19 @@ function NavigationBar() {
     const location = useLocation();
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const profileMenuRef = useRef(null);
-    const isLogin = true;
+    const [isLogin, setIsLogin] = useState(!!localStorage.getItem('accessToken'));
 
+    useEffect(() => {
+        const handleStorageChange = () => {
+            setIsLogin(!!localStorage.getItem('accessToken'));
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+    
     // 프로필 메뉴 토글
     const toggleProfileMenu = () => {
         setIsProfileMenuOpen(!isProfileMenuOpen);
