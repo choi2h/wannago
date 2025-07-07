@@ -48,7 +48,8 @@ public enum CustomErrorCode {
     // 질문 Q
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Q001", "요청하신 질문을 찾을 수 없습니다."),
     INVALID_CATEGORY(HttpStatus.NOT_FOUND, "Q002", "요청하신 카테고리를 찾을 수 없습니다."),
-    INVALID_AUTH_FOR_UPDATE_ASK(HttpStatus.NOT_FOUND, "Q003", "해당 질문의 수정 권한이 없습니다."),
+    INVALID_AUTH_FOR_UPDATE_ASK(HttpStatus.NOT_FOUND, "Q003", "질문에 대한 수정 권한이 없습니다."),
+    INVALID_AUTH_FOR_DELETE_ASK(HttpStatus.NOT_FOUND, "Q003", "질문에 대한 삭제 권한이 없습니다."),
     FAIL_TO_WRITE_ASK(HttpStatus.SERVICE_UNAVAILABLE, "Q004", "질문 작성에 실패했습니다."),
 
     // 질문-답변 A

@@ -50,8 +50,13 @@ public class AskService {
     }
 
     @Transactional
-    public void deleteAsk(Long id) {
+    public void deleteAsk(Long id, Member member) {
         Ask ask = findAskById(id);
+
+        if(!ask.getAuthor().equals(member.getLoginId())) {
+            throw new CustomException(CustomErrorCode.INVALID_AUTH_FOR_DELETE_ASK);
+        }
+
         askRepository.delete(ask);
     }
 

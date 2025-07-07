@@ -34,4 +34,8 @@ const updateQna = async (id, qna) => {
         });
 }
 
-export {getQnaList, getQna, inputQna, updateQna};
+const deleteQna = async (id) => {
+    return api.delete(`/qna/${id}`);
+}
+
+export {getQnaList, getQna, inputQna, updateQna, deleteQna};
