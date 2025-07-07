@@ -1,13 +1,13 @@
 import axios from "axios";
 import api from '../utils/axios';
 
-const QNA_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/qnas`;
+const QNA_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/qna`;
 
 const getLoginId = () => localStorage.getItem('loginId');
 
 // 1. 답변 목록 조회
 const selectAnswersByQnaId = async (qnaId) => {
-    return await api.get(`/qnas/${qnaId}/answers`)
+    return await api.get(`/qna/${qnaId}/answer`)
     .then((response) => {
         console.log(response.status);
         console.log(response.data);
@@ -30,7 +30,7 @@ const inputNewAnswer = async (qnaId, answerData) => {
         loginId: answerData.loginId || getLoginId(),
     };
 
-    return await api.post(`/qnas/${qnaId}/answer`, dataToSend)
+    return await api.post(`/qna/${qnaId}/answer`, dataToSend)
     .then((response) => {
         console.log("Success to add new answer!!");
         console.log(response.status);
@@ -50,7 +50,7 @@ const updateAnswer = async (qnaId, answerId, answerData) => {
         loginId: answerData.loginId || getLoginId(),
     };
 
-    return await api.put(`/qnas/${qnaId}/answer/${answerId}`, dataToSend)
+    return await api.put(`/qna/${qnaId}/answer/${answerId}`, dataToSend)
     .then((response) => {
         console.log("Success to update answer!!");
         console.log(response.status);
@@ -67,7 +67,7 @@ const updateAnswer = async (qnaId, answerId, answerData) => {
 const deleteAnswer = async (qnaId, answerId) => {
     const loginId = getLoginId();
 
-    return await api.delete(`/qnas/${qnaId}/answers/${answerId}`, {
+    return await api.delete(`/qna/${qnaId}/answer/${answerId}`, {
         data: { loginId }
     })
     .then((response) => {
@@ -86,7 +86,7 @@ const deleteAnswer = async (qnaId, answerId) => {
 const acceptAnswer = async (qnaId, answerId) => {
     const loginId = getLoginId();
 
-    return await api.post(`/qnas/${qnaId}/answer/${answerId}`, {
+    return await api.post(`/qna/${qnaId}/answer/${answerId}`, {
         loginId,
     })
     .then((response) => {

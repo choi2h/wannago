@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/qnas")
+@RequestMapping("/qna")
 @RequiredArgsConstructor
 public class AnswerController {
 
@@ -45,7 +45,7 @@ public class AnswerController {
     }
 
     // 답변 삭제
-    @DeleteMapping("/{qnaId}/answers/{answerId}")
+    @DeleteMapping("/{qnaId}/answer/{answerId}")
     public ResponseEntity<Void> deleteAnswer(
             @PathVariable Long qnaId,
             @PathVariable Long answerId,
@@ -69,7 +69,7 @@ public class AnswerController {
     }
 
     // 특정 질문의 모든 답변 조회
-    @GetMapping("/{qnaId}/answers")
+    @GetMapping("/{qnaId}/answer")
     public ResponseEntity<List<AnswerResponse>> getAnswers(@PathVariable Long qnaId) {
         List<AnswerResponse> answers = answerService.getAnswersByAskId(qnaId);
         return ResponseEntity.ok(answers);

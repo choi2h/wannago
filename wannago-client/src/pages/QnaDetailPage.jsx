@@ -20,7 +20,7 @@ import { getQna } from '../service/qna-service';
 const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
 const getQnaDetail = async (qnaId) => {
-  const response = await fetch(`${API_BASE_URL}/qnas/${qnaId}`);
+  const response = await fetch(`${API_BASE_URL}/qna/${qnaId}`);
   if (!response.ok) throw new Error('질문을 불러오는데 실패했습니다.');
   return response.json();
 };
