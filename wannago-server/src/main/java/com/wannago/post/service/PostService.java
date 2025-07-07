@@ -11,6 +11,8 @@ public interface PostService {
 
     PostsResponse getPosts(int pageNo, String criteria);
 
+    PostsResponse getMyPosts(int pageNo, Member member);
+
     PostsResponse getPostsOrderByLikeCount(int pageNo);
 
     PostResponse getPostById(Long postId, Member member);

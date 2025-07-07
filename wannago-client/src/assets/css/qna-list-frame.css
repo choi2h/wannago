@@ -1,6 +1,7 @@
 /* QnaListFrame 전체 스타일 */
 .qna-frame {
   /* border-radius: 12px; */
+  min-width: 800px;
   padding: 24px;
   transition: transform 0.2s ease-in-out; /* 호버 시 부드러운 효과 */
   border-bottom: 1px solid #eee;

@@ -1,5 +1,6 @@
 package com.wannago.qna.ask.service;
 
+import com.wannago.member.entity.Member;
 import com.wannago.qna.ask.dto.AskResponse;
 import com.wannago.qna.ask.dto.AsksResponse;
 import com.wannago.qna.ask.repository.AskRepository;
@@ -16,9 +17,9 @@ public class MyAskService {
 
     private final AskRepository askRepository;
 
-    public AsksResponse getAsksByAuthor(String authorLoginId) {
+    public AsksResponse getAsksByAuthor(Member member) {
         // 1단계에서 추가한 Repository 메소드를 호출합니다.
-        List<Ask> asks = askRepository.findAllByAuthorOrderByIdDesc(authorLoginId);
+        List<Ask> asks = askRepository.findAllByAuthorOrderByIdDesc(member.getLoginId());
 
         // DTO로 변환하여 반환합니다.
         AsksResponse response = new AsksResponse();

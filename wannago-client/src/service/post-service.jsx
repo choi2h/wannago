@@ -5,7 +5,7 @@ const POST_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/post`;
 const POSTS_API = `${import.meta.env.VITE_API_SERVER_ADDRESS}/posts`;
 
 
-const inputNewPost = (newPost) => {
+const inputNewPost = async (newPost) => {
     console.log('Add post!!!');
     console.log(JSON.stringify(newPost));
 
@@ -44,8 +44,9 @@ const deletePost = async (id) => {
 const selectPosts = async (pageNo, orderCriteria) => {
     return await api.get(`${POSTS_API}?page=${pageNo}&criteria=${orderCriteria}`)
     .then((response) => {
-        console.log(response.status);
-        console.log(response.data);
+        console.log(response);
+        // console.log(response.status);
+        // console.log(response.data);
 
         return response.data;
     })
