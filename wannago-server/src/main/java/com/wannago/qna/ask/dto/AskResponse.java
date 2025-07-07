@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 public class AskResponse {
     private final Long id;
-    private String loginId;
+    private final String loginId;
     private final String category;
     private final String author;
     private final String title;
@@ -19,7 +19,7 @@ public class AskResponse {
 
     public AskResponse(Ask ask) {
         this.id = ask.getId();
-        this.loginId = ask.getMember().getLoginId();
+        this.loginId = ask.getAuthor();
         this.category = ask.getCategory().name();
         this.title = ask.getTitle();
         this.author = ask.getAuthor();
