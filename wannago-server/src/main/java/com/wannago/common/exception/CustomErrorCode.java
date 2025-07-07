@@ -10,19 +10,22 @@ import lombok.Getter;
 public enum CustomErrorCode {
     // 회원 M
     MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST, "M001", "존재하지 않는 회원입니다."),
-    DUPLICATE_NAME(HttpStatus.BAD_REQUEST, "M002", "사용할 수 없는 아이디입니다."),
-    PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "M003", "입력된 비밀번호가 일치하지 않습니다."),
-    INVALID_INPUT(HttpStatus.BAD_REQUEST, "M004", "다시 작성해주세요"),
-    EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M005", "잘못된 이메일입니다."),
-    MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M006", "회원을 찾을 수 없습니다."),
+    // 회원가입
+    INVALID_INPUT(HttpStatus.BAD_REQUEST, "M002", "다시 작성해주세요"),
+    DUPLICATE_NAME(HttpStatus.BAD_REQUEST, "M003", "사용할 수 없는 아이디입니다."),
+    PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "M004", "입력된 비밀번호가 일치하지 않습니다."),
+    DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "M005", "사용할 수 없는 이메일입니다."),
+    DUPLICATE_LOGINID(HttpStatus.BAD_REQUEST, "M006", "사용할 수 없는 로그인아이디입니다."),
     PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "M007", "입력된 비밀번호가 일치하지 않습니다."),
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M008", "유효하지 않은 RefreshToken입니다."),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M009", "유효하지 않은 토큰입니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M010", "인증이 필요합니다."),
-    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M011", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "M012", "잘못된 입력값입니다."),
-    DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "M013", "사용할 수 없는 이메일입니다."),
-    DUPLICATE_LOGINID(HttpStatus.BAD_REQUEST, "M014", "사용할 수 없는 로그인아이디입니다."),
+    EMAIL_MISMATCH(HttpStatus.BAD_REQUEST, "M008", "잘못된 이메일입니다."),
+    MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"M009", "회원을 찾을 수 없습니다."),
+
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"M010", "유효하지 않은 RefreshToken입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED,"M011", "유효하지 않은 토큰입니다."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M012", "인증이 필요합니다."),
+    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M013", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
+
+
     
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
