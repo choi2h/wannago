@@ -3,7 +3,7 @@ package com.wannago.post.service;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.wannago.common.exception.CustomErrorCode.MEMBER_NOT_FOUND;
@@ -14,7 +14,7 @@ import com.wannago.post.dto.MyPostResponse;
 import com.wannago.post.entity.Post;
 import com.wannago.post.repository.PostRepository;
 
-import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
