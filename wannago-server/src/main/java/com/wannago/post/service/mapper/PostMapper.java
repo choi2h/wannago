@@ -1,5 +1,6 @@
 package com.wannago.post.service.mapper;
 
+import com.wannago.member.entity.Member;
 import com.wannago.post.dto.*;
 import com.wannago.post.entity.DailySchedule;
 import com.wannago.post.entity.Post;
@@ -19,10 +20,10 @@ public class PostMapper {
     private static final String TIME_FORMAT = "HH:mm";
 
     // 요청 → 엔티티 변환
-    public Post getPost(PostRequest postRequest, boolean isPublic) {
+    public Post getPost(PostRequest postRequest, Member member, boolean isPublic) {
         Post post =  Post.builder()
                 .title(postRequest.getTitle())
-                .author(postRequest.getAuthor())
+                .author(member.getLoginId())
                 .contents(postRequest.getContents())
                 .isPublic(isPublic)
                 .build();
@@ -133,6 +134,30 @@ public class PostMapper {
                     .isPublic(post.isPublic())
                     .createdAt(post.getCreatedDate())
                     .likeCount(likeCount)
+                    .tags(tags)
+                    .build();
+
+            response.addPost(postInfo);
+        }
+
+        return response;
+    }
+
+    // 엔티티 리스트 → 응답 리스트 변환
+    public PostsResponse getPostsResponse(Page<PostWithLikeCount> posts, Map<Long, List<String>> tagsMap) {
+        PostsResponse response = new PostsResponse(posts.getTotalPages(), posts.getNumber());
+
+        for (PostWithLikeCount postWithLikeCount : posts) {
+            Post post = postWithLikeCount.getPost();
+            List<String> tags = tagsMap.get(post.getId());
+            PostSummaryInfo postInfo = PostSummaryInfo.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .author(post.getAuthor())
+                    .contents(post.getContents())
+                    .isPublic(post.isPublic())
+                    .createdAt(post.getCreatedDate())
+                    .likeCount((int) postWithLikeCount.getLikeCount())
                     .tags(tags)
                     .build();
 

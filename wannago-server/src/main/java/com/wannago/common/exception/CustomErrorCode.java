@@ -10,7 +10,6 @@ import lombok.Getter;
 public enum CustomErrorCode {
     // 회원 M
     MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST, "M001", "존재하지 않는 회원입니다."),
-    // 회원가입
     INVALID_INPUT(HttpStatus.BAD_REQUEST, "M002", "다시 작성해주세요"),
     DUPLICATE_NAME(HttpStatus.BAD_REQUEST, "M003", "사용할 수 없는 아이디입니다."),
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "M004", "입력된 비밀번호가 일치하지 않습니다."),
@@ -25,12 +24,11 @@ public enum CustomErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "M012", "인증이 필요합니다."),
     INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, "M013", "비밀번호는 6자 이상 20자 이하로 입력해주세요."),
 
-
-    
     // 게시글 P
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "P001", "요청하신 게시글을 찾을 수 없습니다."),
     POST_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "P002", "이미 삭제된 게시글입니다."),
-    NOT_POST_AUTHOR(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
+    NOT_POST_AUTHOR_FOR_DELETE(HttpStatus.UNAUTHORIZED, "P003", "게시글 삭제 권한이 없습니다."),
+    NOT_POST_AUTHOR_FOR_UPDATE(HttpStatus.UNAUTHORIZED, "P004", "게시글 수정 권한이 없습니다."),
 
     //북마크 B
     ALREADY_BOOKMARKED(HttpStatus.CONFLICT, "B001", "이미 북마크된 게시글입니다."),
