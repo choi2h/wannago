@@ -19,8 +19,8 @@ import { getQna } from '../service/qna-service';
 
 const API_BASE_URL = import.meta.env.VITE_API_SERVER_ADDRESS;
 
-const getQnaDetail = async (qnaId) => {
-  const response = await fetch(`${API_BASE_URL}/qna/${qnaId}`);
+const getQnaDetail = async (id) => {
+  const response = await fetch(`${API_BASE_URL}/qna/${id}`);
   if (!response.ok) throw new Error('질문을 불러오는데 실패했습니다.');
   return response.json();
 };
@@ -99,7 +99,7 @@ function QnaDetailPage() {
   const handleAcceptAnswer = async (answerId) => {
     if (!window.confirm('이 답변을 채택하시겠습니까?')) return;
     try {
-      await acceptAnswer(qnaId, answerId);
+      await acceptAnswer(id, answerId);
       const updatedAnswers = answers.map(answer => ({
         ...answer,
         accepted: answer.answerId === answerId
@@ -130,11 +130,11 @@ function QnaDetailPage() {
       const answerData = {
         contents: contents.trim(),
         author: currentUser.loginId,
-        qnaId: qnaId,
+        id: id,
         loginId: currentUser.loginId // loginId 추가
       };
 
-      const newAnswer = await inputNewAnswer(qnaId, answerData);
+      const newAnswer = await inputNewAnswer(id, answerData);
 
       // 새 답변을 리스트에 추가
       const addedAnswer = {
@@ -159,7 +159,7 @@ function QnaDetailPage() {
   const handleDeleteAnswer = async (answerId) => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
-      await deleteAnswer(qnaId, answerId);
+      await deleteAnswer(id, answerId);
       setAnswers(answers.filter(a => a.answerId !== answerId));
       alert('삭제되었습니다.');
     } catch (err) {
@@ -182,7 +182,7 @@ function QnaDetailPage() {
         loginId: currentUser.loginId // loginId 추가
       };
 
-      await updateAnswer(qnaId, answerId, answerData);
+      await updateAnswer(id, answerId, answerData);
 
       setAnswers(sortAnswers(answers.map(a =>
         a.answerId === answerId ? { ...a, contents: newContents.trim() } : a
