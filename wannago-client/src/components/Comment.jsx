@@ -46,7 +46,7 @@ function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment
           </div>
 
           {/* ⭐ 조건부 버튼 렌더링: 작성자일 때만 */}
-          {isAuthor && (
+          {isAuthor ? (
             <div className="comment-actions">
               {isEditing ? (
                 <>
@@ -65,7 +65,22 @@ function Comment({ comment, postId, onAddReply, onUpdateComment, onDeleteComment
                 </>
               )}
             </div>
-          )}
+          ) : 
+          <div className="comment-actions">
+              {isEditing ? (
+                <>
+                  <button className="action-button" onClick={handleSaveEdit}>저장</button>
+                  <button className="action-button" onClick={() => setIsEditing(false)}>취소</button>
+                </>
+              ) : (
+                <>
+                  {isTopLevelComment && (
+                    <button className="action-button" onClick={handleReplyClick}>답글</button>
+                  )}
+                </>
+              )}
+            </div>
+        }
         </div>
 
         {isEditing ? (
