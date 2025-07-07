@@ -84,7 +84,7 @@ function PostWritePage () {
   return (
     <DefaultLayout>
         <div className="body">
-          <PostForm updateTitle={updateTItle} tags={newPost.tags} updateTags={updateTags} updateContents={updateContents}/>
+          <PostForm post={newPost} updateTitle={updateTItle} updateTags={updateTags} updateContents={updateContents}/>
           {
             newPost.schedules.map((schedule, idx) => <DailyScheduleForm key={idx} newSchedule={schedule} setNewSchedule={updateSchedule} idx={idx}/>)
           }
