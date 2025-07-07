@@ -1,19 +1,20 @@
 package com.wannago.post.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import static com.wannago.common.exception.CustomErrorCode.MEMBER_NOT_FOUND;
 import com.wannago.common.exception.CustomException;
 import com.wannago.member.entity.Member;
 import com.wannago.member.repository.MemberRepository;
 import com.wannago.post.dto.MyPostResponse;
 import com.wannago.post.entity.Post;
 import com.wannago.post.repository.PostRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static com.wannago.common.exception.CustomErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,8 @@ public class MyPostServiceImpl implements MyPostService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         // 사용자가 작성한 게시글 목록 조회 (최신순 정렬)
-        List<Post> posts = postRepository.findByMemberOrderByCreatedDateDesc(member);
+        List<Post> posts = postRepository.findByAuthorOrderByCreatedDateDesc(member.getLoginId());
+
 
         // 게시글 ID만 추출
         List<Long> postIds = posts.stream()

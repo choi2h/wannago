@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.wannago.member.entity.Member;
 import com.wannago.post.entity.Post;
 
 
@@ -26,6 +25,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     Page<Post> findAllByAuthor(String loginId, Pageable pageable);
-    List<Post> findByMemberOrderByCreatedDateDesc(Member member);
+    List<Post> findByAuthorOrderByCreatedDateDesc(String loginId);
 
 }
