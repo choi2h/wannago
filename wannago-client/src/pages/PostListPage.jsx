@@ -1,13 +1,15 @@
 import DefaultLayout from '../layouts/DefatulLayout';
 import PostItem from '../components/PostItem';
 import '../assets/css/qna-list.css';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { selectPosts } from '../service/post-service';
+import { selectPosts, selectPostsByKeyword } from '../service/post-service';
 import Pagination from '../components/Pagination';
 
 function PostListPage(){
   const { tab } = useParams();
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get('keyword');
   const [pagePost, setPagePost] = useState();
 
   const getPageTitle = () => {
@@ -17,6 +19,8 @@ function PostListPage(){
         return '랭킹순';
     } else if (tab === 'bookmark') {
       return '북마크';
+    } else if (tab === 'search') {
+      return '검색결과';
     }
   }
 
@@ -31,9 +35,14 @@ function PostListPage(){
   const getPosts = async(pageNo) => {
     console.log("move-page ====> " + pageNo);
       try {
-        const criteria = getCriteria();
-        const pagePost = await selectPosts(pageNo, criteria);
-        setPagePost(pagePost);
+        if (tab === 'search') {
+          const pagePost = await selectPostsByKeyword(pageNo, keyword);
+          setPagePost(pagePost);
+        } else {
+          const criteria = getCriteria();
+          const pagePost = await selectPosts(pageNo, criteria);
+          setPagePost(pagePost);
+        }
       } catch(error) {
         console.error("게시글 불러오기 실패:", error);
       }
@@ -41,7 +50,7 @@ function PostListPage(){
 
   useEffect(() => {
     getPosts(0);
-  }, [tab])
+  }, [tab, keyword])
 
   if(!pagePost) {
     return <DefaultLayout><div> 등록된 게시글이 없습니다. </div></DefaultLayout>
