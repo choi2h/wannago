@@ -2,7 +2,6 @@ import { Search } from '../assets/icons/search';
 import '../assets/css/navigationbar.css';
 import { useLocation } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import SearchOverlay from './SearchOverlay';
 
 const menus = [
     {
@@ -27,7 +26,7 @@ const profileMenus = [
     {
         name: '내가 쓴글',
         // my를 userId로 바꿔서 사용
-        link: '/my/post'
+        link: '/mypage/post'
     },
     {
         name: '마이페이지',
@@ -44,7 +43,6 @@ function NavigationBar() {
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const profileMenuRef = useRef(null);
     const [isLogin, setIsLogin] = useState(!!localStorage.getItem('accessToken'));
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     useEffect(() => {
         const handleStorageChange = () => {
@@ -60,14 +58,6 @@ function NavigationBar() {
     // 프로필 메뉴 토글
     const toggleProfileMenu = () => {
         setIsProfileMenuOpen(!isProfileMenuOpen);
-    };
-
-    const toggleSearch = () => {
-        setIsSearchOpen(true);
-    };
-
-    const closeSearch = () => {
-        setIsSearchOpen(false);
     };
 
     // 외부 클릭 시 메뉴 닫기
@@ -105,14 +95,9 @@ function NavigationBar() {
 
                 {/* 우측 액션 섹션 */}
                 <div className="action-section">
-                    <button className="search-button" aria-label="검색" onClick={toggleSearch}>
+                    <button className="search-button" aria-label="검색">
                         <Search className="search-icon" />
                     </button>
-
-                    <SearchOverlay 
-                        isOpen={isSearchOpen} 
-                        onClose={closeSearch} 
-                    />
                     
                     {
                         isLogin ?

@@ -15,6 +15,8 @@ public interface PostService {
 
     PostsResponse getPostsOrderByLikeCount(int pageNo);
 
+    PostsResponse getPostsByBookmark(int pageNo, Member member);
+
     PostResponse getPostById(Long postId, Member member);
 
     PostResponse updatePost(Long postId, PostRequest postRequest, Member member);

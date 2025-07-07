@@ -3,7 +3,7 @@ import PostItem from '../components/PostItem';
 import '../assets/css/qna-list.css';
 import { useParams, useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { selectPosts, selectPostsByKeyword } from '../service/post-service';
+import { selectBookmarkPosts, selectPosts, selectPostsByKeyword } from '../service/post-service';
 import Pagination from '../components/Pagination';
 
 function PostListPage(){
@@ -39,9 +39,14 @@ function PostListPage(){
           const pagePost = await selectPostsByKeyword(pageNo, keyword);
           setPagePost(pagePost);
         } else {
-          const criteria = getCriteria();
-          const pagePost = await selectPosts(pageNo, criteria);
-          setPagePost(pagePost);
+          if(tab === 'bookmark') {
+              const pagePost = await selectBookmarkPosts(pageNo);
+              setPagePost(pagePost);
+          } else {
+              const criteria = getCriteria();
+              const pagePost = await selectPosts(pageNo, criteria);
+              setPagePost(pagePost);
+          }
         }
       } catch(error) {
         console.error("게시글 불러오기 실패:", error);

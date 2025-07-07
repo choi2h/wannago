@@ -68,6 +68,7 @@ public class PostServiceImpl implements PostService {
         return getPostsResponseWithPostStatus(postPage);
     }
 
+    @Override
     public PostsResponse getMyPosts(int pageNo, Member member) {
         // 사용자가 작성한 게시글 목록 조회 (최신순 정렬)
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.by(Sort.Direction.DESC, DEFAULT_POST_SORT_CRITERIA));
@@ -75,6 +76,7 @@ public class PostServiceImpl implements PostService {
         return getPostsResponseWithPostStatus(posts);
     }
 
+    @Override
     public PostsResponse getPostsOrderByLikeCount(int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
         Page<PostWithLikeCount> postWithLikeCounts = postRepository.findAllByLikeCount(pageable);
@@ -85,6 +87,13 @@ public class PostServiceImpl implements PostService {
         });
 
         return postMapper.getPostsResponse(postWithLikeCounts, tagsMap);
+    }
+
+    @Override
+    public PostsResponse getPostsByBookmark(int pageNo, Member member) {
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
+        Page<Post> posts = postRepository.findAllByBookmark(member.getLoginId(), pageable);
+        return getPostsResponseWithPostStatus(posts);
     }
 
     @Override
