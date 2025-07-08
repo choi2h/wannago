@@ -110,53 +110,42 @@
 
 ## 📍시연 화면
 
-| 회원가입 |
+| 회원가입 및 로그인 |
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/7ba14537-dae7-4d53-a87e-e4d69e45f683" />|
+|![Image](https://github.com/user-attachments/assets/903b08b6-0544-4587-9441-a43b4a57b7e1)|
 
-<br/>
-
-| 로그인 및 로그아웃 |
-|---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/63dfc9ee-533c-434c-bf47-6d98175241e1" />|
 <br/>
     
 | 회원정보 |
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/4bdb5720-9988-4ddd-9e4c-5656677503ca" />|
-<br/>
-    
-|메인페이지 및 게시글 목록 조회|
-|---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/0a4b087c-9677-4880-8840-90e019c2e8fd" />|
+|![Image](https://github.com/user-attachments/assets/ea8d40eb-89c8-4f89-a74f-a1191ff09b9e)|
 <br/>
     
 | 게시글 등록 및 여행 일정 추가 |
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/f9527c84-d573-44d3-bb2e-5ff817d531a8" />|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/17cfeefa-423f-43d7-86a8-78ea4a5bf526" />|
+|![Image](https://github.com/user-attachments/assets/5d134707-2b33-4111-8248-27c4eb9286b8)|
 <br/>
 
-|게시글 수정|
+| 게시글 댓글 작성/수정/삭제 |
+|--|
+|![Image](https://github.com/user-attachments/assets/5044e587-89eb-4461-93c3-6b9d5bb352d6)|
+<br/>
+
+|게시글 수정/삭제|
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/55778c1d-73cd-4387-a03f-34e7373dc088" />|
+|![Image](https://github.com/user-attachments/assets/349fcec5-f3f0-425d-a6fb-379cf7de09c0)|
 <br/>
     
 |좋아요 및 북마크|
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/612a8286-d4ed-471e-91ca-7d92da9b60a6" />|
+|![Image](https://github.com/user-attachments/assets/2632dfd0-dd83-4eed-bb4f-8d68b71e9db3)|
 <br/>
     
-|나의 게시글 및 북마크|
+|질문 작성 및 조회|
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/0b9639b4-fe31-4bf2-bb89-9ef60700c8ab" />|
+|![Image](https://github.com/user-attachments/assets/1cd72e9c-303a-4d62-a71e-903f800289f4)|
 <br/>
     
-|질문 목록 및 상세조회|
+| 질문 답변 |
 |---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/39f49ce7-441a-41a0-8015-79153fb5ced1" />|
-<br/>
-    
-| 질문 등록 및 수정/답변 작성성 |
-|---|
-|<img width="1000" height="400" alt="Image" src="https://github.com/user-attachments/assets/4ab47a01-f30a-45e1-a154-cd475cd9415d" />|
+|![Image](https://github.com/user-attachments/assets/07613da5-4bd2-43b4-8097-8625b19bcce4)|
