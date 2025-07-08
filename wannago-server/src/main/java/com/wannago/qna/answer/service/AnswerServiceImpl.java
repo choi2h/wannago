@@ -119,7 +119,7 @@ public class AnswerServiceImpl implements AnswerService {
        
     // 답변 채택
     @Transactional
-    public AnswerResponse acceptAnswer(Long answerId, String LoginId) {
+    public AnswerResponse acceptAnswer(Long askId, Long answerId, Member member) {
         // 답변 존재 여부 확인 및 해당 답변 객체 가져오기
         Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new CustomException(CustomErrorCode.ANSWER_NOT_FOUND));
@@ -132,9 +132,9 @@ public class AnswerServiceImpl implements AnswerService {
         }
 
         // 작성자 권한 확인
-        Member member = memberRepository.findByLoginId(LoginId)
-                .orElseThrow(() -> new CustomException(CustomErrorCode.MEMBER_NOT_EXIST));
-        validateAnswerAuthor(answer, member.getId());
+        if (ask.getAuthor() == null || !member.getLoginId().equals(ask.getAuthor())) {
+            throw new CustomException(CustomErrorCode.ANSWER_UNAUTHORIZED);
+        }
 
         // 답변 채택 처리
         answer.accept();

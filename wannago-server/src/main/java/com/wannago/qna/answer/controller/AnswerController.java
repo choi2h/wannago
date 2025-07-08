@@ -64,7 +64,7 @@ public class AnswerController {
             @AuthenticationPrincipal Member member
     ) {
         validateMember(member);
-        AnswerResponse response = answerService.acceptAnswer(answerId, member.getLoginId());
+        AnswerResponse response = answerService.acceptAnswer(id, answerId, member);
         return ResponseEntity.ok(response);
     }
 
