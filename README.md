@@ -63,22 +63,28 @@
 <br/>
 
 ## 📍기술 스택
+<details>
+    <summary>기술스택 정리</summary>
+    <div markdown="1">
+    - 백엔드  
+        - JAVA  
+        - Spring Boot  
+            - Spring Security  
+            - JWT  
+            - Validation  
+            - JPA  
+            - Lombok  
+            - Gradle  
+        - MySQL  
+        - MongoDB  
+    - 프론트  
+        - React  
+        - ReactRouter  
+        - Axios  
+    </div>
+</details>
+<img width="1175" height="466" alt="Image" src="https://github.com/user-attachments/assets/ce681197-956d-43d4-a05c-b33c9236307c" />
 
-- 백엔드
-    - JAVA
-    - Spring Boot
-        - Spring Security
-        - JWT
-        - Validation
-        - JPA
-        - Lombok
-        - Gradle
-    - MySQL
-    - MongoDB
-- 프론트
-    - React
-    - ReactRouter
-    - Axios
 
 <br/>
 
@@ -99,6 +105,7 @@
 
 <img width="2120" height="782" alt="Image" src="https://github.com/user-attachments/assets/832f9a10-b011-430e-bb2a-939ff01278d3" />
 
+<br/>
 <br/>
 
 ## 📍시연 화면
