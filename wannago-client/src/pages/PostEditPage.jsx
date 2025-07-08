@@ -21,8 +21,11 @@ function PostEditPage () {
     console.log("작성 완료했대!!");
     const schedules = post.schedules.map((schedule, idx) => {return {...schedule, day: `${idx+1}일차`}});
     modifyPost({...post, schedules})
-    .then(navigate(`/post/${post.id}`))
-    .catch();
+    .then(() => navigate(`/post/${post.id}`, {replace: true}))
+    .catch((err) => {
+       console.error("게시글 수정 실패:", err);
+       alert("게시글을 수정하는데 실패했습니다.");
+    });
   }
 
   const updateSchedule = (preIdx, newSchedule) => {
