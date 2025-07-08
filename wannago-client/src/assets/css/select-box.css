@@ -1,0 +1,55 @@
+.group-3 {
+  height: 29px;
+  left: 63px;
+  top: 145px;
+  width: 760px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.input-2 {
+  align-items: center;
+  border: 1px solid;
+  border-color: #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  gap: 10px;
+  height: 29px;
+  left: 0;
+  padding: 0px 10px;
+  top: 0;
+  width: 180px;
+}
+
+.icon-outlined-action-main-clock-1 {
+  height: 20px !important;
+  position: relative !important;
+  width: 20px !important;
+}
+
+.text-wrapper-15 {
+  color: #757575;
+  flex: 1;
+  font-family: var(--body-md-regular-font-family);
+  font-size: var(--body-md-regular-font-size);
+  font-style: var(--body-md-regular-font-style);
+  font-weight: var(--body-md-regular-font-weight);
+  letter-spacing: var(--body-md-regular-letter-spacing);
+  line-height: var(--body-md-regular-line-height);
+  position: relative;
+}
+
+.input-3 {
+  align-items: center;
+  border: 1px solid;
+  border-color: #c4c4c4;
+  border-radius: 4px;
+  display: flex;
+  gap: 10px;
+  height: 29px;
+  left: 230px;
+  padding: 0px 10px;
+  top: 0;
+  width: 530px;
+}

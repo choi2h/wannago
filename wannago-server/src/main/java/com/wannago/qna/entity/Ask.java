@@ -1,38 +1,8 @@
 package com.wannago.qna.entity;
 
-import com.wannago.dto.AskRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Getter
-@NoArgsConstructor
-public class Ask { // Timestamped 상속은 나중에 추가하셔도 됩니다.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false, length = 500)
-    private String content;
-
-    public Ask(AskRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-    }
-
-    // 엔티티 내용 업데이트하는 메서드
-    public void update(AskRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-    }
-}package com.wannago.qna.entity;
-
-import jakarta.persistence.*;
-        import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -82,5 +52,18 @@ public class Ask {
         this.category = category;
         this.title = title;
         this.contents = contents;
+    }
+
+    @Builder
+    public Ask(Category category, String title, String contents, String author) {
+        this.category = category;
+        this.title = title;
+        this.author = author;
+        this.contents = contents;
+        this.isAccepted = false;
+    }
+
+    public void accept(){
+        this.isAccepted = true;
     }
 }

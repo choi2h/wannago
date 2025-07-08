@@ -1,0 +1,133 @@
+.input-post {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.title-input {
+  font-size: 24px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #333333;
+}
+
+.title-input::placeholder {
+  color: #999999;
+  font-weight: 600;
+}
+
+.tag {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0;
+}
+
+.content-input {
+  font-size: 16px;
+  line-height: 1.6;
+  border: none;
+  outline: none;
+  resize: vertical;
+  background: transparent;
+  color: #333333;
+  font-family: inherit;
+  min-height: 200px;
+}
+
+.content-input::placeholder {
+  color: #999999;
+}
+
+/* 기존 CSS에 추가 */
+
+.category-dropdown {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.category-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  min-width: 100px;
+  width: fit-content;
+}
+
+.category-button:hover {
+  border-color: #cccccc;
+}
+
+.category-button .placeholder {
+  color: #999999;
+  font-size: 14px;
+}
+
+.category-button .selected {
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  color: #666666;
+  transition: transform 0.2s;
+  margin-left: 8px;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-item:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.dropdown-item:last-child {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}

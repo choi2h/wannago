@@ -1,0 +1,84 @@
+.frame-wrapper {
+  border-color: #757575;
+  border-top-style: solid;
+  border-top-width: 1px;
+  height: 100px;
+  left: 283px;
+  position: absolute;
+  top: 2000px;
+  width: 886px;
+}
+
+.frame-wrapper .tab-wrapper {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  left: 725px;
+  position: absolute;
+  top: 29px;
+}
+
+.frame-wrapper .tab {
+  align-items: center;
+  background-color: #409f71;
+  border-radius: 6px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 16px;
+  position: relative;
+  width: 161px;
+}
+
+.frame-wrapper .text-wrapper-19 {
+  color: var(--white);
+  font-family: var(--navigation-font-family);
+  font-size: var(--navigation-font-size);
+  font-style: var(--navigation-font-style);
+  font-weight: var(--navigation-font-weight);
+  letter-spacing: var(--navigation-letter-spacing);
+  line-height: var(--navigation-line-height);
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.frame-wrapper .frame-11 {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  left: 544px;
+  position: absolute;
+  top: 29px;
+}
+
+.frame-wrapper .tab-2 {
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #eb4600;
+  border-radius: 6px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 16px;
+  position: relative;
+  width: 161px;
+}
+
+.frame-wrapper .text-wrapper-20 {
+  color: #eb4600;
+  font-family: var(--navigation-font-family);
+  font-size: var(--navigation-font-size);
+  font-style: var(--navigation-font-style);
+  font-weight: var(--navigation-font-weight);
+  letter-spacing: var(--navigation-letter-spacing);
+  line-height: var(--navigation-line-height);
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

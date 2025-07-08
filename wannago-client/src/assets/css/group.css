@@ -1,0 +1,135 @@
+.group {
+  height: 49px;
+  left: 150px;
+  position: absolute;
+  top: 29px;
+  width: 1140px;
+}
+
+.group .div-wrapper {
+  height: 49px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 205px;
+}
+
+.group .div {
+  align-items: center;
+  display: inline-flex;
+  gap: 12px;
+  position: relative;
+}
+
+.group .img {
+  height: 48px;
+  position: relative;
+  width: 48px;
+}
+
+.group .text-wrapper {
+  color: #1f1d1b;
+  font-family: "Hakgyoansim Allimjang OTF-B", Helvetica;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.group .navbar {
+  align-items: center;
+  display: flex;
+  gap: 48px;
+  left: 205px;
+  padding: 15px 0px;
+  position: absolute;
+  top: 0;
+  width: 468px;
+}
+
+.group .text-wrapper-2 {
+  color: #1f1d1b;
+  font-family: "S-Core Dream-7ExtraBold", Helvetica;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.group .text-wrapper-3 {
+  color: #666666;
+  font-family: "S-Core Dream-5Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.group .div-2 {
+  height: 48px;
+  left: 895px;
+  position: absolute;
+  top: 0;
+  width: 245px;
+}
+
+.group .search-instance {
+  height: 39px !important;
+  left: 0 !important;
+  position: absolute !important;
+  top: 4px !important;
+  width: 39px !important;
+}
+
+.group .frame-2 {
+  align-items: center;
+  border: 1px solid;
+  border-color: #409f71;
+  border-radius: 1000px;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: flex-end;
+  left: 61px;
+  padding: 10px 16px;
+  position: absolute;
+  top: 4px;
+}
+
+.group .text-wrapper-4 {
+  color: #409f71;
+  font-family: "S-Core Dream-7ExtraBold", Helvetica;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.group .ellipse-wrapper {
+  align-items: center;
+  display: inline-flex;
+  gap: 16px;
+  left: 197px;
+  position: absolute;
+  top: 0;
+}
+
+.group .ellipse {
+  height: 48px;
+  object-fit: cover;
+  position: relative;
+  width: 48px;
+}
